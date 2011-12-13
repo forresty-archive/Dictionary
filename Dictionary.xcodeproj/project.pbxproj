@@ -23,6 +23,7 @@
 		683A6A5314760152004C3F8C /* DictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A6A5214760152004C3F8C /* DictionaryTests.m */; };
 		68B0C3B01476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */; };
 		68B0C3B11476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */; };
+		68E6AED2149786A10034486E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68E6AED1149786A10034486E /* Icon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		683A6A5214760152004C3F8C /* DictionaryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DictionaryTests.m; sourceTree = "<group>"; };
 		68B0C3AE1476047B006AEA06 /* DICWordLookupTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICWordLookupTableViewController.h; sourceTree = "<group>"; };
 		68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DICWordLookupTableViewController.m; sourceTree = "<group>"; };
+		68E6AED1149786A10034486E /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 		683A6A1814760151004C3F8C = {
 			isa = PBXGroup;
 			children = (
+				68E6AED1149786A10034486E /* Icon.png */,
 				683A6A2F14760152004C3F8C /* Dictionary */,
 				683A6A4B14760152004C3F8C /* DictionaryTests */,
 				683A6A2614760152004C3F8C /* Frameworks */,
@@ -229,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				683A6A3414760152004C3F8C /* InfoPlist.strings in Resources */,
+				68E6AED2149786A10034486E /* Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,7 +365,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Dictionary/Dictionary-Prefix.pch";
 				INFOPLIST_FILE = "Dictionary/Dictionary-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -372,7 +378,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Dictionary/Dictionary-Prefix.pch";
 				INFOPLIST_FILE = "Dictionary/Dictionary-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -28,24 +28,13 @@
     searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
     [searchBar sizeToFit];
     
-    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 460) style:UITableViewStyleGrouped];
-    
+    tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     
     tableView.dataSource = self;
     tableView.delegate = self;
-//    
-    
   }
   
   return self;
-}
-
-- (void)didReceiveMemoryWarning
-{
-  // Releases the view if it doesn't have a superview.
-  [super didReceiveMemoryWarning];
-    
-  // Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark - View lifecycle
@@ -63,22 +52,24 @@
   
   tableView.tableHeaderView = searchBar;
 
+  tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+  tableView.frame = self.view.bounds;
   
   [self.view addSubview:self.tableView];
-
-  NSLog(@"viewDidLoad completed");
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    return YES;
+  }
+  else {
+    return interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
+  }
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+  tableView.frame = self.view.bounds;
 }
 
 -(NSInteger)tableView:(UITableView *)tView numberOfRowsInSection:(NSInteger)section {
@@ -115,8 +106,10 @@
     
     if (exactMatch && section == 0) {
       return @"Match";
+    } else if (guessing) {
+      return @"Guessing...";
     } else if ([guessesArray count] == 0) {
-      return @"No result";
+      return @"No results";
     }
     
     return @"Did you mean?";
@@ -136,11 +129,12 @@
 	if (cell == nil)
 	{
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID];
+    cell.textLabel.font = [UIFont fontWithName:@"Baskerville" size:24];
 	}
 	
 //	cell.textLabel.text = [self.guessesArray objectAtIndex:indexPath.row];
   if (exactMatch && indexPath.section == 0) {
-    cell.textLabel.textColor = [UIColor blackColor];
+    cell.textLabel.textColor = [UIColor blueColor];
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = searchBar.text;
@@ -178,6 +172,7 @@
 
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
   [self.guessesArray removeAllObjects];
+  
 //  NSLog(@"searching for %@", searchString);
   if ([UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:searchString]) {
     exactMatch = YES;
@@ -195,6 +190,8 @@
 //    NSLog(@"operation working!!");
     
     NSArray *guesses = [self.textChecker guessesForWordRange:NSMakeRange(0, [searchString length]) inString:searchString language:@"en_US"];
+  
+    [self.guessesArray removeAllObjects];
     
     for (NSString *guess in guesses) {
       if ([UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:guess]) {
@@ -206,7 +203,7 @@
   [guessOperation setCompletionBlock:^{
     guessing = NO;
     
-    [self.searchDisplayController.searchResultsTableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
+    [self.searchDisplayController.searchResultsTableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
     
 //    NSLog(@"operation completed!");
   }];
