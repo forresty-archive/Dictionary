@@ -24,6 +24,7 @@
 		68B0C3B01476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */; };
 		68B0C3B11476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */; };
 		68E6AED2149786A10034486E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68E6AED1149786A10034486E /* Icon.png */; };
+		68E6AED614978F170034486E /* MKiCloudSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6AED514978F170034486E /* MKiCloudSync.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,9 @@
 		68B0C3AE1476047B006AEA06 /* DICWordLookupTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICWordLookupTableViewController.h; sourceTree = "<group>"; };
 		68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DICWordLookupTableViewController.m; sourceTree = "<group>"; };
 		68E6AED1149786A10034486E /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		68E6AED314978DBA0034486E /* Dictionary.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Dictionary.entitlements; sourceTree = "<group>"; };
+		68E6AED414978F170034486E /* MKiCloudSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKiCloudSync.h; sourceTree = "<group>"; };
+		68E6AED514978F170034486E /* MKiCloudSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKiCloudSync.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +93,8 @@
 		683A6A1814760151004C3F8C = {
 			isa = PBXGroup;
 			children = (
+				68E6AED414978F170034486E /* MKiCloudSync.h */,
+				68E6AED514978F170034486E /* MKiCloudSync.m */,
 				68E6AED1149786A10034486E /* Icon.png */,
 				683A6A2F14760152004C3F8C /* Dictionary */,
 				683A6A4B14760152004C3F8C /* DictionaryTests */,
@@ -121,6 +127,7 @@
 		683A6A2F14760152004C3F8C /* Dictionary */ = {
 			isa = PBXGroup;
 			children = (
+				68E6AED314978DBA0034486E /* Dictionary.entitlements */,
 				683A6A3814760152004C3F8C /* DICAppDelegate.h */,
 				683A6A3914760152004C3F8C /* DICAppDelegate.m */,
 				683A6A3B14760152004C3F8C /* Dictionary.xcdatamodeld */,
@@ -271,6 +278,7 @@
 				683A6A3A14760152004C3F8C /* DICAppDelegate.m in Sources */,
 				683A6A3D14760152004C3F8C /* Dictionary.xcdatamodeld in Sources */,
 				68B0C3B01476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */,
+				68E6AED614978F170034486E /* MKiCloudSync.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,6 +370,7 @@
 		683A6A5714760152004C3F8C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Dictionary/Dictionary.entitlements;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Dictionary/Dictionary-Prefix.pch";
 				INFOPLIST_FILE = "Dictionary/Dictionary-Info.plist";
@@ -375,6 +384,7 @@
 		683A6A5814760152004C3F8C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Dictionary/Dictionary.entitlements;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Dictionary/Dictionary-Prefix.pch";
 				INFOPLIST_FILE = "Dictionary/Dictionary-Info.plist";

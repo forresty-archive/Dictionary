@@ -11,6 +11,9 @@
 #import "UIKit/UITextChecker.h"
 #import "UIKit/UIReferenceLibraryViewController.h"
 
+static NSString *kDictionaryLookupHistory = @"kDictionaryLookupHistory";
+static int kDictionaryLookupHistoryLimit = 10;
+
 @implementation DICWordLookupTableViewController
 
 @synthesize searchBar, tableView, guessesArray, textChecker, mySearchDisplayController, exactMatch, guessing, guessOperationQueue;
@@ -26,6 +29,7 @@
     guessOperationQueue = [[NSOperationQueue alloc] init];
     
     searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
+    searchBar.delegate = self;
     [searchBar sizeToFit];
     
     tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
@@ -153,21 +157,45 @@
 	return cell;
 }
 
--(void)tableView:(UITableView *)tView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  UIReferenceLibraryViewController *dicController;
+-(NSArray *)lookupHistory {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   
+  return [defaults objectForKey:kDictionaryLookupHistory];
+}
+
+-(void)showDefinitionForTerm:(NSString *)term {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  NSMutableArray *lookupHistory = [[NSMutableArray alloc] init];
+  [lookupHistory addObject:term];
+  
+  for (NSString *termInHistory in [self lookupHistory]) {
+    if (![term isEqual:termInHistory] && [lookupHistory count] < kDictionaryLookupHistoryLimit) {
+      [lookupHistory addObject:termInHistory];
+    }
+  }
+
+  [defaults setObject:lookupHistory forKey:kDictionaryLookupHistory];
+  [defaults synchronize];
+  NSLog(@"current history: %@", [lookupHistory description]);
+  
+  UIReferenceLibraryViewController *dicController = [[UIReferenceLibraryViewController alloc] initWithTerm:term];
+  
+  [self presentModalViewController:dicController animated:YES];
+}
+
+-(void)tableView:(UITableView *)tView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [tView deselectRowAtIndexPath:indexPath animated:YES];
   
   if (exactMatch && indexPath.section == 0) {
-    dicController = [[UIReferenceLibraryViewController alloc] initWithTerm:searchBar.text];
+    [self showDefinitionForTerm:searchBar.text];
+    
   } else if (guessing) {
     // guessing, do nothing
     return;
+    
   } else {
-    dicController = [[UIReferenceLibraryViewController alloc] initWithTerm:[[guessesArray objectAtIndex:indexPath.row] description]];
+    [self showDefinitionForTerm:[[guessesArray objectAtIndex:indexPath.row] description]];
   }
-  
-  [self presentModalViewController:dicController animated:YES];
 }
 
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
@@ -212,6 +240,23 @@
   
   
   return exactMatch;
+}
+
+-(void)searchBarSearchButtonClicked:(UISearchBar *)sBar {
+  NSString *term = nil;
+  
+  if (exactMatch) {    
+    term = sBar.text;
+  } 
+//  else if ([guessesArray count] > 0) {
+//    term = [guessesArray objectAtIndex:0];
+//  }
+  
+  if (term == nil) {
+    return;
+  }
+  
+  [self showDefinitionForTerm:term];
 }
 
 @end

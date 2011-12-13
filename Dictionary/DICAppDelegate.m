@@ -8,6 +8,7 @@
 
 #import "DICAppDelegate.h"
 #import "DICWordLookupTableViewController.h"
+#import "MKiCloudSync.h"
 
 @implementation DICAppDelegate
 
@@ -20,6 +21,8 @@ DICWordLookupTableViewController *wordLookupController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [MKiCloudSync start];
+  
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
   wordLookupController = [[DICWordLookupTableViewController alloc] init];
