@@ -21,6 +21,8 @@
 		683A6A4814760152004C3F8C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2D14760152004C3F8C /* CoreData.framework */; };
 		683A6A5014760152004C3F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 683A6A4E14760152004C3F8C /* InfoPlist.strings */; };
 		683A6A5314760152004C3F8C /* DictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A6A5214760152004C3F8C /* DictionaryTests.m */; };
+		68B0C3B01476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */; };
+		68B0C3B11476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,19 +41,21 @@
 		683A6A2914760152004C3F8C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		683A6A2B14760152004C3F8C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		683A6A2D14760152004C3F8C /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		683A6A3114760152004C3F8C /* Dictionary-Info.plist */ = {isa = PBXFileReference; path = "Dictionary-Info.plist"; sourceTree = "<group>"; };
+		683A6A3114760152004C3F8C /* Dictionary-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Dictionary-Info.plist"; sourceTree = "<group>"; };
 		683A6A3314760152004C3F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		683A6A3514760152004C3F8C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		683A6A3714760152004C3F8C /* Dictionary-Prefix.pch */ = {isa = PBXFileReference; path = "Dictionary-Prefix.pch"; sourceTree = "<group>"; };
-		683A6A3814760152004C3F8C /* DICAppDelegate.h */ = {isa = PBXFileReference; path = DICAppDelegate.h; sourceTree = "<group>"; };
+		683A6A3714760152004C3F8C /* Dictionary-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dictionary-Prefix.pch"; sourceTree = "<group>"; };
+		683A6A3814760152004C3F8C /* DICAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DICAppDelegate.h; sourceTree = "<group>"; };
 		683A6A3914760152004C3F8C /* DICAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DICAppDelegate.m; sourceTree = "<group>"; };
 		683A6A3C14760152004C3F8C /* Dictionary.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Dictionary.xcdatamodel; sourceTree = "<group>"; };
 		683A6A4314760152004C3F8C /* DictionaryTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DictionaryTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		683A6A4414760152004C3F8C /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		683A6A4D14760152004C3F8C /* DictionaryTests-Info.plist */ = {isa = PBXFileReference; path = "DictionaryTests-Info.plist"; sourceTree = "<group>"; };
+		683A6A4D14760152004C3F8C /* DictionaryTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DictionaryTests-Info.plist"; sourceTree = "<group>"; };
 		683A6A4F14760152004C3F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		683A6A5114760152004C3F8C /* DictionaryTests.h */ = {isa = PBXFileReference; path = DictionaryTests.h; sourceTree = "<group>"; };
+		683A6A5114760152004C3F8C /* DictionaryTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DictionaryTests.h; sourceTree = "<group>"; };
 		683A6A5214760152004C3F8C /* DictionaryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DictionaryTests.m; sourceTree = "<group>"; };
+		68B0C3AE1476047B006AEA06 /* DICWordLookupTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICWordLookupTableViewController.h; sourceTree = "<group>"; };
+		68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DICWordLookupTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +122,8 @@
 				683A6A3914760152004C3F8C /* DICAppDelegate.m */,
 				683A6A3B14760152004C3F8C /* Dictionary.xcdatamodeld */,
 				683A6A3014760152004C3F8C /* Supporting Files */,
+				68B0C3AE1476047B006AEA06 /* DICWordLookupTableViewController.h */,
+				68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */,
 			);
 			path = Dictionary;
 			sourceTree = "<group>";
@@ -260,6 +266,7 @@
 				683A6A3614760152004C3F8C /* main.m in Sources */,
 				683A6A3A14760152004C3F8C /* DICAppDelegate.m in Sources */,
 				683A6A3D14760152004C3F8C /* Dictionary.xcdatamodeld in Sources */,
+				68B0C3B01476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +275,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				683A6A5314760152004C3F8C /* DictionaryTests.m in Sources */,
+				68B0C3B11476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,7 +315,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Feng Ye (PHPRBMZ77C)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -322,6 +330,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "99C5F3ED-7F1F-4B79-AADD-5B02419227A4";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -332,7 +341,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -421,6 +430,7 @@
 				683A6A5814760152004C3F8C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		683A6A5914760152004C3F8C /* Build configuration list for PBXNativeTarget "DictionaryTests" */ = {
 			isa = XCConfigurationList;
@@ -429,6 +439,7 @@
 				683A6A5B14760152004C3F8C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

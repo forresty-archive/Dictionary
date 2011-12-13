@@ -7,6 +7,7 @@
 //
 
 #import "DICAppDelegate.h"
+#import "DICWordLookupTableViewController.h"
 
 @implementation DICAppDelegate
 
@@ -15,13 +16,21 @@
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 
+DICWordLookupTableViewController *wordLookupController;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
-    return YES;
+  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+  
+  wordLookupController = [[DICWordLookupTableViewController alloc] init];
+  
+  [self.window addSubview:wordLookupController.view];
+  
+  // Override point for customization after application launch.
+  self.window.backgroundColor = [UIColor whiteColor];
+  [self.window makeKeyAndVisible];
+  
+  return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -98,6 +107,7 @@
         __managedObjectContext = [[NSManagedObjectContext alloc] init];
         [__managedObjectContext setPersistentStoreCoordinator:coordinator];
     }
+  
     return __managedObjectContext;
 }
 
@@ -113,6 +123,7 @@
     }
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Dictionary" withExtension:@"momd"];
     __managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+  
     return __managedObjectModel;
 }
 
@@ -158,7 +169,7 @@
          */
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
-    }    
+    }
     
     return __persistentStoreCoordinator;
 }
