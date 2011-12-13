@@ -12,7 +12,7 @@
 #import "UIKit/UIReferenceLibraryViewController.h"
 
 static NSString *kDictionaryLookupHistory = @"kDictionaryLookupHistory";
-static int kDictionaryLookupHistoryLimit = 10;
+static int kDictionaryLookupHistoryLimit = 15;
 
 @implementation DICWordLookupTableViewController
 
@@ -32,7 +32,7 @@ static int kDictionaryLookupHistoryLimit = 10;
     searchBar.delegate = self;
     [searchBar sizeToFit];
     
-    tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     
     tableView.dataSource = self;
     tableView.delegate = self;
@@ -76,6 +76,12 @@ static int kDictionaryLookupHistoryLimit = 10;
   tableView.frame = self.view.bounds;
 }
 
+-(NSArray *)lookupHistory {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  
+  return [defaults objectForKey:kDictionaryLookupHistory];
+}
+
 -(NSInteger)tableView:(UITableView *)tView numberOfRowsInSection:(NSInteger)section {
   if (tView == self.searchDisplayController.searchResultsTableView) {
     if (exactMatch && section == 0) {
@@ -87,6 +93,8 @@ static int kDictionaryLookupHistoryLimit = 10;
     }
     
     return [self.guessesArray count];
+  } else if (tView == tableView) {
+    return [[self lookupHistory] count];
   }
   
   return 0;
@@ -99,6 +107,8 @@ static int kDictionaryLookupHistoryLimit = 10;
       return 2;
     }
     
+    return 1;
+  } else if (tView == tableView) {
     return 1;
   }
   
@@ -117,15 +127,14 @@ static int kDictionaryLookupHistoryLimit = 10;
     }
     
     return @"Did you mean?";
+  } else if (tView == tableView) {
+    return @"History";
   }
   
   return nil;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (tView != self.searchDisplayController.searchResultsTableView) {
-    return nil;
-  }
   
   static NSString *kCellID = @"wordCellID";
 	
@@ -137,31 +146,34 @@ static int kDictionaryLookupHistoryLimit = 10;
 	}
 	
 //	cell.textLabel.text = [self.guessesArray objectAtIndex:indexPath.row];
-  if (exactMatch && indexPath.section == 0) {
-    cell.textLabel.textColor = [UIColor blueColor];
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.text = searchBar.text;
-  } else if (guessing) {
-    cell.textLabel.textColor = [UIColor grayColor];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.textLabel.text = @"Guessing...";
-  } else {
+  
+  if (tView == self.searchDisplayController.searchResultsTableView) {
+    if (exactMatch && indexPath.section == 0) {
+      cell.textLabel.textColor = [UIColor blueColor];
+      cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+      cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+      cell.textLabel.text = searchBar.text;
+    } else if (guessing) {
+      cell.textLabel.textColor = [UIColor grayColor];
+      cell.selectionStyle = UITableViewCellSelectionStyleNone;
+      cell.accessoryType = UITableViewCellAccessoryNone;
+      cell.textLabel.text = @"Guessing...";
+    } else {
+      cell.textLabel.textColor = [UIColor blackColor];
+      cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+      cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+      cell.textLabel.text = [[guessesArray objectAtIndex:indexPath.row] description];
+    }
+  } else if (tView == tableView) {
     cell.textLabel.textColor = [UIColor blackColor];
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.text = [[guessesArray objectAtIndex:indexPath.row] description];
+    cell.textLabel.text = [[[self lookupHistory] objectAtIndex:indexPath.row] description];
   }
   
 	return cell;
 }
 
--(NSArray *)lookupHistory {
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  
-  return [defaults objectForKey:kDictionaryLookupHistory];
-}
 
 -(void)showDefinitionForTerm:(NSString *)term {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -176,7 +188,10 @@ static int kDictionaryLookupHistoryLimit = 10;
 
   [defaults setObject:lookupHistory forKey:kDictionaryLookupHistory];
   [defaults synchronize];
-  NSLog(@"current history: %@", [lookupHistory description]);
+  
+  [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+  
+//  NSLog(@"current history: %@", [lookupHistory description]);
   
   UIReferenceLibraryViewController *dicController = [[UIReferenceLibraryViewController alloc] initWithTerm:term];
   
@@ -186,15 +201,19 @@ static int kDictionaryLookupHistoryLimit = 10;
 -(void)tableView:(UITableView *)tView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [tView deselectRowAtIndexPath:indexPath animated:YES];
   
-  if (exactMatch && indexPath.section == 0) {
-    [self showDefinitionForTerm:searchBar.text];
-    
-  } else if (guessing) {
-    // guessing, do nothing
-    return;
-    
-  } else {
-    [self showDefinitionForTerm:[[guessesArray objectAtIndex:indexPath.row] description]];
+  if (tView == self.searchDisplayController.searchResultsTableView) {
+    if (exactMatch && indexPath.section == 0) {
+      [self showDefinitionForTerm:searchBar.text];
+      
+    } else if (guessing) {
+      // guessing, do nothing
+      return;
+      
+    } else {
+      [self showDefinitionForTerm:[[guessesArray objectAtIndex:indexPath.row] description]];
+    }
+  } else if (tView == tableView) {
+    [self showDefinitionForTerm:[[[self lookupHistory] objectAtIndex:indexPath.row] description]];
   }
 }
 
