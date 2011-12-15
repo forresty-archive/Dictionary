@@ -7,7 +7,6 @@
 //
 
 #import "DICWordLookupTableViewController.h"
-
 #import "UIKit/UITextChecker.h"
 #import "UIKit/UIReferenceLibraryViewController.h"
 #import "MKiCloudSync.h"
@@ -33,11 +32,9 @@ static int kDictionaryGuessCountLimit = 10;
     searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
     searchBar.delegate = self;
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    
     [searchBar sizeToFit];
     
     tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    
     tableView.dataSource = self;
     tableView.delegate = self;
   }
@@ -57,7 +54,6 @@ static int kDictionaryGuessCountLimit = 10;
   mySearchDisplayController.searchResultsDelegate = self;
   
   tableView.tableHeaderView = searchBar;
-
   tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   tableView.frame = self.view.bounds;
   
@@ -321,7 +317,6 @@ static int kDictionaryGuessCountLimit = 10;
   }];
   
   [guessOperationQueue addOperation:guessOperation];
-  
   
   return exactMatch;
 }
