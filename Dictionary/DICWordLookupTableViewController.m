@@ -3,7 +3,7 @@
 //  Dictionary
 //
 //  Created by Feng Ye on 11/18/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2011 @forresty. All rights reserved.
 //
 
 #import "DICWordLookupTableViewController.h"
