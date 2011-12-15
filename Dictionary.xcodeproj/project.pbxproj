@@ -21,10 +21,10 @@
 		683A6A4814760152004C3F8C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2D14760152004C3F8C /* CoreData.framework */; };
 		683A6A5014760152004C3F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 683A6A4E14760152004C3F8C /* InfoPlist.strings */; };
 		683A6A5314760152004C3F8C /* DictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A6A5214760152004C3F8C /* DictionaryTests.m */; };
+		685E87FF1499CB5C00B3E91A /* MKiCloudSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E87FE1499CB5C00B3E91A /* MKiCloudSync.m */; };
 		68B0C3B01476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */; };
 		68B0C3B11476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */; };
 		68E6AED2149786A10034486E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68E6AED1149786A10034486E /* Icon.png */; };
-		68E6AED614978F170034486E /* MKiCloudSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6AED514978F170034486E /* MKiCloudSync.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,12 +56,12 @@
 		683A6A4F14760152004C3F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		683A6A5114760152004C3F8C /* DictionaryTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DictionaryTests.h; sourceTree = "<group>"; };
 		683A6A5214760152004C3F8C /* DictionaryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DictionaryTests.m; sourceTree = "<group>"; };
+		685E87FD1499CB5C00B3E91A /* MKiCloudSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKiCloudSync.h; sourceTree = "<group>"; };
+		685E87FE1499CB5C00B3E91A /* MKiCloudSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKiCloudSync.m; sourceTree = "<group>"; };
 		68B0C3AE1476047B006AEA06 /* DICWordLookupTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICWordLookupTableViewController.h; sourceTree = "<group>"; };
 		68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DICWordLookupTableViewController.m; sourceTree = "<group>"; };
 		68E6AED1149786A10034486E /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		68E6AED314978DBA0034486E /* Dictionary.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Dictionary.entitlements; sourceTree = "<group>"; };
-		68E6AED414978F170034486E /* MKiCloudSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKiCloudSync.h; sourceTree = "<group>"; };
-		68E6AED514978F170034486E /* MKiCloudSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKiCloudSync.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,8 +93,6 @@
 		683A6A1814760151004C3F8C = {
 			isa = PBXGroup;
 			children = (
-				68E6AED414978F170034486E /* MKiCloudSync.h */,
-				68E6AED514978F170034486E /* MKiCloudSync.m */,
 				68E6AED1149786A10034486E /* Icon.png */,
 				683A6A2F14760152004C3F8C /* Dictionary */,
 				683A6A4B14760152004C3F8C /* DictionaryTests */,
@@ -127,6 +125,7 @@
 		683A6A2F14760152004C3F8C /* Dictionary */ = {
 			isa = PBXGroup;
 			children = (
+				685E87FC1499CB5C00B3E91A /* MKiCloudSync */,
 				68E6AED314978DBA0034486E /* Dictionary.entitlements */,
 				683A6A3814760152004C3F8C /* DICAppDelegate.h */,
 				683A6A3914760152004C3F8C /* DICAppDelegate.m */,
@@ -166,6 +165,15 @@
 				683A6A4E14760152004C3F8C /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		685E87FC1499CB5C00B3E91A /* MKiCloudSync */ = {
+			isa = PBXGroup;
+			children = (
+				685E87FD1499CB5C00B3E91A /* MKiCloudSync.h */,
+				685E87FE1499CB5C00B3E91A /* MKiCloudSync.m */,
+			);
+			path = MKiCloudSync;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,7 +286,7 @@
 				683A6A3A14760152004C3F8C /* DICAppDelegate.m in Sources */,
 				683A6A3D14760152004C3F8C /* Dictionary.xcdatamodeld in Sources */,
 				68B0C3B01476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */,
-				68E6AED614978F170034486E /* MKiCloudSync.m in Sources */,
+				685E87FF1499CB5C00B3E91A /* MKiCloudSync.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
