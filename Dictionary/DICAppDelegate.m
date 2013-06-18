@@ -19,16 +19,16 @@ DICWordLookupTableViewController *wordLookupController;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [MKiCloudSync start];
-  
+
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-  
+
   wordLookupController = [[DICWordLookupTableViewController alloc] init];
-  
+
   [self.window addSubview:wordLookupController.view];
-  
+
   self.window.backgroundColor = [UIColor whiteColor];
   [self.window makeKeyAndVisible];
-  
+
   return YES;
 }
 

@@ -23,9 +23,9 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-//  As a side note, you might also consider 
-//	1) tweeting about this mentioning @mugunthkumar
-//	2) A paypal donation to mugunth.kumar@gmail.com
+//  As a side note, you might also consider
+//  1) tweeting about this mentioning @mugunthkumar
+//  2) A paypal donation to mugunth.kumar@gmail.com
 
 #ifdef DEBUG
 #   define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
