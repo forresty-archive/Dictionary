@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2659B76977BD40CB8C3FF315 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 206B5FAD4EF0452B9D4F0FCB /* libPods.a */; };
 		683A6A2814760152004C3F8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2714760152004C3F8C /* UIKit.framework */; };
 		683A6A2A14760152004C3F8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2914760152004C3F8C /* Foundation.framework */; };
 		683A6A2C14760152004C3F8C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2B14760152004C3F8C /* CoreGraphics.framework */; };
@@ -18,7 +19,7 @@
 		683A6A4714760152004C3F8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2914760152004C3F8C /* Foundation.framework */; };
 		683A6A5014760152004C3F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 683A6A4E14760152004C3F8C /* InfoPlist.strings */; };
 		683A6A5314760152004C3F8C /* DictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A6A5214760152004C3F8C /* DictionaryTests.m */; };
-		685E87FF1499CB5C00B3E91A /* MKiCloudSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E87FE1499CB5C00B3E91A /* MKiCloudSync.m */; };
+		6892932117705C46005187F0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6892932017705C46005187F0 /* Default-568h@2x.png */; };
 		68B0C3B01476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */; };
 		68B0C3B11476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */; };
 		68E6AED2149786A10034486E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68E6AED1149786A10034486E /* Icon.png */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		206B5FAD4EF0452B9D4F0FCB /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		683A6A2314760152004C3F8C /* Dictionary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dictionary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		683A6A2714760152004C3F8C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		683A6A2914760152004C3F8C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -51,12 +53,12 @@
 		683A6A4F14760152004C3F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		683A6A5114760152004C3F8C /* DictionaryTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DictionaryTests.h; sourceTree = "<group>"; };
 		683A6A5214760152004C3F8C /* DictionaryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DictionaryTests.m; sourceTree = "<group>"; };
-		685E87FD1499CB5C00B3E91A /* MKiCloudSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKiCloudSync.h; sourceTree = "<group>"; };
-		685E87FE1499CB5C00B3E91A /* MKiCloudSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKiCloudSync.m; sourceTree = "<group>"; };
+		6892932017705C46005187F0 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		68B0C3AE1476047B006AEA06 /* DICWordLookupTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICWordLookupTableViewController.h; sourceTree = "<group>"; };
 		68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DICWordLookupTableViewController.m; sourceTree = "<group>"; };
 		68E6AED1149786A10034486E /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		68E6AED314978DBA0034486E /* Dictionary.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Dictionary.entitlements; sourceTree = "<group>"; };
+		AA4BCB22A4CB48EEAC5E0BC8 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				683A6A2814760152004C3F8C /* UIKit.framework in Frameworks */,
 				683A6A2A14760152004C3F8C /* Foundation.framework in Frameworks */,
 				683A6A2C14760152004C3F8C /* CoreGraphics.framework in Frameworks */,
+				2659B76977BD40CB8C3FF315 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,11 +89,13 @@
 		683A6A1814760151004C3F8C = {
 			isa = PBXGroup;
 			children = (
+				6892932017705C46005187F0 /* Default-568h@2x.png */,
 				68E6AED1149786A10034486E /* Icon.png */,
 				683A6A2F14760152004C3F8C /* Dictionary */,
 				683A6A4B14760152004C3F8C /* DictionaryTests */,
 				683A6A2614760152004C3F8C /* Frameworks */,
 				683A6A2414760152004C3F8C /* Products */,
+				AA4BCB22A4CB48EEAC5E0BC8 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -110,6 +115,7 @@
 				683A6A2914760152004C3F8C /* Foundation.framework */,
 				683A6A2B14760152004C3F8C /* CoreGraphics.framework */,
 				683A6A4414760152004C3F8C /* SenTestingKit.framework */,
+				206B5FAD4EF0452B9D4F0FCB /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -117,7 +123,6 @@
 		683A6A2F14760152004C3F8C /* Dictionary */ = {
 			isa = PBXGroup;
 			children = (
-				685E87FC1499CB5C00B3E91A /* MKiCloudSync */,
 				68E6AED314978DBA0034486E /* Dictionary.entitlements */,
 				683A6A3814760152004C3F8C /* DICAppDelegate.h */,
 				683A6A3914760152004C3F8C /* DICAppDelegate.m */,
@@ -158,15 +163,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		685E87FC1499CB5C00B3E91A /* MKiCloudSync */ = {
-			isa = PBXGroup;
-			children = (
-				685E87FD1499CB5C00B3E91A /* MKiCloudSync.h */,
-				685E87FE1499CB5C00B3E91A /* MKiCloudSync.m */,
-			);
-			path = MKiCloudSync;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -174,9 +170,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 683A6A5614760152004C3F8C /* Build configuration list for PBXNativeTarget "Dictionary" */;
 			buildPhases = (
+				EBCC504F2AE843149EB35581 /* Check Pods Manifest.lock */,
 				683A6A1F14760152004C3F8C /* Sources */,
 				683A6A2014760152004C3F8C /* Frameworks */,
 				683A6A2114760152004C3F8C /* Resources */,
+				E52E238E14A649D6BA71CDF1 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -212,7 +210,7 @@
 		683A6A1A14760151004C3F8C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 683A6A1D14760151004C3F8C /* Build configuration list for PBXProject "Dictionary" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -239,6 +237,7 @@
 			files = (
 				683A6A3414760152004C3F8C /* InfoPlist.strings in Resources */,
 				68E6AED2149786A10034486E /* Icon.png in Resources */,
+				6892932117705C46005187F0 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +265,34 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
+		E52E238E14A649D6BA71CDF1 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
+		EBCC504F2AE843149EB35581 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -276,7 +303,6 @@
 				683A6A3614760152004C3F8C /* main.m in Sources */,
 				683A6A3A14760152004C3F8C /* DICAppDelegate.m in Sources */,
 				68B0C3B01476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */,
-				685E87FF1499CB5C00B3E91A /* MKiCloudSync.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,6 +351,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Feng Ye (PHPRBMZ77C)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -338,6 +368,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D08CA01F-5E91-4A89-BD91-915547E280E3";
@@ -351,12 +382,17 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Feng Ye";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -368,13 +404,18 @@
 		};
 		683A6A5714760152004C3F8C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA4BCB22A4CB48EEAC5E0BC8 /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Dictionary/Dictionary.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Dictionary/Dictionary-Prefix.pch";
 				INFOPLIST_FILE = "Dictionary/Dictionary-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -382,15 +423,18 @@
 		};
 		683A6A5814760152004C3F8C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA4BCB22A4CB48EEAC5E0BC8 /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Dictionary/Dictionary.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Feng Ye";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Dictionary/Dictionary-Prefix.pch";
 				INFOPLIST_FILE = "Dictionary/Dictionary-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "09A97327-E002-4AEC-9DB9-215DC57C50CC";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -400,6 +444,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Dictionary.app/Dictionary";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
@@ -408,6 +453,7 @@
 				GCC_PREFIX_HEADER = "Dictionary/Dictionary-Prefix.pch";
 				INFOPLIST_FILE = "DictionaryTests/DictionaryTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -417,6 +463,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Dictionary.app/Dictionary";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
@@ -425,6 +473,8 @@
 				GCC_PREFIX_HEADER = "Dictionary/Dictionary-Prefix.pch";
 				INFOPLIST_FILE = "DictionaryTests/DictionaryTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};

@@ -1,0 +1,10 @@
+PODS:
+  - MKiCloudSync (0.0.1)
+
+DEPENDENCIES:
+  - MKiCloudSync
+
+SPEC CHECKSUMS:
+  MKiCloudSync: f3b777b165c893cb6339cc5729b170cba495140e
+
+COCOAPODS: 0.20.2
