@@ -9,7 +9,6 @@
 #import "DICWordLookupTableViewController.h"
 #import "UIKit/UITextChecker.h"
 #import "UIKit/UIReferenceLibraryViewController.h"
-#import "MKiCloudSync.h"
 
 static NSString *kDictionaryLookupHistory = @"kDictionaryLookupHistory";
 static int kDictionaryLookupHistoryLimit = 15;
@@ -58,10 +57,6 @@ static int kDictionaryGuessCountLimit = 10;
   tableView.frame = self.view.bounds;
 
   [self.view addSubview:self.tableView];
-
-  [[NSNotificationCenter defaultCenter] addObserverForName:kMKiCloudSyncNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-    [tableView reloadData];
-  }];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

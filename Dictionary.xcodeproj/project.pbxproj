@@ -57,7 +57,6 @@
 		68B0C3AE1476047B006AEA06 /* DICWordLookupTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICWordLookupTableViewController.h; sourceTree = "<group>"; };
 		68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DICWordLookupTableViewController.m; sourceTree = "<group>"; };
 		68E6AED1149786A10034486E /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
-		68E6AED314978DBA0034486E /* Dictionary.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Dictionary.entitlements; sourceTree = "<group>"; };
 		AA4BCB22A4CB48EEAC5E0BC8 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -123,7 +122,6 @@
 		683A6A2F14760152004C3F8C /* Dictionary */ = {
 			isa = PBXGroup;
 			children = (
-				68E6AED314978DBA0034486E /* Dictionary.entitlements */,
 				683A6A3814760152004C3F8C /* DICAppDelegate.h */,
 				683A6A3914760152004C3F8C /* DICAppDelegate.m */,
 				683A6A3014760152004C3F8C /* Supporting Files */,
@@ -406,7 +404,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AA4BCB22A4CB48EEAC5E0BC8 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Dictionary/Dictionary.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -425,7 +422,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AA4BCB22A4CB48EEAC5E0BC8 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Dictionary/Dictionary.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
