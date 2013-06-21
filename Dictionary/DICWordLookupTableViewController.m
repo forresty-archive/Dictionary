@@ -205,7 +205,16 @@ static int kDictionaryLookupHistoryLimit = 15;
 
 
 -(BOOL)hasDefinitionForTerm:(NSString *)term {
-  return [cache containsObject:term] || [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:term];
+  if ([cache containsObject:term]) {
+    return YES;
+  }
+  BOOL result = [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:term];
+
+  if (result) {
+    [cache addObject:term];
+  }
+
+  return result;
 }
 
 
@@ -225,8 +234,6 @@ static int kDictionaryLookupHistoryLimit = 15;
       }
 
       if (![guess isEqualToString:searchString] && [self hasDefinitionForTerm:guess]) {
-//      if (![guess isEqualToString:searchString]) {
-        [cache addObject:guess];
         [guessResults addObject:guess];
       }
     }
@@ -260,8 +267,6 @@ static int kDictionaryLookupHistoryLimit = 15;
       }
 
       if (![completion isEqualToString:searchString] && [self hasDefinitionForTerm:completion]) {
-//      if(![completion isEqualToString:searchString]) {
-        [cache addObject:completion];
         [results addObject:completion];
       }
     }
@@ -289,7 +294,7 @@ static int kDictionaryLookupHistoryLimit = 15;
   [lookupOperation addExecutionBlock:^{
     NSAssert(exactMatchedString == nil, @"exactMatch should be NO here");
 
-    if ([UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:searchString]) {
+    if ([self hasDefinitionForTerm:searchString]) {
       if (![weakLookupOperation isCancelled]) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
           exactMatchedString = [searchString copy];
