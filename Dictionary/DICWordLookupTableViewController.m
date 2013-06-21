@@ -16,10 +16,13 @@ static int kDictionaryLookupHistoryLimit = 15;
 static int kDictionaryGuessCountLimit = 10;
 
 
-@implementation DICWordLookupTableViewController
+@implementation DICWordLookupTableViewController {
+@private
+  UISearchBar *__searchBar;
+}
 
 
-@synthesize searchBar, tableView, textChecker, mySearchDisplayController;
+@synthesize tableView, textChecker, mySearchDisplayController;
 @synthesize guessesArray, exactMatch, guessing, guessOperationQueue;
 
 
@@ -33,10 +36,10 @@ static int kDictionaryGuessCountLimit = 10;
     guessesArray = [[NSMutableArray alloc] init];
     guessOperationQueue = [[NSOperationQueue alloc] init];
 
-    searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
-    searchBar.delegate = self;
-    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    [searchBar sizeToFit];
+    __searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
+    __searchBar.delegate = self;
+    __searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [__searchBar sizeToFit];
 
     tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     tableView.dataSource = self;
@@ -53,12 +56,12 @@ static int kDictionaryGuessCountLimit = 10;
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+  mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:__searchBar contentsController:self];
   mySearchDisplayController.delegate = self;
   mySearchDisplayController.searchResultsDataSource = self;
   mySearchDisplayController.searchResultsDelegate = self;
 
-  tableView.tableHeaderView = searchBar;
+  tableView.tableHeaderView = __searchBar;
   tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   tableView.frame = self.view.bounds;
 
@@ -163,7 +166,7 @@ static int kDictionaryGuessCountLimit = 10;
   if (tView == self.searchDisplayController.searchResultsTableView) {
     if (exactMatch && indexPath.section == 0) {
       [self makeCellHighlighted:cell];
-      cell.textLabel.text = searchBar.text;
+      cell.textLabel.text = __searchBar.text;
     } else if (guessing) {
       [self makeCellDisabled:cell];
       cell.textLabel.text = @"Guessing...";
@@ -255,7 +258,7 @@ static int kDictionaryGuessCountLimit = 10;
 
   if (tView == self.searchDisplayController.searchResultsTableView) {
     if (exactMatch && indexPath.section == 0) {
-      [self showDefinitionForTerm:searchBar.text];
+      [self showDefinitionForTerm:__searchBar.text];
 
     } else if (guessing) {
       // guessing, do nothing
@@ -353,12 +356,12 @@ static int kDictionaryGuessCountLimit = 10;
 # pragma mark - UISearchBarDelegate
 
 
--(void)searchBarSearchButtonClicked:(UISearchBar *)sBar {
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
   if (!exactMatch) {
     return;
   }
 
-  [self showDefinitionForTerm:sBar.text];
+  [self showDefinitionForTerm:searchBar.text];
 }
 
 
