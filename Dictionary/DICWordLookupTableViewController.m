@@ -360,9 +360,10 @@ static int kDictionaryGuessCountLimit = 10;
   }];
 
   [guessOperation setCompletionBlock:^{
-    guessing = NO;
-
-    [self.searchDisplayController.searchResultsTableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      guessing = NO;
+      [self.searchDisplayController.searchResultsTableView reloadData];
+    }];
   }];
 
   [guessOperationQueue addOperation:guessOperation];
