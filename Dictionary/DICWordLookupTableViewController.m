@@ -20,10 +20,11 @@ static int kDictionaryGuessCountLimit = 10;
 @private
   UISearchBar *__searchBar;
   UITableView *__tableView;
+  UITextChecker *__textChecker;
 }
 
 
-@synthesize textChecker, mySearchDisplayController;
+@synthesize mySearchDisplayController;
 @synthesize guessesArray, exactMatch, guessing, guessOperationQueue;
 
 
@@ -45,6 +46,8 @@ static int kDictionaryGuessCountLimit = 10;
     __tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     __tableView.dataSource = self;
     __tableView.delegate = self;
+
+    __textChecker = [[UITextChecker alloc] init];
   }
 
   return self;
@@ -152,6 +155,16 @@ static int kDictionaryGuessCountLimit = 10;
   UIReferenceLibraryViewController *dicController = [[UIReferenceLibraryViewController alloc] initWithTerm:term];
 
   [self presentModalViewController:dicController animated:YES];
+}
+
+
+-(NSArray *)guessesForString:(NSString *)searchString {
+  return [__textChecker guessesForWordRange:NSMakeRange(0, [searchString length]) inString:searchString language:@"en_US"];
+}
+
+
+-(NSArray *)completionsForString:(NSString *)searchString {
+  return [__textChecker completionsForPartialWordRange:NSMakeRange(0, [searchString length]) inString:searchString language:@"en_US"];
 }
 
 
@@ -313,14 +326,13 @@ static int kDictionaryGuessCountLimit = 10;
   [guessOperationQueue cancelAllOperations];
 
   NSBlockOperation *guessOperation = [NSBlockOperation blockOperationWithBlock:^{
-    textChecker = [[UITextChecker alloc] init];
 
     //    NSLog(@"operation working!!");
 
     [self.guessesArray removeAllObjects];
 
     if (!exactMatch) {
-      NSArray *guesses = [self.textChecker guessesForWordRange:NSMakeRange(0, [searchString length]) inString:searchString language:@"en_US"];
+      NSArray *guesses = [self guessesForString:searchString];
       for (NSString *guess in guesses) {
         if ([guessesArray count] < kDictionaryGuessCountLimit &&
             ![guess isEqualToString:searchString] &&
@@ -331,7 +343,7 @@ static int kDictionaryGuessCountLimit = 10;
     }
 
     if ([guessesArray count] < kDictionaryGuessCountLimit) {
-      NSArray *completions = [textChecker completionsForPartialWordRange:NSMakeRange(0, [searchString length]) inString:searchString language:@"en_US"];
+      NSArray *completions = [self completionsForString:searchString];
       for (NSString *completion in completions) {
         if ([guessesArray count] < kDictionaryGuessCountLimit &&
             ![completion isEqualToString:searchString] &&

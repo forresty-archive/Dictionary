@@ -13,7 +13,6 @@
 @interface DICWordLookupTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 
 @property (strong) NSMutableArray *guessesArray;
-@property (strong) UITextChecker *textChecker;
 @property (strong) UISearchDisplayController *mySearchDisplayController;
 @property (strong) NSOperationQueue *guessOperationQueue;
 @property BOOL exactMatch;
