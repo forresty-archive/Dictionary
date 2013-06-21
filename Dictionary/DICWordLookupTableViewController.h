@@ -8,13 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class UITextChecker;
-
-@interface DICWordLookupTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
-
-@property (strong) NSMutableArray *guessesArray;
-@property (strong) NSOperationQueue *guessOperationQueue;
-@property BOOL exactMatch;
-@property BOOL guessing;
+@interface DICWordLookupTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 
 @end

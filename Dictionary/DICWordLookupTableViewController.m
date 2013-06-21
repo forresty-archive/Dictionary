@@ -22,10 +22,12 @@ static int kDictionaryGuessCountLimit = 10;
   UITableView *__tableView;
   UITextChecker *__textChecker;
   UISearchDisplayController *__searchDisplayController;
+
+  NSMutableArray *guessesArray;
+  NSOperationQueue *guessOperationQueue;
+  BOOL exactMatch;
+  BOOL guessing;
 }
-
-
-@synthesize guessesArray, exactMatch, guessing, guessOperationQueue;
 
 
 #pragma mark - View lifecycle
@@ -248,7 +250,7 @@ static int kDictionaryGuessCountLimit = 10;
       return 1;
     }
 
-    return [self.guessesArray count];
+    return [guessesArray count];
   } else if (tableView == __tableView) {
     return [[self lookupHistory] count] + 1;
   }
@@ -302,7 +304,7 @@ static int kDictionaryGuessCountLimit = 10;
 
 
 -(BOOL)searchDisplayController:(UISearchDisplayController *)searchDisplayController shouldReloadTableForSearchString:(NSString *)searchString {
-  [self.guessesArray removeAllObjects];
+  [guessesArray removeAllObjects];
 
   //  NSLog(@"searching for %@", searchString);
   if ([UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:searchString]) {
@@ -319,7 +321,7 @@ static int kDictionaryGuessCountLimit = 10;
 
     //    NSLog(@"operation working!!");
 
-    [self.guessesArray removeAllObjects];
+    [guessesArray removeAllObjects];
 
     if (!exactMatch) {
       NSArray *guesses = [self guessesForString:searchString];
