@@ -24,6 +24,8 @@ static int kDictionaryLookupHistoryLimit = 15;
 
   __strong NSArray *candidatesArray;
 
+  __strong NSMutableSet *cache;
+
   __strong NSOperationQueue *guessOperationQueue;
   __strong NSOperationQueue *definitionLookupOperationQueue;
   __strong NSOperationQueue *completionLookupOperationQueue;
@@ -45,6 +47,8 @@ static int kDictionaryLookupHistoryLimit = 15;
   lookingUpCompletions = NO;
 
   candidatesArray = [[NSMutableArray alloc] init];
+
+  cache = [[NSMutableSet alloc] init];
 
   guessOperationQueue = [[NSOperationQueue alloc] init];
   definitionLookupOperationQueue = [[NSOperationQueue alloc] init];
@@ -200,6 +204,11 @@ static int kDictionaryLookupHistoryLimit = 15;
 }
 
 
+-(BOOL)hasDefinitionForTerm:(NSString *)term {
+  return [cache containsObject:term] || [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:term];
+}
+
+
 -(void)makeGuessForSearchString:(NSString *)searchString {
   guessing = YES;
   [guessOperationQueue cancelAllOperations];
@@ -215,9 +224,9 @@ static int kDictionaryLookupHistoryLimit = 15;
         break;
       }
 
-      if (![guess isEqualToString:searchString] &&
-          [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:guess]) {
+      if (![guess isEqualToString:searchString] && [self hasDefinitionForTerm:guess]) {
 //      if (![guess isEqualToString:searchString]) {
+        [cache addObject:guess];
         [guessResults addObject:guess];
       }
     }
@@ -250,9 +259,9 @@ static int kDictionaryLookupHistoryLimit = 15;
         break;
       }
 
-      if (![completion isEqualToString:searchString] &&
-          [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:completion]) {
+      if (![completion isEqualToString:searchString] && [self hasDefinitionForTerm:completion]) {
 //      if(![completion isEqualToString:searchString]) {
+        [cache addObject:completion];
         [results addObject:completion];
       }
     }
