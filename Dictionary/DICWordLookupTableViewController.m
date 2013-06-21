@@ -123,7 +123,7 @@ static int kDictionaryLookupHistoryLimit = 15;
 }
 
 
-# pragma mark - internal
+# pragma mark - lookup history management
 
 
 -(NSArray *)lookupHistory {
@@ -173,6 +173,9 @@ static int kDictionaryLookupHistoryLimit = 15;
 }
 
 
+# pragma mark - UI presentation
+
+
 -(void)showDefinitionForTerm:(NSString *)term {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     [self addToLookupHistory:term];
@@ -181,10 +184,11 @@ static int kDictionaryLookupHistoryLimit = 15;
 
   UIReferenceLibraryViewController *referenceLibraryViewController = [[UIReferenceLibraryViewController alloc] initWithTerm:term];
 
-  [self presentViewController:referenceLibraryViewController animated:YES completion:^{
-    // do nothing
-  }];
+  [self presentViewController:referenceLibraryViewController animated:YES completion:NULL];
 }
+
+
+# pragma mark - definition / completion lookup && guesses
 
 
 -(NSArray *)guessesForString:(NSString *)searchString {
