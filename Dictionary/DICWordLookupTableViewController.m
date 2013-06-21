@@ -21,37 +21,11 @@ static int kDictionaryGuessCountLimit = 10;
   UISearchBar *__searchBar;
   UITableView *__tableView;
   UITextChecker *__textChecker;
+  UISearchDisplayController *__searchDisplayController;
 }
 
 
-@synthesize mySearchDisplayController;
 @synthesize guessesArray, exactMatch, guessing, guessOperationQueue;
-
-
-- (id)init {
-  self = [super init];
-
-  if (self) {
-    exactMatch = false;
-    guessing = false;
-
-    guessesArray = [[NSMutableArray alloc] init];
-    guessOperationQueue = [[NSOperationQueue alloc] init];
-
-    __searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
-    __searchBar.delegate = self;
-    __searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    [__searchBar sizeToFit];
-
-    __tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    __tableView.dataSource = self;
-    __tableView.delegate = self;
-
-    __textChecker = [[UITextChecker alloc] init];
-  }
-
-  return self;
-}
 
 
 #pragma mark - View lifecycle
@@ -60,11 +34,27 @@ static int kDictionaryGuessCountLimit = 10;
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:__searchBar contentsController:self];
-  mySearchDisplayController.delegate = self;
-  mySearchDisplayController.searchResultsDataSource = self;
-  mySearchDisplayController.searchResultsDelegate = self;
+  exactMatch = false;
+  guessing = false;
 
+  guessesArray = [[NSMutableArray alloc] init];
+  guessOperationQueue = [[NSOperationQueue alloc] init];
+
+  __searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
+  __searchBar.delegate = self;
+  __searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+  [__searchBar sizeToFit];
+
+  __textChecker = [[UITextChecker alloc] init];
+
+  __searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:__searchBar contentsController:self];
+  __searchDisplayController.delegate = self;
+  __searchDisplayController.searchResultsDataSource = self;
+  __searchDisplayController.searchResultsDelegate = self;
+
+  __tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+  __tableView.dataSource = self;
+  __tableView.delegate = self;
   __tableView.tableHeaderView = __searchBar;
   __tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   __tableView.frame = self.view.bounds;
@@ -311,7 +301,7 @@ static int kDictionaryGuessCountLimit = 10;
 # pragma mark - UISearchDisplayDelegate
 
 
--(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+-(BOOL)searchDisplayController:(UISearchDisplayController *)searchDisplayController shouldReloadTableForSearchString:(NSString *)searchString {
   [self.guessesArray removeAllObjects];
 
   //  NSLog(@"searching for %@", searchString);
