@@ -85,21 +85,7 @@ static int kDictionaryGuessCountLimit = 10;
 }
 
 
-# pragma mark - internal
-
-
--(NSArray *)lookupHistory {
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-  return [defaults objectForKey:kDictionaryLookupHistory];
-}
-
-
--(void)setLookupHistory:(NSArray *)lookupHistory {
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  [defaults setObject:lookupHistory forKey:kDictionaryLookupHistory];
-  [defaults synchronize];
-}
+# pragma mark - view manipulation
 
 
 -(void)makeCellDefault:(UITableViewCell *)cell {
@@ -127,6 +113,23 @@ static int kDictionaryGuessCountLimit = 10;
 -(void)makeCellHighlighted:(UITableViewCell *)cell {
   [self makeCellDefault:cell];
   cell.textLabel.textColor = [UIColor blueColor];
+}
+
+
+# pragma mark - internal
+
+
+-(NSArray *)lookupHistory {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+  return [defaults objectForKey:kDictionaryLookupHistory];
+}
+
+
+-(void)setLookupHistory:(NSArray *)lookupHistory {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setObject:lookupHistory forKey:kDictionaryLookupHistory];
+  [defaults synchronize];
 }
 
 
