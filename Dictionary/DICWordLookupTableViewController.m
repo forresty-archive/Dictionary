@@ -161,16 +161,16 @@ static int kDictionaryGuessCountLimit = 10;
 # pragma mark - UITableViewDataSource
 
 
--(UITableViewCell *)tableView:(UITableView *)tView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
   static NSString *kCellID = @"wordCellID";
 
-  UITableViewCell *cell = [tView dequeueReusableCellWithIdentifier:kCellID];
+  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
   if (cell == nil) {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID];
   }
 
-  if (tView == self.searchDisplayController.searchResultsTableView) {
+  if (tableView == self.searchDisplayController.searchResultsTableView) {
     if (exactMatch && indexPath.section == 0) {
       [self makeCellHighlighted:cell];
       cell.textLabel.text = __searchBar.text;
@@ -181,7 +181,7 @@ static int kDictionaryGuessCountLimit = 10;
       [self makeCellNormal:cell];
       cell.textLabel.text = [[guessesArray objectAtIndex:indexPath.row] description];
     }
-  } else if (tView == __tableView) {
+  } else if (tableView == __tableView) {
     if ([[self lookupHistory] count] == 0) {
       [self makeCellDisabled:cell];
       cell.textLabel.text = @"No history";
@@ -202,15 +202,15 @@ static int kDictionaryGuessCountLimit = 10;
 }
 
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tView {
-  if (tView == self.searchDisplayController.searchResultsTableView) {
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+  if (tableView == self.searchDisplayController.searchResultsTableView) {
 
     if (exactMatch && ([guessesArray count] > 0 || guessing)) {
       return 2;
     }
 
     return 1;
-  } else if (tView == __tableView) {
+  } else if (tableView == __tableView) {
     return 1;
   }
 
@@ -260,10 +260,10 @@ static int kDictionaryGuessCountLimit = 10;
 # pragma mark - UITableViewDelegate
 
 
--(void)tableView:(UITableView *)tView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  [tView deselectRowAtIndexPath:indexPath animated:YES];
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-  if (tView == self.searchDisplayController.searchResultsTableView) {
+  if (tableView == self.searchDisplayController.searchResultsTableView) {
     if (exactMatch && indexPath.section == 0) {
       [self showDefinitionForTerm:__searchBar.text];
 
@@ -274,7 +274,7 @@ static int kDictionaryGuessCountLimit = 10;
     } else {
       [self showDefinitionForTerm:[[guessesArray objectAtIndex:indexPath.row] description]];
     }
-  } else if (tView == __tableView) {
+  } else if (tableView == __tableView) {
     if ([[self lookupHistory] count] == 0) {
       // do nothing
     } else {
