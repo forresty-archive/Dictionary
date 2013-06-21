@@ -123,6 +123,21 @@ static int kDictionaryLookupHistoryLimit = 15;
 }
 
 
+# pragma mark - UI presentation
+
+
+-(void)showDefinitionForTerm:(NSString *)term {
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    [self addToLookupHistory:term];
+    [__lookupHistoryTableView reloadData];
+  }];
+
+  UIReferenceLibraryViewController *referenceLibraryViewController = [[UIReferenceLibraryViewController alloc] initWithTerm:term];
+
+  [self presentViewController:referenceLibraryViewController animated:YES completion:NULL];
+}
+
+
 # pragma mark - lookup history management
 
 
@@ -170,21 +185,6 @@ static int kDictionaryLookupHistoryLimit = 15;
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     [__lookupHistoryTableView reloadData];
   }];
-}
-
-
-# pragma mark - UI presentation
-
-
--(void)showDefinitionForTerm:(NSString *)term {
-  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    [self addToLookupHistory:term];
-    [__lookupHistoryTableView reloadData];
-  }];
-
-  UIReferenceLibraryViewController *referenceLibraryViewController = [[UIReferenceLibraryViewController alloc] initWithTerm:term];
-
-  [self presentViewController:referenceLibraryViewController animated:YES completion:NULL];
 }
 
 
