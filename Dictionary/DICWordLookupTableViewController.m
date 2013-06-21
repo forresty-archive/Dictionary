@@ -13,20 +13,19 @@
 
 static NSString *kDictionaryLookupHistory = @"kDictionaryLookupHistory";
 static int kDictionaryLookupHistoryLimit = 15;
-static int kDictionaryGuessCountLimit = 10;
 
 
 @implementation DICWordLookupTableViewController {
 @private
-  UISearchBar *__searchBar;
-  UITableView *__lookupHistoryTableView;
-  UITextChecker *__textChecker;
-  UISearchDisplayController *__searchDisplayController;
+  __strong UISearchBar *__searchBar;
+  __strong UITableView *__lookupHistoryTableView;
+  __strong UITextChecker *__textChecker;
+  __strong UISearchDisplayController *__searchDisplayController;
 
-  NSArray *guessesArray;
-  NSOperationQueue *guessOperationQueue;
-  NSOperationQueue *lookupOperationQueue;
-  BOOL exactMatch;
+  __strong NSArray *guessesArray;
+  __strong NSOperationQueue *guessOperationQueue;
+  __strong NSOperationQueue *lookupOperationQueue;
+  __strong NSString *exactMatchedString;
   BOOL guessing;
 }
 
@@ -37,8 +36,8 @@ static int kDictionaryGuessCountLimit = 10;
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  exactMatch = false;
-  guessing = false;
+  exactMatchedString = nil;
+  guessing = NO;
 
   guessesArray = [[NSMutableArray alloc] init];
 
@@ -143,6 +142,7 @@ static int kDictionaryGuessCountLimit = 10;
   [self setLookupHistory:lookupHistory];
 }
 
+
 -(void)clearHistory {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:[[self lookupHistory] count]];
@@ -188,6 +188,7 @@ static int kDictionaryGuessCountLimit = 10;
 
 
 -(void)makeGuessForSearchString:(NSString *)searchString {
+  guessing = YES;
   [guessOperationQueue cancelAllOperations];
 
   NSBlockOperation *guessOperation = [[NSBlockOperation alloc] init];
@@ -201,32 +202,28 @@ static int kDictionaryGuessCountLimit = 10;
         break;
       }
 
-      if ([guessResults count] < kDictionaryGuessCountLimit &&
-          ![guess isEqualToString:searchString] &&
+      if (![guess isEqualToString:searchString] &&
           [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:guess]) {
         [guessResults addObject:guess];
       }
     }
 
-    if ([guessResults count] < kDictionaryGuessCountLimit) {
-      for (NSString *completion in [self completionsForString:searchString]) {
-        if ([weakGuessOperation isCancelled]) {
-          break;
-        }
+    for (NSString *completion in [self completionsForString:searchString]) {
+      if ([weakGuessOperation isCancelled]) {
+        break;
+      }
 
-        if ([guessResults count] < kDictionaryGuessCountLimit &&
-            ![completion isEqualToString:searchString] &&
-            ![guessResults containsObject:completion] &&
-            [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:completion]) {
-          [guessResults addObject:completion];
-        }
+      if (![completion isEqualToString:searchString] &&
+          ![guessResults containsObject:completion] &&
+          [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:completion]) {
+        [guessResults addObject:completion];
       }
     }
 
     if (![weakGuessOperation isCancelled]) {
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         guessing = NO;
-        guessesArray = [guessResults copy];
+        guessesArray = [guessResults sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
         [self.searchDisplayController.searchResultsTableView reloadData];
       }];
     }
@@ -237,25 +234,26 @@ static int kDictionaryGuessCountLimit = 10;
 
 
 -(void)startLookupForSearchString:(NSString *)searchString {
+  exactMatchedString = nil;
   [lookupOperationQueue cancelAllOperations];
 
   NSBlockOperation *lookupOperation = [[NSBlockOperation alloc] init];
   __weak NSBlockOperation *weakLookupOperation = lookupOperation;
 
   [lookupOperation addExecutionBlock:^{
+    NSAssert(exactMatchedString == nil, @"exactMatch should be NO here");
+
     if ([UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:searchString]) {
       if (![weakLookupOperation isCancelled]) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          exactMatch = YES;
-          guessing = NO;
-          [guessOperationQueue cancelAllOperations];
+          exactMatchedString = [searchString copy];
           [self.searchDisplayController.searchResultsTableView reloadData];
         }];
       }
     } else {
       if (![weakLookupOperation isCancelled]) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          exactMatch = NO;
+          exactMatchedString = nil;
           [self.searchDisplayController.searchResultsTableView reloadData];
         }];
       }
@@ -279,7 +277,7 @@ static int kDictionaryGuessCountLimit = 10;
   }
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if (exactMatch && indexPath.section == 0) {
+    if ([exactMatchedString isEqualToString:__searchBar.text] && indexPath.section == 0) {
       [self makeCellHighlighted:cell];
       cell.textLabel.text = __searchBar.text;
     } else if (guessing) {
@@ -313,7 +311,7 @@ static int kDictionaryGuessCountLimit = 10;
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
 
-    if (exactMatch && ([guessesArray count] > 0 || guessing)) {
+    if ([exactMatchedString isEqualToString:__searchBar.text] && [guessesArray count] > 0) {
       return 2;
     }
 
@@ -329,7 +327,7 @@ static int kDictionaryGuessCountLimit = 10;
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
 
-    if (exactMatch && section == 0) {
+    if ([exactMatchedString isEqualToString:__searchBar.text] && section == 0) {
       return @"Match";
     } else if (guessing) {
       return @"Guessing...";
@@ -348,11 +346,14 @@ static int kDictionaryGuessCountLimit = 10;
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if (exactMatch && section == 0) {
+    if ([exactMatchedString isEqualToString:__searchBar.text] && section == 0) {
       return 1;
     }
 
     if (guessing) {
+      if ([exactMatchedString isEqualToString:__searchBar.text]) {
+        return 2;
+      }
       return 1;
     }
 
@@ -372,7 +373,7 @@ static int kDictionaryGuessCountLimit = 10;
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if (exactMatch && indexPath.section == 0) {
+    if ([exactMatchedString isEqualToString:__searchBar.text] && indexPath.section == 0) {
       [self showDefinitionForTerm:__searchBar.text];
 
     } else if (guessing) {
@@ -402,7 +403,7 @@ static int kDictionaryGuessCountLimit = 10;
 -(BOOL)searchDisplayController:(UISearchDisplayController *)searchDisplayController shouldReloadTableForSearchString:(NSString *)searchString {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     guessing = YES;
-    exactMatch = NO;
+    exactMatchedString = nil;
     guessesArray = @[];
     [self.searchDisplayController.searchResultsTableView reloadData];
   }];
@@ -418,7 +419,7 @@ static int kDictionaryGuessCountLimit = 10;
 
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-  if (!exactMatch) {
+  if ([exactMatchedString isEqualToString:searchBar.text]) {
     return;
   }
 
