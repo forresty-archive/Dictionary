@@ -24,7 +24,7 @@ static int kDictionaryLookupHistoryLimit = 15;
 
   __strong NSArray *candidatesArray;
 
-  __strong NSMutableSet *cache;
+  __strong NSMutableSet *validCandidates;
 
   __strong NSOperationQueue *guessOperationQueue;
   __strong NSOperationQueue *definitionLookupOperationQueue;
@@ -48,7 +48,7 @@ static int kDictionaryLookupHistoryLimit = 15;
 
   candidatesArray = [[NSMutableArray alloc] init];
 
-  cache = [[NSMutableSet alloc] init];
+  validCandidates = [[NSMutableSet alloc] init];
 
   guessOperationQueue = [[NSOperationQueue alloc] init];
   definitionLookupOperationQueue = [[NSOperationQueue alloc] init];
@@ -209,13 +209,13 @@ static int kDictionaryLookupHistoryLimit = 15;
 
 
 -(BOOL)hasDefinitionForTerm:(NSString *)term {
-  if ([cache containsObject:term]) {
+  if ([validCandidates containsObject:term]) {
     return YES;
   }
   BOOL result = [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:term];
 
   if (result) {
-    [cache addObject:term];
+    [validCandidates addObject:term];
   }
 
   return result;
