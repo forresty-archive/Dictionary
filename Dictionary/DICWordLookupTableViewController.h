@@ -12,7 +12,6 @@
 
 @interface DICWordLookupTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 
-@property (strong) UITableView *tableView;
 @property (strong) NSMutableArray *guessesArray;
 @property (strong) UITextChecker *textChecker;
 @property (strong) UISearchDisplayController *mySearchDisplayController;
