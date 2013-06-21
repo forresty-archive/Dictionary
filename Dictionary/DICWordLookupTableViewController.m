@@ -456,6 +456,10 @@ static int kDictionaryLookupHistoryLimit = 15;
 
 
 -(BOOL)searchDisplayController:(UISearchDisplayController *)searchDisplayController shouldReloadTableForSearchString:(NSString *)searchString {
+  if ([searchString length] < 1) {
+    return NO;
+  }
+
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     guessing = YES;
     lookingUpCompletions = YES;
