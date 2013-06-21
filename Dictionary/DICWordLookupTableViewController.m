@@ -292,7 +292,6 @@ static int kDictionaryGuessCountLimit = 10;
         for (int i = 0; i < [[self lookupHistory] count]; i++) {
           [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
         }
-        //        NSLog(@"indexpaths %@", [indexPaths description]);
         [__lookupHistoryTableView beginUpdates];
         [__lookupHistoryTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
         [self setLookupHistory:[[NSArray alloc] init]];
@@ -312,7 +311,6 @@ static int kDictionaryGuessCountLimit = 10;
 -(BOOL)searchDisplayController:(UISearchDisplayController *)searchDisplayController shouldReloadTableForSearchString:(NSString *)searchString {
   [guessesArray removeAllObjects];
 
-  //  NSLog(@"searching for %@", searchString);
   if ([UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:searchString]) {
     exactMatch = YES;
   } else {
@@ -324,8 +322,6 @@ static int kDictionaryGuessCountLimit = 10;
   [guessOperationQueue cancelAllOperations];
 
   NSBlockOperation *guessOperation = [NSBlockOperation blockOperationWithBlock:^{
-
-    //    NSLog(@"operation working!!");
 
     [guessesArray removeAllObjects];
 
@@ -357,8 +353,6 @@ static int kDictionaryGuessCountLimit = 10;
     guessing = NO;
 
     [self.searchDisplayController.searchResultsTableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-
-    //    NSLog(@"operation completed!");
   }];
 
   [guessOperationQueue addOperation:guessOperation];
