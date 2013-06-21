@@ -256,8 +256,6 @@ static int kDictionaryGuessCountLimit = 10;
       if (![weakLookupOperation isCancelled]) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
           exactMatch = NO;
-          guessing = NO;
-          [guessOperationQueue cancelAllOperations];
           [self.searchDisplayController.searchResultsTableView reloadData];
         }];
       }
