@@ -89,7 +89,7 @@ static int kDictionaryGuessCountLimit = 10;
 -(void)makeCellDefault:(UITableViewCell *)cell {
   cell.selectionStyle = UITableViewCellSelectionStyleBlue;
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-  cell.textLabel.textAlignment = UITextAlignmentLeft;
+  cell.textLabel.textAlignment = NSTextAlignmentLeft;
   cell.textLabel.font = [UIFont fontWithName:@"Baskerville" size:24];
 }
 
@@ -169,9 +169,11 @@ static int kDictionaryGuessCountLimit = 10;
     [__lookupHistoryTableView reloadData];
   }];
 
-  UIReferenceLibraryViewController *dicController = [[UIReferenceLibraryViewController alloc] initWithTerm:term];
+  UIReferenceLibraryViewController *referenceLibraryViewController = [[UIReferenceLibraryViewController alloc] initWithTerm:term];
 
-  [self presentModalViewController:dicController animated:YES];
+  [self presentViewController:referenceLibraryViewController animated:YES completion:^{
+    // do nothing
+  }];
 }
 
 
@@ -182,6 +184,70 @@ static int kDictionaryGuessCountLimit = 10;
 
 -(NSArray *)completionsForString:(NSString *)searchString {
   return [__textChecker completionsForPartialWordRange:NSMakeRange(0, [searchString length]) inString:searchString language:@"en_US"];
+}
+
+
+-(void)makeGuessForSearchString:(NSString *)searchString {
+  [guessOperationQueue cancelAllOperations];
+
+  NSBlockOperation *guessOperation = [[NSBlockOperation alloc] init];
+  __weak NSBlockOperation *weakGuessOperation = guessOperation;
+
+  [guessOperation addExecutionBlock:^{
+    [guessesArray removeAllObjects];
+
+    for (NSString *guess in [self guessesForString:searchString]) {
+      if ([weakGuessOperation isCancelled]) {
+        break;
+      }
+      if ([guessesArray count] < kDictionaryGuessCountLimit &&
+          ![guess isEqualToString:searchString] &&
+          [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:guess]) {
+        [guessesArray addObject:guess];
+      }
+    }
+
+    if ([guessesArray count] < kDictionaryGuessCountLimit) {
+      for (NSString *completion in [self completionsForString:searchString]) {
+        if ([weakGuessOperation isCancelled]) {
+          break;
+        }
+        if ([guessesArray count] < kDictionaryGuessCountLimit &&
+            ![completion isEqualToString:searchString] &&
+            ![guessesArray containsObject:completion] &&
+            [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:completion]) {
+          [guessesArray addObject:completion];
+        }
+      }
+    }
+  }];
+
+  [guessOperation setCompletionBlock:^{
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      guessing = NO;
+      [self.searchDisplayController.searchResultsTableView reloadData];
+    }];
+  }];
+
+  [guessOperationQueue addOperation:guessOperation];
+}
+
+
+-(void)startLookupForSearchString:(NSString *)searchString {
+  [lookupOperationQueue cancelAllOperations];
+
+  NSBlockOperation *lookupOperation = [[NSBlockOperation alloc] init];
+
+  [lookupOperation addExecutionBlock:^{
+    if ([UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:searchString]) {
+      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        exactMatch = YES;
+        [self.searchDisplayController.searchResultsTableView reloadData];
+      }];
+    }
+  }];
+
+  [lookupOperationQueue addOperation:lookupOperation];
 }
 
 
@@ -215,7 +281,7 @@ static int kDictionaryGuessCountLimit = 10;
     } else {
       [self makeCellNormal:cell];
       if (indexPath.row == [[self lookupHistory] count]) {
-        cell.textLabel.textAlignment = UITextAlignmentCenter;
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:18];
         cell.textLabel.text = @"Clear History";
@@ -319,56 +385,17 @@ static int kDictionaryGuessCountLimit = 10;
 
 
 -(BOOL)searchDisplayController:(UISearchDisplayController *)searchDisplayController shouldReloadTableForSearchString:(NSString *)searchString {
-  [guessesArray removeAllObjects];
-
-  if ([UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:searchString]) {
-    exactMatch = YES;
-  } else {
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    guessing = YES;
     exactMatch = NO;
-  }
-
-  guessing = YES;
-
-  [guessOperationQueue cancelAllOperations];
-
-  NSBlockOperation *guessOperation = [NSBlockOperation blockOperationWithBlock:^{
-
     [guessesArray removeAllObjects];
-
-    if (!exactMatch) {
-      NSArray *guesses = [self guessesForString:searchString];
-      for (NSString *guess in guesses) {
-        if ([guessesArray count] < kDictionaryGuessCountLimit &&
-            ![guess isEqualToString:searchString] &&
-            [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:guess]) {
-          [guessesArray addObject:guess];
-        }
-      }
-    }
-
-    if ([guessesArray count] < kDictionaryGuessCountLimit) {
-      NSArray *completions = [self completionsForString:searchString];
-      for (NSString *completion in completions) {
-        if ([guessesArray count] < kDictionaryGuessCountLimit &&
-            ![completion isEqualToString:searchString] &&
-            ![guessesArray containsObject:completion] &&
-            [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:completion]) {
-          [guessesArray addObject:completion];
-        }
-      }
-    }
+    [self.searchDisplayController.searchResultsTableView reloadData];
   }];
 
-  [guessOperation setCompletionBlock:^{
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      guessing = NO;
-      [self.searchDisplayController.searchResultsTableView reloadData];
-    }];
-  }];
+  [self makeGuessForSearchString:searchString];
+  [self startLookupForSearchString:searchString];
 
-  [guessOperationQueue addOperation:guessOperation];
-
-  return exactMatch;
+  return NO;
 }
 
 
