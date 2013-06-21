@@ -23,7 +23,7 @@ static int kDictionaryGuessCountLimit = 10;
   UITextChecker *__textChecker;
   UISearchDisplayController *__searchDisplayController;
 
-  NSMutableArray *guessesArray;
+  NSArray *guessesArray;
   NSOperationQueue *guessOperationQueue;
   NSOperationQueue *lookupOperationQueue;
   BOOL exactMatch;
@@ -194,39 +194,42 @@ static int kDictionaryGuessCountLimit = 10;
   __weak NSBlockOperation *weakGuessOperation = guessOperation;
 
   [guessOperation addExecutionBlock:^{
-    [guessesArray removeAllObjects];
+    NSMutableArray *guessResults = [@[] mutableCopy];
 
     for (NSString *guess in [self guessesForString:searchString]) {
       if ([weakGuessOperation isCancelled]) {
         break;
       }
-      if ([guessesArray count] < kDictionaryGuessCountLimit &&
+
+      if ([guessResults count] < kDictionaryGuessCountLimit &&
           ![guess isEqualToString:searchString] &&
           [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:guess]) {
-        [guessesArray addObject:guess];
+        [guessResults addObject:guess];
       }
     }
 
-    if ([guessesArray count] < kDictionaryGuessCountLimit) {
+    if ([guessResults count] < kDictionaryGuessCountLimit) {
       for (NSString *completion in [self completionsForString:searchString]) {
         if ([weakGuessOperation isCancelled]) {
           break;
         }
-        if ([guessesArray count] < kDictionaryGuessCountLimit &&
+
+        if ([guessResults count] < kDictionaryGuessCountLimit &&
             ![completion isEqualToString:searchString] &&
-            ![guessesArray containsObject:completion] &&
+            ![guessResults containsObject:completion] &&
             [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:completion]) {
-          [guessesArray addObject:completion];
+          [guessResults addObject:completion];
         }
       }
     }
-  }];
 
-  [guessOperation setCompletionBlock:^{
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      guessing = NO;
-      [self.searchDisplayController.searchResultsTableView reloadData];
-    }];
+    if (![weakGuessOperation isCancelled]) {
+      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        guessing = NO;
+        guessesArray = [guessResults copy];
+        [self.searchDisplayController.searchResultsTableView reloadData];
+      }];
+    }
   }];
 
   [guessOperationQueue addOperation:guessOperation];
@@ -237,13 +240,27 @@ static int kDictionaryGuessCountLimit = 10;
   [lookupOperationQueue cancelAllOperations];
 
   NSBlockOperation *lookupOperation = [[NSBlockOperation alloc] init];
+  __weak NSBlockOperation *weakLookupOperation = lookupOperation;
 
   [lookupOperation addExecutionBlock:^{
     if ([UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:searchString]) {
-      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        exactMatch = YES;
-        [self.searchDisplayController.searchResultsTableView reloadData];
-      }];
+      if (![weakLookupOperation isCancelled]) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+          exactMatch = YES;
+          guessing = NO;
+          [guessOperationQueue cancelAllOperations];
+          [self.searchDisplayController.searchResultsTableView reloadData];
+        }];
+      }
+    } else {
+      if (![weakLookupOperation isCancelled]) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+          exactMatch = NO;
+          guessing = NO;
+          [guessOperationQueue cancelAllOperations];
+          [self.searchDisplayController.searchResultsTableView reloadData];
+        }];
+      }
     }
   }];
 
@@ -388,7 +405,7 @@ static int kDictionaryGuessCountLimit = 10;
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     guessing = YES;
     exactMatch = NO;
-    [guessesArray removeAllObjects];
+    guessesArray = @[];
     [self.searchDisplayController.searchResultsTableView reloadData];
   }];
 
