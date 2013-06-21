@@ -25,6 +25,7 @@ static int kDictionaryGuessCountLimit = 10;
 
   NSMutableArray *guessesArray;
   NSOperationQueue *guessOperationQueue;
+  NSOperationQueue *lookupOperationQueue;
   BOOL exactMatch;
   BOOL guessing;
 }
@@ -40,7 +41,9 @@ static int kDictionaryGuessCountLimit = 10;
   guessing = false;
 
   guessesArray = [[NSMutableArray alloc] init];
+
   guessOperationQueue = [[NSOperationQueue alloc] init];
+  lookupOperationQueue = [[NSOperationQueue alloc] init];
 
   __searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
   __searchBar.delegate = self;
@@ -128,9 +131,8 @@ static int kDictionaryGuessCountLimit = 10;
 }
 
 
--(void)showDefinitionForTerm:(NSString *)term {
-  NSMutableArray *lookupHistory = [[NSMutableArray alloc] init];
-  [lookupHistory addObject:term];
+-(void)addToLookupHistory:(NSString *)term {
+  NSMutableArray *lookupHistory = [@[term] mutableCopy];
 
   for (NSString *termInHistory in [self lookupHistory]) {
     if (![term isEqual:termInHistory] && [lookupHistory count] < kDictionaryLookupHistoryLimit) {
@@ -139,10 +141,14 @@ static int kDictionaryGuessCountLimit = 10;
   }
 
   [self setLookupHistory:lookupHistory];
+}
 
-  [__tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 
-  //  NSLog(@"current history: %@", [lookupHistory description]);
+-(void)showDefinitionForTerm:(NSString *)term {
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    [self addToLookupHistory:term];
+    [__tableView reloadData];
+  }];
 
   UIReferenceLibraryViewController *dicController = [[UIReferenceLibraryViewController alloc] initWithTerm:term];
 
