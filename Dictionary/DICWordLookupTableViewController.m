@@ -19,7 +19,7 @@ static int kDictionaryGuessCountLimit = 10;
 @implementation DICWordLookupTableViewController {
 @private
   UISearchBar *__searchBar;
-  UITableView *__tableView;
+  UITableView *__lookupHistoryTableView;
   UITextChecker *__textChecker;
   UISearchDisplayController *__searchDisplayController;
 
@@ -57,14 +57,14 @@ static int kDictionaryGuessCountLimit = 10;
   __searchDisplayController.searchResultsDataSource = self;
   __searchDisplayController.searchResultsDelegate = self;
 
-  __tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-  __tableView.dataSource = self;
-  __tableView.delegate = self;
-  __tableView.tableHeaderView = __searchBar;
-  __tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-  __tableView.frame = self.view.bounds;
+  __lookupHistoryTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+  __lookupHistoryTableView.dataSource = self;
+  __lookupHistoryTableView.delegate = self;
+  __lookupHistoryTableView.tableHeaderView = __searchBar;
+  __lookupHistoryTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+  __lookupHistoryTableView.frame = self.view.bounds;
 
-  [self.view addSubview:__tableView];
+  [self.view addSubview:__lookupHistoryTableView];
 }
 
 
@@ -79,7 +79,7 @@ static int kDictionaryGuessCountLimit = 10;
 
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-  __tableView.frame = self.view.bounds;
+  __lookupHistoryTableView.frame = self.view.bounds;
 }
 
 
@@ -147,7 +147,7 @@ static int kDictionaryGuessCountLimit = 10;
 -(void)showDefinitionForTerm:(NSString *)term {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     [self addToLookupHistory:term];
-    [__tableView reloadData];
+    [__lookupHistoryTableView reloadData];
   }];
 
   UIReferenceLibraryViewController *dicController = [[UIReferenceLibraryViewController alloc] initWithTerm:term];
@@ -189,7 +189,7 @@ static int kDictionaryGuessCountLimit = 10;
       [self makeCellNormal:cell];
       cell.textLabel.text = [[guessesArray objectAtIndex:indexPath.row] description];
     }
-  } else if (tableView == __tableView) {
+  } else if (tableView == __lookupHistoryTableView) {
     if ([[self lookupHistory] count] == 0) {
       [self makeCellDisabled:cell];
       cell.textLabel.text = @"No history";
@@ -218,7 +218,7 @@ static int kDictionaryGuessCountLimit = 10;
     }
 
     return 1;
-  } else if (tableView == __tableView) {
+  } else if (tableView == __lookupHistoryTableView) {
     return 1;
   }
 
@@ -238,7 +238,7 @@ static int kDictionaryGuessCountLimit = 10;
     }
 
     return @"Did you mean?";
-  } else if (tableView == __tableView) {
+  } else if (tableView == __lookupHistoryTableView) {
     return @"History";
   }
 
@@ -257,7 +257,7 @@ static int kDictionaryGuessCountLimit = 10;
     }
 
     return [guessesArray count];
-  } else if (tableView == __tableView) {
+  } else if (tableView == __lookupHistoryTableView) {
     return [[self lookupHistory] count] + 1;
   }
 
@@ -282,7 +282,7 @@ static int kDictionaryGuessCountLimit = 10;
     } else {
       [self showDefinitionForTerm:[[guessesArray objectAtIndex:indexPath.row] description]];
     }
-  } else if (tableView == __tableView) {
+  } else if (tableView == __lookupHistoryTableView) {
     if ([[self lookupHistory] count] == 0) {
       // do nothing
     } else {
@@ -293,11 +293,11 @@ static int kDictionaryGuessCountLimit = 10;
           [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
         }
         //        NSLog(@"indexpaths %@", [indexPaths description]);
-        [__tableView beginUpdates];
-        [__tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+        [__lookupHistoryTableView beginUpdates];
+        [__lookupHistoryTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
         [self setLookupHistory:[[NSArray alloc] init]];
-        [__tableView endUpdates];
-        [__tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+        [__lookupHistoryTableView endUpdates];
+        [__lookupHistoryTableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
       } else {
         [self showDefinitionForTerm:[[[self lookupHistory] objectAtIndex:indexPath.row] description]];
       }
