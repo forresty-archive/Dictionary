@@ -143,6 +143,25 @@ static int kDictionaryGuessCountLimit = 10;
   [self setLookupHistory:lookupHistory];
 }
 
+-(void)clearHistory {
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:[[self lookupHistory] count]];
+
+    for (int i = 0; i < [[self lookupHistory] count]; i++) {
+      [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+    }
+
+    [__lookupHistoryTableView beginUpdates];
+    [__lookupHistoryTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+    [self setLookupHistory:@[]];
+    [__lookupHistoryTableView endUpdates];
+  }];
+
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    [__lookupHistoryTableView reloadData];
+  }];
+}
+
 
 -(void)showDefinitionForTerm:(NSString *)term {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -284,19 +303,10 @@ static int kDictionaryGuessCountLimit = 10;
     }
   } else if (tableView == __lookupHistoryTableView) {
     if ([[self lookupHistory] count] == 0) {
-      // do nothing
+      // empty history, do nothing
     } else {
       if (indexPath.row == [[self lookupHistory] count]) {
-        // clear history
-        NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:[[self lookupHistory] count]];
-        for (int i = 0; i < [[self lookupHistory] count]; i++) {
-          [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-        }
-        [__lookupHistoryTableView beginUpdates];
-        [__lookupHistoryTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
-        [self setLookupHistory:[[NSArray alloc] init]];
-        [__lookupHistoryTableView endUpdates];
-        [__lookupHistoryTableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+        [self clearHistory];
       } else {
         [self showDefinitionForTerm:[[[self lookupHistory] objectAtIndex:indexPath.row] description]];
       }
