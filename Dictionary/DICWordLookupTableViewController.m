@@ -354,20 +354,11 @@ static int kDictionaryGuessCountLimit = 10;
 
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)sBar {
-  NSString *term = nil;
-
-  if (exactMatch) {
-    term = sBar.text;
-  }
-  //  else if ([guessesArray count] > 0) {
-  //    term = [guessesArray objectAtIndex:0];
-  //  }
-
-  if (term == nil) {
+  if (!exactMatch) {
     return;
   }
 
-  [self showDefinitionForTerm:term];
+  [self showDefinitionForTerm:sBar.text];
 }
 
 
