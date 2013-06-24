@@ -18,6 +18,7 @@ static int kDictionaryLookupHistoryLimit = 15;
   __strong NSMutableSet *validTermsCache;
 }
 
+
 +(instancetype)sharedDictionary {
   static Dictionary *_instance = nil;
 
@@ -29,6 +30,7 @@ static int kDictionaryLookupHistoryLimit = 15;
 
   return _instance;
 }
+
 
 -(instancetype)init {
   self = [super init];
@@ -43,13 +45,14 @@ static int kDictionaryLookupHistoryLimit = 15;
   if ([validTermsCache containsObject:term]) {
     return YES;
   }
-  BOOL result = [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:term];
 
-  if (result) {
+  BOOL hasDefinition = [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:term];
+
+  if (hasDefinition) {
     [validTermsCache addObject:term];
   }
 
-  return result;
+  return hasDefinition;
 }
 
 
