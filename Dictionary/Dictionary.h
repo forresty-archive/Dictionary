@@ -11,8 +11,15 @@
 @interface Dictionary : NSObject
 
 -(BOOL)containsTerm:(NSString *)term;
+
 -(NSArray *)guessesForTerm:(NSString *)term;
+
 -(NSArray *)completionsForTerm:(NSString *)term;
+
 -(NSArray *)lookupHistory;
+
+-(void)clearLookupHistory;
+
+-(void)addToLookupHistory:(NSString *)term;
 
 @end

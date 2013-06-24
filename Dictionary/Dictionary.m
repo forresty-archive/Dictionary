@@ -9,6 +9,10 @@
 #import "Dictionary.h"
 
 
+static NSString *kDictionaryLookupHistory = @"kDictionaryLookupHistory";
+static int kDictionaryLookupHistoryLimit = 15;
+
+
 @implementation Dictionary
 
 
@@ -27,8 +31,38 @@
 }
 
 
+# pragma mark - lookup history management
+
+
 -(NSArray *)lookupHistory {
-  return @[];
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+  return [defaults objectForKey:kDictionaryLookupHistory];
+}
+
+
+-(void)setLookupHistory:(NSArray *)lookupHistory {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setObject:lookupHistory forKey:kDictionaryLookupHistory];
+  [defaults synchronize];
+}
+
+
+-(void)addToLookupHistory:(NSString *)term {
+  NSMutableArray *lookupHistory = [@[term] mutableCopy];
+
+  for (NSString *termInHistory in [self lookupHistory]) {
+    if (![term isEqual:termInHistory] && [lookupHistory count] < kDictionaryLookupHistoryLimit) {
+      [lookupHistory addObject:termInHistory];
+    }
+  }
+
+  [self setLookupHistory:lookupHistory];
+}
+
+
+-(void)clearLookupHistory {
+  [self setLookupHistory:@[]];
 }
 
 
