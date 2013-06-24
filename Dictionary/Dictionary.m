@@ -97,7 +97,7 @@ static int kDictionaryLookupHistoryLimit = 15;
 }
 
 
--(void)addToLookupHistory:(NSString *)term {
+-(void)addLookupHistoryWithTerm:(NSString *)term {
   NSMutableArray *lookupHistory = [@[term] mutableCopy];
 
   for (NSString *termInHistory in [self lookupHistory]) {

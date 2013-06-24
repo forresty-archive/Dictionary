@@ -141,7 +141,7 @@
 
 -(void)showDefinitionForTerm:(NSString *)term {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    [dictionary addToLookupHistory:term];
+    [dictionary addLookupHistoryWithTerm:term];
     [__lookupHistoryTableView reloadData];
   }];
 
