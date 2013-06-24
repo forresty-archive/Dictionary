@@ -1,15 +1,15 @@
 //
-//  DICAppDelegate.m
+//  AppDelegate.m
 //  Dictionary
 //
 //  Created by Feng Ye on 11/18/11.
 //  Copyright (c) 2011 @forresty. All rights reserved.
 //
 
-#import "DICAppDelegate.h"
+#import "AppDelegate.h"
 #import "MainViewController.h"
 
-@implementation DICAppDelegate
+@implementation AppDelegate
 
 @synthesize window = _window;
 

@@ -13,7 +13,7 @@
 		683A6A2C14760152004C3F8C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2B14760152004C3F8C /* CoreGraphics.framework */; };
 		683A6A3414760152004C3F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 683A6A3214760152004C3F8C /* InfoPlist.strings */; };
 		683A6A3614760152004C3F8C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A6A3514760152004C3F8C /* main.m */; };
-		683A6A3A14760152004C3F8C /* DICAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A6A3914760152004C3F8C /* DICAppDelegate.m */; };
+		683A6A3A14760152004C3F8C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A6A3914760152004C3F8C /* AppDelegate.m */; };
 		683A6A4514760152004C3F8C /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A4414760152004C3F8C /* SenTestingKit.framework */; };
 		683A6A4614760152004C3F8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2714760152004C3F8C /* UIKit.framework */; };
 		683A6A4714760152004C3F8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2914760152004C3F8C /* Foundation.framework */; };
@@ -46,8 +46,8 @@
 		683A6A3314760152004C3F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		683A6A3514760152004C3F8C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		683A6A3714760152004C3F8C /* Dictionary-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dictionary-Prefix.pch"; sourceTree = "<group>"; };
-		683A6A3814760152004C3F8C /* DICAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DICAppDelegate.h; sourceTree = "<group>"; };
-		683A6A3914760152004C3F8C /* DICAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DICAppDelegate.m; sourceTree = "<group>"; };
+		683A6A3814760152004C3F8C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		683A6A3914760152004C3F8C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		683A6A4314760152004C3F8C /* DictionaryTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DictionaryTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		683A6A4414760152004C3F8C /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		683A6A4D14760152004C3F8C /* DictionaryTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DictionaryTests-Info.plist"; sourceTree = "<group>"; };
@@ -127,8 +127,8 @@
 			children = (
 				68E5E6FD1778753C00AB0684 /* Controllers */,
 				68E5E6FC177874E200AB0684 /* Models */,
-				683A6A3814760152004C3F8C /* DICAppDelegate.h */,
-				683A6A3914760152004C3F8C /* DICAppDelegate.m */,
+				683A6A3814760152004C3F8C /* AppDelegate.h */,
+				683A6A3914760152004C3F8C /* AppDelegate.m */,
 				683A6A3014760152004C3F8C /* Supporting Files */,
 			);
 			path = Dictionary;
@@ -320,7 +320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				683A6A3614760152004C3F8C /* main.m in Sources */,
-				683A6A3A14760152004C3F8C /* DICAppDelegate.m in Sources */,
+				683A6A3A14760152004C3F8C /* AppDelegate.m in Sources */,
 				68B0C3B01476047B006AEA06 /* MainViewController.m in Sources */,
 				68E5E6FB177874DC00AB0684 /* Dictionary.m in Sources */,
 			);

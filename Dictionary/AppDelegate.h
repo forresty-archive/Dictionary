@@ -1,5 +1,5 @@
 //
-//  DICAppDelegate.h
+//  AppDelegate.h
 //  Dictionary
 //
 //  Created by Feng Ye on 11/18/11.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DICAppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
