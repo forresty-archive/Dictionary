@@ -1,12 +1,12 @@
 //
-//  DICWordLookupTableViewController.m
+//  MainViewController.m
 //  Dictionary
 //
 //  Created by Feng Ye on 11/18/11.
 //  Copyright (c) 2011 @forresty. All rights reserved.
 //
 
-#import "DICWordLookupTableViewController.h"
+#import "MainViewController.h"
 #import "UIKit/UITextChecker.h"
 #import "UIKit/UIReferenceLibraryViewController.h"
 
@@ -15,7 +15,7 @@ static NSString *kDictionaryLookupHistory = @"kDictionaryLookupHistory";
 static int kDictionaryLookupHistoryLimit = 15;
 
 
-@implementation DICWordLookupTableViewController {
+@implementation MainViewController {
 @private
   __strong UISearchBar *__searchBar;
   __strong UITableView *__lookupHistoryTableView;

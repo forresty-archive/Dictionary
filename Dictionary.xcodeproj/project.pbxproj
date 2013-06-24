@@ -20,8 +20,9 @@
 		683A6A5014760152004C3F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 683A6A4E14760152004C3F8C /* InfoPlist.strings */; };
 		683A6A5314760152004C3F8C /* DictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A6A5214760152004C3F8C /* DictionaryTests.m */; };
 		6892932117705C46005187F0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6892932017705C46005187F0 /* Default-568h@2x.png */; };
-		68B0C3B01476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */; };
-		68B0C3B11476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */; };
+		68B0C3B01476047B006AEA06 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* MainViewController.m */; };
+		68B0C3B11476047B006AEA06 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* MainViewController.m */; };
+		68E5E6FB177874DC00AB0684 /* Dictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E5E6FA177874DC00AB0684 /* Dictionary.m */; };
 		68E6AED2149786A10034486E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68E6AED1149786A10034486E /* Icon.png */; };
 /* End PBXBuildFile section */
 
@@ -54,8 +55,10 @@
 		683A6A5114760152004C3F8C /* DictionaryTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DictionaryTests.h; sourceTree = "<group>"; };
 		683A6A5214760152004C3F8C /* DictionaryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DictionaryTests.m; sourceTree = "<group>"; };
 		6892932017705C46005187F0 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		68B0C3AE1476047B006AEA06 /* DICWordLookupTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICWordLookupTableViewController.h; sourceTree = "<group>"; };
-		68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DICWordLookupTableViewController.m; sourceTree = "<group>"; };
+		68B0C3AE1476047B006AEA06 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		68B0C3AF1476047B006AEA06 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		68E5E6F9177874DC00AB0684 /* Dictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dictionary.h; sourceTree = "<group>"; };
+		68E5E6FA177874DC00AB0684 /* Dictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dictionary.m; sourceTree = "<group>"; };
 		68E6AED1149786A10034486E /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		AA4BCB22A4CB48EEAC5E0BC8 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -122,11 +125,11 @@
 		683A6A2F14760152004C3F8C /* Dictionary */ = {
 			isa = PBXGroup;
 			children = (
+				68E5E6FD1778753C00AB0684 /* Controllers */,
+				68E5E6FC177874E200AB0684 /* Models */,
 				683A6A3814760152004C3F8C /* DICAppDelegate.h */,
 				683A6A3914760152004C3F8C /* DICAppDelegate.m */,
 				683A6A3014760152004C3F8C /* Supporting Files */,
-				68B0C3AE1476047B006AEA06 /* DICWordLookupTableViewController.h */,
-				68B0C3AF1476047B006AEA06 /* DICWordLookupTableViewController.m */,
 			);
 			path = Dictionary;
 			sourceTree = "<group>";
@@ -159,6 +162,24 @@
 				683A6A4E14760152004C3F8C /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		68E5E6FC177874E200AB0684 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				68E5E6F9177874DC00AB0684 /* Dictionary.h */,
+				68E5E6FA177874DC00AB0684 /* Dictionary.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		68E5E6FD1778753C00AB0684 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				68B0C3AE1476047B006AEA06 /* MainViewController.h */,
+				68B0C3AF1476047B006AEA06 /* MainViewController.m */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -300,7 +321,8 @@
 			files = (
 				683A6A3614760152004C3F8C /* main.m in Sources */,
 				683A6A3A14760152004C3F8C /* DICAppDelegate.m in Sources */,
-				68B0C3B01476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */,
+				68B0C3B01476047B006AEA06 /* MainViewController.m in Sources */,
+				68E5E6FB177874DC00AB0684 /* Dictionary.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -309,7 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				683A6A5314760152004C3F8C /* DictionaryTests.m in Sources */,
-				68B0C3B11476047B006AEA06 /* DICWordLookupTableViewController.m in Sources */,
+				68B0C3B11476047B006AEA06 /* MainViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

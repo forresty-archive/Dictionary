@@ -7,23 +7,20 @@
 //
 
 #import "DICAppDelegate.h"
-#import "DICWordLookupTableViewController.h"
+#import "MainViewController.h"
 
 @implementation DICAppDelegate
 
 @synthesize window = _window;
 
-DICWordLookupTableViewController *wordLookupController;
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-  wordLookupController = [[DICWordLookupTableViewController alloc] init];
-
-  self.window.rootViewController = wordLookupController;
+  self.window.rootViewController = [[MainViewController alloc] init];
 
   self.window.backgroundColor = [UIColor whiteColor];
+
   [self.window makeKeyAndVisible];
 
   return YES;
