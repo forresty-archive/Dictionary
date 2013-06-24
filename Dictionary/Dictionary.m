@@ -7,6 +7,8 @@
 //
 
 #import "Dictionary.h"
+#import "UIKit/UITextChecker.h"
+#import "UIKit/UIReferenceLibraryViewController.h"
 
 
 static NSString *kDictionaryLookupHistory = @"kDictionaryLookupHistory";
@@ -14,9 +16,16 @@ static int kDictionaryLookupHistoryLimit = 15;
 
 
 @implementation Dictionary {
+
 @private
+
   __strong NSMutableSet *validTermsCache;
+
+  __strong UITextChecker *__textChecker;
 }
+
+
+# pragma mark - object life cycle
 
 
 +(instancetype)sharedDictionary {
@@ -37,8 +46,13 @@ static int kDictionaryLookupHistoryLimit = 15;
 
   validTermsCache = [[NSMutableSet alloc] init];
 
+  __textChecker = [[UITextChecker alloc] init];
+
   return self;
 }
+
+
+# pragma mark - definition / completion lookup && guesses
 
 
 -(BOOL)hasDefinitionForTerm:(NSString *)term {
@@ -57,16 +71,16 @@ static int kDictionaryLookupHistoryLimit = 15;
 
 
 -(NSArray *)guessesForTerm:(NSString *)term {
-  return @[];
+  return [__textChecker guessesForWordRange:NSMakeRange(0, [term length]) inString:term language:@"en_US"];
 }
 
 
 -(NSArray *)completionsForTerm:(NSString *)term {
-  return @[];
+  return [__textChecker completionsForPartialWordRange:NSMakeRange(0, [term length]) inString:term language:@"en_US"];
 }
 
 
-# pragma mark - lookup history management
+# pragma mark - history management
 
 
 -(NSArray *)lookupHistory {

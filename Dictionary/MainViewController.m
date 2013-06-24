@@ -7,8 +7,6 @@
 //
 
 #import "MainViewController.h"
-#import "UIKit/UITextChecker.h"
-#import "UIKit/UIReferenceLibraryViewController.h"
 #import "Dictionary.h"
 
 
@@ -16,7 +14,6 @@
 @private
   __strong UISearchBar *__searchBar;
   __strong UITableView *__lookupHistoryTableView;
-  __strong UITextChecker *__textChecker;
   __strong UISearchDisplayController *__searchDisplayController;
 
   __strong NSArray *candidatesArray;
@@ -55,8 +52,6 @@
   __searchBar.delegate = self;
   __searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
   [__searchBar sizeToFit];
-
-  __textChecker = [[UITextChecker alloc] init];
 
   __searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:__searchBar contentsController:self];
   __searchDisplayController.delegate = self;
@@ -159,16 +154,6 @@
 # pragma mark - definition / completion lookup && guesses
 
 
--(NSArray *)guessesForString:(NSString *)searchString {
-  return [__textChecker guessesForWordRange:NSMakeRange(0, [searchString length]) inString:searchString language:@"en_US"];
-}
-
-
--(NSArray *)completionsForString:(NSString *)searchString {
-  return [__textChecker completionsForPartialWordRange:NSMakeRange(0, [searchString length]) inString:searchString language:@"en_US"];
-}
-
-
 -(NSArray *)mergeAndSortArray:(NSArray *)array withAnotherArray:(NSArray *)anotherArray {
   NSArray *result = [array arrayByAddingObjectsFromArray:anotherArray];
 
@@ -186,7 +171,7 @@
   [guessOperation addExecutionBlock:^{
     NSMutableArray *guessResults = [@[] mutableCopy];
 
-    for (NSString *guess in [self guessesForString:searchString]) {
+    for (NSString *guess in [dictionary guessesForTerm:searchString]) {
       if ([weakGuessOperation isCancelled]) {
         break;
       }
@@ -219,7 +204,7 @@
   [operation addExecutionBlock:^{
     NSMutableArray *results = [@[] mutableCopy];
 
-    for (NSString *completion in [self completionsForString:searchString]) {
+    for (NSString *completion in [dictionary completionsForTerm:searchString]) {
       if ([weakOperation isCancelled]) {
         break;
       }
