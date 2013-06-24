@@ -10,7 +10,9 @@
 
 @interface Dictionary : NSObject
 
--(BOOL)containsTerm:(NSString *)term;
++(instancetype)sharedDictionary;
+
+-(BOOL)hasDefinitionForTerm:(NSString *)term;
 
 -(NSArray *)guessesForTerm:(NSString *)term;
 

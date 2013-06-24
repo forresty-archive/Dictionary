@@ -13,11 +13,43 @@ static NSString *kDictionaryLookupHistory = @"kDictionaryLookupHistory";
 static int kDictionaryLookupHistoryLimit = 15;
 
 
-@implementation Dictionary
+@implementation Dictionary {
+@private
+  __strong NSMutableSet *validTermsCache;
+}
+
++(instancetype)sharedDictionary {
+  static Dictionary *_instance = nil;
+
+  static dispatch_once_t onceToken;
+
+  dispatch_once(&onceToken, ^{
+    _instance = [[Dictionary alloc] init];
+  });
+
+  return _instance;
+}
+
+-(instancetype)init {
+  self = [super init];
+
+  validTermsCache = [[NSMutableSet alloc] init];
+
+  return self;
+}
 
 
--(BOOL)containsTerm:(NSString *)term {
-  return NO;
+-(BOOL)hasDefinitionForTerm:(NSString *)term {
+  if ([validTermsCache containsObject:term]) {
+    return YES;
+  }
+  BOOL result = [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:term];
+
+  if (result) {
+    [validTermsCache addObject:term];
+  }
+
+  return result;
 }
 
 

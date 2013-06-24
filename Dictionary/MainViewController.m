@@ -21,8 +21,6 @@
 
   __strong NSArray *candidatesArray;
 
-  __strong NSMutableSet *validCandidates;
-
   __strong NSOperationQueue *guessOperationQueue;
   __strong NSOperationQueue *definitionLookupOperationQueue;
   __strong NSOperationQueue *completionLookupOperationQueue;
@@ -41,15 +39,13 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  dictionary = [[Dictionary alloc] init];
+  dictionary = [Dictionary sharedDictionary];
 
   exactMatchedString = nil;
   guessing = NO;
   lookingUpCompletions = NO;
 
   candidatesArray = [[NSMutableArray alloc] init];
-
-  validCandidates = [[NSMutableSet alloc] init];
 
   guessOperationQueue = [[NSOperationQueue alloc] init];
   definitionLookupOperationQueue = [[NSOperationQueue alloc] init];
@@ -180,20 +176,6 @@
 }
 
 
--(BOOL)hasDefinitionForTerm:(NSString *)term {
-  if ([validCandidates containsObject:term]) {
-    return YES;
-  }
-  BOOL result = [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:term];
-
-  if (result) {
-    [validCandidates addObject:term];
-  }
-
-  return result;
-}
-
-
 -(void)makeGuessForSearchString:(NSString *)searchString {
   guessing = YES;
   [guessOperationQueue cancelAllOperations];
@@ -209,7 +191,7 @@
         break;
       }
 
-      if (![guess isEqualToString:searchString] && [self hasDefinitionForTerm:guess]) {
+      if (![guess isEqualToString:searchString] && [dictionary hasDefinitionForTerm:guess]) {
         [guessResults addObject:guess];
       }
     }
@@ -242,7 +224,7 @@
         break;
       }
 
-      if (![completion isEqualToString:searchString] && [self hasDefinitionForTerm:completion]) {
+      if (![completion isEqualToString:searchString] && [dictionary hasDefinitionForTerm:completion]) {
         [results addObject:completion];
       }
     }
@@ -270,7 +252,7 @@
   [lookupOperation addExecutionBlock:^{
     NSAssert(exactMatchedString == nil, @"exactMatch should be NO here");
 
-    if ([self hasDefinitionForTerm:searchString]) {
+    if ([dictionary hasDefinitionForTerm:searchString]) {
       if (![weakLookupOperation isCancelled]) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
           exactMatchedString = [searchString copy];
