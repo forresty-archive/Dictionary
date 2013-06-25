@@ -15,7 +15,7 @@
 # pragma mark - object life cycle
 
 
-+(instancetype)sharedDictionary;
++(instancetype)sharedInstance;
 
 
 # pragma mark - look up
@@ -28,18 +28,5 @@
 
 
 -(NSArray *)completionsForTerm:(NSString *)term;
-
-
-# pragma mark - history management
-
-
--(NSArray *)lookupHistory;
-
-
--(void)clearLookupHistory;
-
-
--(void)addLookupHistoryWithTerm:(NSString *)term;
-
 
 @end

@@ -24,6 +24,7 @@
 		68B0C3B11476047B006AEA06 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* MainViewController.m */; };
 		68E5E6FB177874DC00AB0684 /* Dictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E5E6FA177874DC00AB0684 /* Dictionary.m */; };
 		68E5E7001778B3FE00AB0684 /* LookupResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E5E6FF1778B3FE00AB0684 /* LookupResult.m */; };
+		68E5E7031779389900AB0684 /* LookupHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E5E7021779389900AB0684 /* LookupHistory.m */; };
 		68E6AED2149786A10034486E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68E6AED1149786A10034486E /* Icon.png */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +63,8 @@
 		68E5E6FA177874DC00AB0684 /* Dictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dictionary.m; sourceTree = "<group>"; };
 		68E5E6FE1778B3FE00AB0684 /* LookupResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LookupResult.h; sourceTree = "<group>"; };
 		68E5E6FF1778B3FE00AB0684 /* LookupResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LookupResult.m; sourceTree = "<group>"; };
+		68E5E7011779389900AB0684 /* LookupHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LookupHistory.h; sourceTree = "<group>"; };
+		68E5E7021779389900AB0684 /* LookupHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LookupHistory.m; sourceTree = "<group>"; };
 		68E6AED1149786A10034486E /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		AA4BCB22A4CB48EEAC5E0BC8 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -174,6 +177,8 @@
 				68E5E6FA177874DC00AB0684 /* Dictionary.m */,
 				68E5E6FE1778B3FE00AB0684 /* LookupResult.h */,
 				68E5E6FF1778B3FE00AB0684 /* LookupResult.m */,
+				68E5E7011779389900AB0684 /* LookupHistory.h */,
+				68E5E7021779389900AB0684 /* LookupHistory.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -329,6 +334,7 @@
 				68B0C3B01476047B006AEA06 /* MainViewController.m in Sources */,
 				68E5E6FB177874DC00AB0684 /* Dictionary.m in Sources */,
 				68E5E7001778B3FE00AB0684 /* LookupResult.m in Sources */,
+				68E5E7031779389900AB0684 /* LookupHistory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

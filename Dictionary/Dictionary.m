@@ -11,10 +11,6 @@
 #import "UIKit/UIReferenceLibraryViewController.h"
 
 
-static NSString *kDictionaryLookupHistory = @"kDictionaryLookupHistory";
-static int kDictionaryLookupHistoryLimit = 15;
-
-
 @implementation Dictionary {
 
 @private
@@ -28,7 +24,7 @@ static int kDictionaryLookupHistoryLimit = 15;
 # pragma mark - object life cycle
 
 
-+(instancetype)sharedDictionary {
++(instancetype)sharedInstance {
   static Dictionary *_instance = nil;
 
   static dispatch_once_t onceToken;
@@ -77,41 +73,6 @@ static int kDictionaryLookupHistoryLimit = 15;
 
 -(NSArray *)completionsForTerm:(NSString *)term {
   return [__textChecker completionsForPartialWordRange:NSMakeRange(0, [term length]) inString:term language:@"en_US"];
-}
-
-
-# pragma mark - history management
-
-
--(NSArray *)lookupHistory {
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-  return [defaults objectForKey:kDictionaryLookupHistory];
-}
-
-
--(void)setLookupHistory:(NSArray *)lookupHistory {
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  [defaults setObject:lookupHistory forKey:kDictionaryLookupHistory];
-  [defaults synchronize];
-}
-
-
--(void)addLookupHistoryWithTerm:(NSString *)term {
-  NSMutableArray *lookupHistory = [@[term] mutableCopy];
-
-  for (NSString *termInHistory in [self lookupHistory]) {
-    if (![term isEqual:termInHistory] && [lookupHistory count] < kDictionaryLookupHistoryLimit) {
-      [lookupHistory addObject:termInHistory];
-    }
-  }
-
-  [self setLookupHistory:lookupHistory];
-}
-
-
--(void)clearLookupHistory {
-  [self setLookupHistory:@[]];
 }
 
 

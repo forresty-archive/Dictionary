@@ -8,7 +8,7 @@
 
 #import "MainViewController.h"
 #import "Dictionary.h"
-
+#import "LookupHistory.h"
 
 @implementation MainViewController {
 @private
@@ -27,6 +27,7 @@
   BOOL lookingUpCompletions;
 
   Dictionary *dictionary;
+  LookupHistory *lookupHistory;
 }
 
 
@@ -36,7 +37,8 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  dictionary = [Dictionary sharedDictionary];
+  dictionary = [Dictionary sharedInstance];
+  lookupHistory = [LookupHistory sharedInstance];
 
   exactMatchedString = nil;
   guessing = NO;
@@ -88,15 +90,15 @@
 
 -(void)clearHistory {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:[[dictionary lookupHistory] count]];
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:[[lookupHistory recent] count]];
 
-    for (int i = 0; i < [[dictionary lookupHistory] count]; i++) {
+    for (int i = 0; i < [[lookupHistory recent] count]; i++) {
       [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
     }
 
     [__lookupHistoryTableView beginUpdates];
     [__lookupHistoryTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
-    [dictionary clearLookupHistory];
+    [lookupHistory clear];
     [__lookupHistoryTableView endUpdates];
   }];
 
@@ -141,7 +143,7 @@
 
 -(void)showDefinitionForTerm:(NSString *)term {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    [dictionary addLookupHistoryWithTerm:term];
+    [lookupHistory addLookupHistoryWithTerm:term];
     [__lookupHistoryTableView reloadData];
   }];
 
@@ -282,18 +284,18 @@
       cell.textLabel.text = [[candidatesArray objectAtIndex:indexPath.row] description];
     }
   } else if (tableView == __lookupHistoryTableView) {
-    if ([[dictionary lookupHistory] count] == 0) {
+    if ([[lookupHistory recent] count] == 0) {
       [self makeCellDisabled:cell];
       cell.textLabel.text = @"No history";
     } else {
       [self makeCellNormal:cell];
-      if (indexPath.row == [[dictionary lookupHistory] count]) {
+      if (indexPath.row == [[lookupHistory recent] count]) {
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:18];
         cell.textLabel.text = @"Clear History";
       } else {
-        cell.textLabel.text = [[[dictionary lookupHistory] objectAtIndex:indexPath.row] description];
+        cell.textLabel.text = [[[lookupHistory recent] objectAtIndex:indexPath.row] description];
       }
     }
   }
@@ -353,7 +355,7 @@
 
     return [candidatesArray count];
   } else if (tableView == __lookupHistoryTableView) {
-    return [[dictionary lookupHistory] count] + 1;
+    return [[lookupHistory recent] count] + 1;
   }
 
   return 0;
@@ -378,13 +380,13 @@
       [self showDefinitionForTerm:[[candidatesArray objectAtIndex:indexPath.row] description]];
     }
   } else if (tableView == __lookupHistoryTableView) {
-    if ([[dictionary lookupHistory] count] == 0) {
+    if ([[lookupHistory recent] count] == 0) {
       // empty history, do nothing
     } else {
-      if (indexPath.row == [[dictionary lookupHistory] count]) {
+      if (indexPath.row == [[lookupHistory recent] count]) {
         [self clearHistory];
       } else {
-        [self showDefinitionForTerm:[[[dictionary lookupHistory] objectAtIndex:indexPath.row] description]];
+        [self showDefinitionForTerm:[[[lookupHistory recent] objectAtIndex:indexPath.row] description]];
       }
     }
   }
