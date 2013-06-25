@@ -397,6 +397,8 @@
 
 
 -(BOOL)searchDisplayController:(UISearchDisplayController *)searchDisplayController shouldReloadTableForSearchString:(NSString *)searchString {
+//  NSAssert([NSOperationQueue mainQueue] == [NSOperationQueue currentQueue], @"should be called in main queue!");
+
   if ([searchString length] < 1) {
     return NO;
   }
