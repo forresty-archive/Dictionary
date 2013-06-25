@@ -50,43 +50,32 @@
   definitionLookupOperationQueue = [[NSOperationQueue alloc] init];
   completionLookupOperationQueue = [[NSOperationQueue alloc] init];
 
-  __searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
+  __searchBar = [[UISearchBar alloc] init];
   __searchBar.delegate = self;
   __searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
   [__searchBar sizeToFit];
+
+  __lookupHistoryTableView = [[UITableView alloc] init];
+  [__lookupHistoryTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+  __lookupHistoryTableView.dataSource = self;
+  __lookupHistoryTableView.delegate = self;
+  __lookupHistoryTableView.tableHeaderView = __searchBar;
+
+  [self.view addSubview:__lookupHistoryTableView];
 
   __searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:__searchBar contentsController:self];
   __searchDisplayController.delegate = self;
   __searchDisplayController.searchResultsDataSource = self;
   __searchDisplayController.searchResultsDelegate = self;
 
-  __lookupHistoryTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-  __lookupHistoryTableView.dataSource = self;
-  __lookupHistoryTableView.delegate = self;
-  __lookupHistoryTableView.tableHeaderView = __searchBar;
-  __lookupHistoryTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-  __lookupHistoryTableView.frame = self.view.bounds;
-
-  [self.view addSubview:__lookupHistoryTableView];
-}
-
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-    return YES;
-  }
-  else {
-    return interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
-  }
-}
-
-
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-  __lookupHistoryTableView.frame = self.view.bounds;
+  NSDictionary *views = NSDictionaryOfVariableBindings(__lookupHistoryTableView, self.view);
+  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[__lookupHistoryTableView]|" options:0 metrics:nil views:views]];
+  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[__lookupHistoryTableView]|" options:0 metrics:nil views:views]];
 }
 
 
 # pragma mark - history
+
 
 -(void)clearHistory {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -106,6 +95,7 @@
     [__lookupHistoryTableView reloadData];
   }];
 }
+
 
 # pragma mark - view manipulation
 
