@@ -67,4 +67,17 @@ static int kDictionaryLookupHistoryLimit = 15;
 }
 
 
+-(NSUInteger)count {
+  return [[self recent] count];
+}
+
+
+# pragma mark - object subscripting
+
+
+-(NSString *)objectAtIndexedSubscript:(NSUInteger)idx {
+  return [self recent][idx];
+}
+
+
 @end

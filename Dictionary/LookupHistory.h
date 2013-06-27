@@ -22,11 +22,17 @@
 
 -(NSArray *)recent;
 
-
 -(void)clear;
 
-
 -(void)addLookupHistoryWithTerm:(NSString *)term;
+
+-(NSUInteger)count;
+
+
+# pragma mark - object subscripting
+
+
+-(NSString *)objectAtIndexedSubscript:(NSUInteger)idx;
 
 
 @end

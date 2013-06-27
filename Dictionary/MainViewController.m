@@ -79,9 +79,9 @@
 
 -(void)clearHistory {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:[[lookupHistory recent] count]];
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:[lookupHistory count]];
 
-    for (int i = 0; i < [[lookupHistory recent] count]; i++) {
+    for (int i = 0; i < [lookupHistory count]; i++) {
       [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
     }
 
@@ -271,21 +271,21 @@
       cell.textLabel.text = @"Guessing...";
     } else {
       [self makeCellNormal:cell];
-      cell.textLabel.text = [[candidatesArray objectAtIndex:indexPath.row] description];
+      cell.textLabel.text = [candidatesArray[indexPath.row] description];
     }
   } else if (tableView == __lookupHistoryTableView) {
-    if ([[lookupHistory recent] count] == 0) {
+    if ([lookupHistory count] == 0) {
       [self makeCellDisabled:cell];
       cell.textLabel.text = @"No history";
     } else {
       [self makeCellNormal:cell];
-      if (indexPath.row == [[lookupHistory recent] count]) {
+      if (indexPath.row == [lookupHistory count]) {
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:18];
         cell.textLabel.text = @"Clear History";
       } else {
-        cell.textLabel.text = [[[lookupHistory recent] objectAtIndex:indexPath.row] description];
+        cell.textLabel.text = [lookupHistory[indexPath.row] description];
       }
     }
   }
@@ -345,7 +345,7 @@
 
     return [candidatesArray count];
   } else if (tableView == __lookupHistoryTableView) {
-    return [[lookupHistory recent] count] + 1;
+    return [lookupHistory count] + 1;
   }
 
   return 0;
@@ -367,16 +367,16 @@
       return;
 
     } else {
-      [self showDefinitionForTerm:[[candidatesArray objectAtIndex:indexPath.row] description]];
+      [self showDefinitionForTerm:[candidatesArray[indexPath.row] description]];
     }
   } else if (tableView == __lookupHistoryTableView) {
-    if ([[lookupHistory recent] count] == 0) {
+    if ([lookupHistory count] == 0) {
       // empty history, do nothing
     } else {
-      if (indexPath.row == [[lookupHistory recent] count]) {
+      if (indexPath.row == [lookupHistory count]) {
         [self clearHistory];
       } else {
-        [self showDefinitionForTerm:[[[lookupHistory recent] objectAtIndex:indexPath.row] description]];
+        [self showDefinitionForTerm:[lookupHistory[indexPath.row] description]];
       }
     }
   }
