@@ -11,6 +11,8 @@
 #import "LookupResult.h"
 #import "LookupRequest.h"
 
+#define kCellID @"wordCellID"
+
 @implementation MainViewController {
 @private
   UISearchBar *__searchBar;
@@ -61,6 +63,7 @@
   [__lookupHistoryTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
   __lookupHistoryTableView.dataSource = self;
   __lookupHistoryTableView.delegate = self;
+  [__lookupHistoryTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellID];
   __lookupHistoryTableView.tableHeaderView = __searchBar;
 
   [self.view addSubview:__lookupHistoryTableView];
@@ -72,6 +75,7 @@
   __searchDisplayController.delegate = self;
   __searchDisplayController.searchResultsDataSource = self;
   __searchDisplayController.searchResultsDelegate = self;
+  [__searchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellID];
 }
 
 
@@ -82,12 +86,7 @@
 }
 
 
-# pragma mark - history
-
-
-- (NSArray *)indexPathsForLookupHistory {
-  return [self indexPathsFromOffset:0 count:[__lookupHistory count]];
-}
+# pragma mark - internal
 
 
 - (NSArray *)indexPathsFromOffset:(NSUInteger)offset count:(NSUInteger)count {
@@ -101,10 +100,13 @@
 }
 
 
+# pragma mark - history
+
+
 - (void)clearHistory {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     [__lookupHistoryTableView beginUpdates];
-    [__lookupHistoryTableView deleteRowsAtIndexPaths:[self indexPathsForLookupHistory] withRowAnimation:UITableViewRowAnimationTop];
+    [__lookupHistoryTableView deleteRowsAtIndexPaths:[self indexPathsFromOffset:0 count:[__lookupHistory count]] withRowAnimation:UITableViewRowAnimationTop];
     [__lookupHistory clear];
     [__lookupHistoryTableView endUpdates];
   }];
@@ -159,13 +161,7 @@
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
-  static NSString *kCellID = @"wordCellID";
-
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
-  if (cell == nil) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID];
-  }
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     if (__lookingUpCompletions) {
