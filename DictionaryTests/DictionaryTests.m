@@ -7,26 +7,46 @@
 //
 
 #import "DictionaryTests.h"
+#import "Dictionary.h"
 
-@implementation DictionaryTests
-
-- (void)setUp
-{
-    [super setUp];
-
-    // Set-up code here.
+@implementation DictionaryTests {
+@private
+  Dictionary *_dictionary;
 }
 
-- (void)tearDown
-{
-    // Tear-down code here.
+- (void)setUp {
+  [super setUp];
 
-    [super tearDown];
+  _dictionary = [Dictionary sharedInstance];
 }
 
-- (void)testExample
-{
-//    STFail(@"Unit tests are not implemented yet in DictionaryTests");
+- (void)tearDown {
+  // Tear-down code here.
+
+  [super tearDown];
+}
+
+- (void)testHasDefinitionForTerm {
+  NSAssert([_dictionary hasDefinitionForTerm:@"hello"], @"sanity test");
+}
+
+- (void)testGuessesForTerm {
+  NSArray *guesses = [_dictionary guessesForTerm:@"helo"];
+  NSAssert([guesses count] > 0, @"should have guesses");
+  NSAssert([guesses containsObject:@"hello"], @"sanity test");
+}
+
+- (void)testCompletionsForTerm {
+  NSArray *completions = [_dictionary completionsForTerm:@"histo"];
+  NSAssert([completions count] > 0, @"should have completions");
+  NSAssert([completions containsObject:@"history"], @"should include the term history");
+}
+
+- (void)testCompletionsForTermShouldIncludeTheTermItself {
+  NSArray *completions = [_dictionary completionsForTerm:@"history"];
+  NSLog(@"completions: %@", completions);
+  NSAssert([completions containsObject:@"history"], @"should include the term history");
 }
 
 @end
+
