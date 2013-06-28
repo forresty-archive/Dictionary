@@ -18,7 +18,6 @@
   UISearchDisplayController *__searchDisplayController;
 
   LookupHistory *__lookupHistory;
-//  LookupResult *__lookupResult;
   LookupRequest *__lookupRequest;
 
   NSMutableArray *__completions;
@@ -33,14 +32,11 @@
   [super viewDidLoad];
 
   __lookupHistory = [LookupHistory sharedInstance];
-//  __lookupResult = [[LookupResult alloc] init];
   __lookupRequest = [[LookupRequest alloc] init];
   __completions = [@[] mutableCopy];
   __lookingUpCompletions = NO;
 
   [self buildViews];
-
-//  [__lookupRequest addObserver:self forKeyPath:@"completions" options:NSKeyValueObservingOptionNew context:@"MainViewController"];
 }
 
 
@@ -84,16 +80,6 @@
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[__lookupHistoryTableView]|" options:0 metrics:nil views:views]];
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[__lookupHistoryTableView]|" options:0 metrics:nil views:views]];
 }
-
-
-//# pragma mark - KVO
-
-
-//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-//  __lookingUpCompletions = __lookupRequest.lookingUpCompletions;
-////  __completions = [__lookupRequest.completions mutableCopy];
-//  [self.searchDisplayController.searchResultsTableView reloadData];
-//}
 
 
 # pragma mark - history
@@ -285,23 +271,17 @@
 
 
 -(BOOL)searchDisplayController:(UISearchDisplayController *)searchDisplayController shouldReloadTableForSearchString:(NSString *)searchString {
-//  NSAssert([NSOperationQueue mainQueue] == [NSOperationQueue currentQueue], @"should be called in main queue!");
-
   if ([searchString length] < 1) {
     return NO;
   }
-
-//  __lookupResult.term = searchString;
-
 
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     __lookingUpCompletions = YES;
     __completions = [@[] mutableCopy];
     [self.searchDisplayController.searchResultsTableView reloadData];
   }];
-//  [__lookupResult startLookupCompletionsForSearchString:searchString];
 
-  [__lookupRequest startLookingUpDictionaryWithTerm:searchString progress:^(NSArray *partialResults) {
+  [__lookupRequest startLookingUpDictionaryWithTerm:searchString progressBlock:^(NSArray *partialResults) {
     __lookingUpCompletions = __lookupRequest.lookingUpCompletions;
     [__completions addObjectsFromArray:partialResults];
     [self.searchDisplayController.searchResultsTableView reloadData];

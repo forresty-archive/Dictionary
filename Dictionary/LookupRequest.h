@@ -8,13 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void(^DictionaryPartialResult)(NSArray *partialResults);
+typedef void(^DictionaryLookupPartialResult)(NSArray *partialResults);
 
 @interface LookupRequest : NSObject
 
-//@property NSArray *completions;
 @property BOOL lookingUpCompletions;
 
-- (void)startLookingUpDictionaryWithTerm:(NSString *)term progress:(DictionaryPartialResult)progress;
+- (void)startLookingUpDictionaryWithTerm:(NSString *)term progressBlock:(DictionaryLookupPartialResult)block;
 
 @end

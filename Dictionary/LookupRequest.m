@@ -32,10 +32,9 @@
   return self;
 }
 
-- (void)startLookingUpDictionaryWithTerm:(NSString *)term progress:(DictionaryPartialResult)progress {
+- (void)startLookingUpDictionaryWithTerm:(NSString *)term progressBlock:(DictionaryLookupPartialResult)block {
   _lookingUpCompletions = YES;
   [__completionLookupOperationQueue cancelAllOperations];
-//  self.completions = @[];
 
   NSBlockOperation *operation = [[NSBlockOperation alloc] init];
   __weak NSBlockOperation *weakOperation = operation;
@@ -52,17 +51,16 @@
       if (![weakOperation isCancelled]) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
           _lookingUpCompletions = NO;
-//          self.completions = results;
-          progress(@[term]);
+          block(@[term]);
         }];
       }
     }
 
-    NSMutableArray *results = [@[] mutableCopy];
-
     if ([weakOperation isCancelled]) {
       return;
     }
+
+    NSMutableArray *partialResults = [@[] mutableCopy];
 
     for (NSString *completion in [__dictionary completionsForTerm:term]) {
       if ([weakOperation isCancelled]) {
@@ -70,31 +68,32 @@
       }
 
       if (![term isEqualToString:completion] && [__dictionary hasDefinitionForTerm:completion]) {
-        [results addObject:completion];
+        [partialResults addObject:completion];
       }
 
       // send in batch
-      if ([results count] % kDictionaryLookupResultBatchCount == 0) {
+      if ([partialResults count] % kDictionaryLookupResultBatchCount == 0) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
           _lookingUpCompletions = NO;
-//          self.completions = results;
-          progress(results);
+          block(partialResults);
         }];
-        results = [@[] mutableCopy];
+        partialResults = [@[] mutableCopy];
       }
     }
 
     if (![weakOperation isCancelled]) {
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         _lookingUpCompletions = NO;
-//        self.completions = results;
-        progress(results);
+        block(partialResults);
       }];
     }
   }];
 
   [__completionLookupOperationQueue addOperation:operation];
-
 }
+
+
+
+
 
 @end
