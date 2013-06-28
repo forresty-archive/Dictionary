@@ -35,13 +35,12 @@
 - (void)startLookingUpDictionaryWithTerm:(NSString *)term progress:(DictionaryPartialResult)progress {
   _lookingUpCompletions = YES;
   [__completionLookupOperationQueue cancelAllOperations];
-  self.completions = @[];
+//  self.completions = @[];
 
   NSBlockOperation *operation = [[NSBlockOperation alloc] init];
   __weak NSBlockOperation *weakOperation = operation;
 
   [operation addExecutionBlock:^{
-    NSMutableArray *results = [@[] mutableCopy];
 
     [NSThread sleepForTimeInterval:0.3];
 
@@ -50,15 +49,16 @@
     }
 
     if ([__dictionary hasDefinitionForTerm:term]) {
-      [results addObject:term];
-
       if (![weakOperation isCancelled]) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
           _lookingUpCompletions = NO;
-          self.completions = results;
+//          self.completions = results;
+          progress(@[term]);
         }];
       }
     }
+
+    NSMutableArray *results = [@[] mutableCopy];
 
     if ([weakOperation isCancelled]) {
       return;
@@ -69,23 +69,26 @@
         break;
       }
 
-      if (![results containsObject:completion] && [__dictionary hasDefinitionForTerm:completion]) {
+      if (![term isEqualToString:completion] && [__dictionary hasDefinitionForTerm:completion]) {
         [results addObject:completion];
       }
 
       // send in batch
-      if ([results count] % kDictionaryLookupResultBatchCount == 1) {
+      if ([results count] % kDictionaryLookupResultBatchCount == 0) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
           _lookingUpCompletions = NO;
-          self.completions = results;
+//          self.completions = results;
+          progress(results);
         }];
+        results = [@[] mutableCopy];
       }
     }
 
     if (![weakOperation isCancelled]) {
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         _lookingUpCompletions = NO;
-        self.completions = results;
+//        self.completions = results;
+        progress(results);
       }];
     }
   }];

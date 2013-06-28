@@ -40,7 +40,7 @@
 
   [self buildViews];
 
-  [__lookupRequest addObserver:self forKeyPath:@"completions" options:NSKeyValueObservingOptionNew context:@"MainViewController"];
+//  [__lookupRequest addObserver:self forKeyPath:@"completions" options:NSKeyValueObservingOptionNew context:@"MainViewController"];
 }
 
 
@@ -86,24 +86,29 @@
 }
 
 
-# pragma mark - KVO
+//# pragma mark - KVO
 
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-  __lookingUpCompletions = __lookupRequest.lookingUpCompletions;
-  __completions = [__lookupRequest.completions mutableCopy];
-  [self.searchDisplayController.searchResultsTableView reloadData];
-}
+//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+//  __lookingUpCompletions = __lookupRequest.lookingUpCompletions;
+////  __completions = [__lookupRequest.completions mutableCopy];
+//  [self.searchDisplayController.searchResultsTableView reloadData];
+//}
 
 
 # pragma mark - history
 
 
 - (NSArray *)indexPathsForLookupHistory {
-  NSMutableArray * indexPaths = [[NSMutableArray alloc] initWithCapacity:[__lookupHistory count]];
+  return [self indexPathsFromOffset:0 count:[__lookupHistory count]];
+}
 
-  for (int i = 0; i < [__lookupHistory count]; i++) {
-    [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+
+- (NSArray *)indexPathsFromOffset:(NSUInteger)offset count:(NSUInteger)count {
+  NSMutableArray * indexPaths = [[NSMutableArray alloc] initWithCapacity:count];
+
+  for (int i = 0; i < count; i++) {
+    [indexPaths addObject:[NSIndexPath indexPathForRow:i + offset inSection:0]];
   }
 
   return indexPaths;
@@ -288,11 +293,36 @@
 
 //  __lookupResult.term = searchString;
 
-  __lookingUpCompletions = YES;
+
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    __lookingUpCompletions = YES;
+    __completions = [@[] mutableCopy];
+    [self.searchDisplayController.searchResultsTableView reloadData];
+  }];
 //  [__lookupResult startLookupCompletionsForSearchString:searchString];
-  [__lookupRequest startLookingUpDictionaryWithTerm:searchString progress:nil];
+
+  [__lookupRequest startLookingUpDictionaryWithTerm:searchString progress:^(NSArray *partialResults) {
+    __lookingUpCompletions = __lookupRequest.lookingUpCompletions;
+    [__completions addObjectsFromArray:partialResults];
+    [self.searchDisplayController.searchResultsTableView reloadData];
+//    [self insertPartialResults:partialResults];
+  }];
 
   return NO;
+}
+
+
+- (void)insertPartialResults:(NSArray *)partialResults {
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    [__searchDisplayController.searchResultsTableView beginUpdates];
+    __lookingUpCompletions = __lookupRequest.lookingUpCompletions;
+
+    NSArray *indexPaths = [self indexPathsFromOffset:[__completions count] count:[partialResults count]];
+    [__searchDisplayController.searchResultsTableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+
+    [__completions addObjectsFromArray:partialResults];
+    [__searchDisplayController.searchResultsTableView endUpdates];
+  }];
 }
 
 
