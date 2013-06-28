@@ -62,7 +62,6 @@
   [__lookupHistoryTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
   __lookupHistoryTableView.dataSource = self;
   __lookupHistoryTableView.delegate = self;
-  [__lookupHistoryTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellID];
   __lookupHistoryTableView.tableHeaderView = __searchBar;
 
   [self.view addSubview:__lookupHistoryTableView];
@@ -74,7 +73,6 @@
   __searchDisplayController.delegate = self;
   __searchDisplayController.searchResultsDataSource = self;
   __searchDisplayController.searchResultsDelegate = self;
-  [__searchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellID];
 }
 
 
@@ -171,6 +169,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
 
+  if (!cell) {
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID];
+  }
+
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     [self makeSearchResultCell:cell forRowAtIndexPath:indexPath];
   } else if (tableView == __lookupHistoryTableView) {
@@ -205,7 +207,7 @@
 }
 
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     return 1;
   } else if (tableView == __lookupHistoryTableView) {
@@ -216,7 +218,7 @@
 }
 
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     return nil;
   } else if (tableView == __lookupHistoryTableView) {
@@ -227,7 +229,7 @@
 }
 
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     if (__lookingUpCompletions) {
       return 1;
@@ -247,7 +249,7 @@
 # pragma mark - UITableViewDelegate
 
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
@@ -276,7 +278,7 @@
 # pragma mark - UISearchDisplayDelegate
 
 
--(BOOL)searchDisplayController:(UISearchDisplayController *)searchDisplayController shouldReloadTableForSearchString:(NSString *)searchString {
+- (BOOL)searchDisplayController:(UISearchDisplayController *)searchDisplayController shouldReloadTableForSearchString:(NSString *)searchString {
   if ([searchString length] < 1) {
     return NO;
   }
@@ -315,10 +317,14 @@
 # pragma mark - UISearchBarDelegate
 
 
--(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
   if ([searchBar.text length] > 0 && [__completions count] > 0 && [searchBar.text isEqualToString:__completions[0]]) {
     [self showDefinitionForTerm:searchBar.text];
   }
+}
+
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
 }
 
 
