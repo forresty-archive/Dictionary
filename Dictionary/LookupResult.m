@@ -9,6 +9,8 @@
 #import "LookupResult.h"
 #import "Dictionary.h"
 
+#define kDictionaryLookupResultBatchCount 3
+
 @implementation LookupResult {
 @private
   __strong NSOperationQueue *__completionLookupOperationQueue;
@@ -90,6 +92,14 @@
 
       if (![results containsObject:completion] && [__dictionary hasDefinitionForTerm:completion]) {
         [results addObject:completion];
+      }
+
+      // send in batch
+      if ([results count] % kDictionaryLookupResultBatchCount == 0) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+          _lookingUpCompletions = NO;
+          self.completions = results;
+        }];
       }
     }
 

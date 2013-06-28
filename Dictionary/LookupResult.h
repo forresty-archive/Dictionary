@@ -11,10 +11,14 @@
 @interface LookupResult : NSObject
 
 @property NSString *term;
-
 @property NSArray *completions;
-
 @property BOOL lookingUpCompletions;
+
+- (void)startLookupCompletionsForSearchString:(NSString *)searchString;
+
+
+
+
 
 -(BOOL)guessing;
 
@@ -33,7 +37,5 @@
 -(BOOL)partiallyDone;
 
 -(BOOL)allDone;
-
-- (void)startLookupCompletionsForSearchString:(NSString *)searchString;
 
 @end
