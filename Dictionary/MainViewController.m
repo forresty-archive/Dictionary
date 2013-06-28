@@ -324,8 +324,4 @@
 }
 
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-}
-
-
 @end
