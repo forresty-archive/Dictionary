@@ -128,17 +128,18 @@
 }
 
 
-- (void)makeCellDisabled:(UITableViewCell *)cell {
+- (void)makeCellNormal:(UITableViewCell *)cell {
+  [self makeCellDefault:cell];
+  cell.textLabel.textColor = [UIColor blackColor];
+}
+
+
+- (void)disableCell:(UITableViewCell *)cell withText:(NSString *)text {
   [self makeCellDefault:cell];
   cell.textLabel.textColor = [UIColor grayColor];
   cell.selectionStyle = UITableViewCellSelectionStyleNone;
   cell.accessoryType = UITableViewCellAccessoryNone;
-}
-
-
-- (void)makeCellNormal:(UITableViewCell *)cell {
-  [self makeCellDefault:cell];
-  cell.textLabel.textColor = [UIColor blackColor];
+  cell.textLabel.text = text;
 }
 
 
@@ -160,38 +161,45 @@
 # pragma mark - UITableViewDataSource
 
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if (__lookingUpCompletions) {
-      [self makeCellDisabled:cell];
-      cell.textLabel.text = @"Looking up...";
-    } else if ([__completions count] > 0){
-      [self makeCellNormal:cell];
-      cell.textLabel.text = [__completions[indexPath.row] description];
-    } else {
-      [self makeCellDisabled:cell];
-      cell.textLabel.text = @"No result";
-    }
+    [self makeSearchResultCell:cell forRowAtIndexPath:indexPath];
   } else if (tableView == __lookupHistoryTableView) {
-    if ([__lookupHistory count] == 0) {
-      [self makeCellDisabled:cell];
-      cell.textLabel.text = @"No history";
-    } else {
-      [self makeCellNormal:cell];
-      if (indexPath.row == [__lookupHistory count]) {
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:18];
-        cell.textLabel.text = @"Clear History";
-      } else {
-        cell.textLabel.text = [__lookupHistory[indexPath.row] description];
-      }
-    }
+    [self makeHistoryCell:cell forRowAtIndexPath:indexPath];
   }
 
   return cell;
+}
+
+
+- (void)makeHistoryCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+  if ([__lookupHistory count] == 0) {
+    [self disableCell:cell withText:@"No history"];
+  } else {
+    [self makeCellNormal:cell];
+    if (indexPath.row == [__lookupHistory count]) {
+      cell.textLabel.textAlignment = NSTextAlignmentCenter;
+      cell.accessoryType = UITableViewCellAccessoryNone;
+      cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:18];
+      cell.textLabel.text = @"Clear History";
+    } else {
+      cell.textLabel.text = [__lookupHistory[indexPath.row] description];
+    }
+  }
+}
+
+
+- (void)makeSearchResultCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (__lookingUpCompletions) {
+    [self disableCell:cell withText:@"Looking up..."];
+  } else if ([__completions count] > 0){
+    [self makeCellNormal:cell];
+    cell.textLabel.text = [__completions[indexPath.row] description];
+  } else {
+    [self disableCell:cell withText:@"No result"];
+  }
 }
 
 
