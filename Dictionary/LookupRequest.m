@@ -72,7 +72,7 @@
       }
 
       // send in batch
-      if ([partialResults count] % kDictionaryLookupResultBatchCount == 0) {
+      if ([partialResults count] >= kDictionaryLookupResultBatchCount) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
           _lookingUpCompletions = NO;
           block(partialResults);
