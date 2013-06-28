@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "LookupHistory.h"
 #import "LookupResult.h"
+#import "LookupRequest.h"
 
 @implementation MainViewController {
 @private
@@ -17,9 +18,11 @@
   UISearchDisplayController *__searchDisplayController;
 
   LookupHistory *__lookupHistory;
-  LookupResult *__lookupResult;
+//  LookupResult *__lookupResult;
+  LookupRequest *__lookupRequest;
 
   NSMutableArray *__completions;
+  BOOL __lookingUpCompletions;
 }
 
 
@@ -30,12 +33,14 @@
   [super viewDidLoad];
 
   __lookupHistory = [LookupHistory sharedInstance];
-  __lookupResult = [[LookupResult alloc] init];
+//  __lookupResult = [[LookupResult alloc] init];
+  __lookupRequest = [[LookupRequest alloc] init];
   __completions = [@[] mutableCopy];
+  __lookingUpCompletions = NO;
 
   [self buildViews];
 
-  [__lookupResult addObserver:self forKeyPath:@"completions" options:NSKeyValueObservingOptionNew context:@"MainViewController"];
+  [__lookupRequest addObserver:self forKeyPath:@"completions" options:NSKeyValueObservingOptionNew context:@"MainViewController"];
 }
 
 
@@ -85,7 +90,8 @@
 
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-  __completions = [__lookupResult.completions mutableCopy];
+  __lookingUpCompletions = __lookupRequest.lookingUpCompletions;
+  __completions = [__lookupRequest.completions mutableCopy];
   [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
@@ -143,12 +149,6 @@
 }
 
 
-- (void)makeCellHighlighted:(UITableViewCell *)cell {
-  [self makeCellDefault:cell];
-  cell.textLabel.textColor = [UIColor blueColor];
-}
-
-
 # pragma mark - UI presentation
 
 
@@ -164,50 +164,6 @@
 }
 
 
-# pragma mark - definition / completion lookup && guesses
-
-
-//-(NSArray *)mergeAndSortArray:(NSArray *)array withAnotherArray:(NSArray *)anotherArray {
-//  NSArray *result = [array arrayByAddingObjectsFromArray:anotherArray];
-//
-//  return [result sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-//}
-
-
-//-(void)makeGuessForSearchString:(NSString *)searchString {
-//  __guessing = YES;
-//  [__guessOperationQueue cancelAllOperations];
-//
-//  NSBlockOperation *guessOperation = [[NSBlockOperation alloc] init];
-//  __weak NSBlockOperation *weakGuessOperation = guessOperation;
-//
-//  [guessOperation addExecutionBlock:^{
-//    NSMutableArray *guessResults = [@[] mutableCopy];
-//
-//    for (NSString *guess in [__dictionary guessesForTerm:searchString]) {
-//      if ([weakGuessOperation isCancelled]) {
-//        break;
-//      }
-//
-//      if (![guess isEqualToString:searchString] && [__dictionary hasDefinitionForTerm:guess]) {
-//        [guessResults addObject:guess];
-//      }
-//    }
-//
-//    if (![weakGuessOperation isCancelled]) {
-//      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-//        __guessing = NO;
-//        __guesses = guessResults;
-//        [self.searchDisplayController.searchResultsTableView reloadData];
-//      }];
-//    }
-//  }];
-//
-//  [__guessOperationQueue addOperation:guessOperation];
-//}
-//
-
-
 # pragma mark - UITableViewDataSource
 
 
@@ -221,7 +177,7 @@
   }
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if (__lookupResult.lookingUpCompletions) {
+    if (__lookingUpCompletions) {
       [self makeCellDisabled:cell];
       cell.textLabel.text = @"Looking up...";
     } else if ([__completions count] > 0){
@@ -276,7 +232,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if (__lookupResult.lookingUpCompletions) {
+    if (__lookingUpCompletions) {
       return 1;
     } else if ([__completions count] > 0) {
       return [__completions count];
@@ -301,7 +257,7 @@
     if ([__searchBar.text length] > 0 && [__completions count] > 0 && indexPath.section == 0) {
       [self showDefinitionForTerm:__completions[indexPath.row]];
 
-    } else if (__lookupResult.lookingUpCompletions) {
+    } else if (__lookingUpCompletions) {
       // guessing, do nothing
       return;
 
@@ -330,9 +286,11 @@
     return NO;
   }
 
-  __lookupResult.term = searchString;
+//  __lookupResult.term = searchString;
 
-  [__lookupResult startLookupCompletionsForSearchString:searchString];
+  __lookingUpCompletions = YES;
+//  [__lookupResult startLookupCompletionsForSearchString:searchString];
+  [__lookupRequest startLookingUpDictionaryWithTerm:searchString progress:nil];
 
   return NO;
 }
