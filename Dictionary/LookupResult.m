@@ -15,7 +15,6 @@
 @private
   __strong NSOperationQueue *__completionLookupOperationQueue;
 
-
   Dictionary *__dictionary;
 }
 
@@ -77,8 +76,21 @@
   [operation addExecutionBlock:^{
     NSMutableArray *results = [@[] mutableCopy];
 
+    [NSThread sleepForTimeInterval:0.3];
+
+    if ([weakOperation isCancelled]) {
+      return;
+    }
+
     if ([__dictionary hasDefinitionForTerm:searchString]) {
       [results addObject:searchString];
+
+      if (![weakOperation isCancelled]) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+          _lookingUpCompletions = NO;
+          self.completions = results;
+        }];
+      }
     }
 
     if ([weakOperation isCancelled]) {
@@ -95,7 +107,7 @@
       }
 
       // send in batch
-      if ([results count] % kDictionaryLookupResultBatchCount == 0) {
+      if ([results count] % kDictionaryLookupResultBatchCount == 1) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
           _lookingUpCompletions = NO;
           self.completions = results;
