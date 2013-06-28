@@ -16,13 +16,10 @@
   __strong UITableView *__lookupHistoryTableView;
   __strong UISearchDisplayController *__searchDisplayController;
 
-//  __strong NSArray *__guesses;
   __strong NSArray *__completions;
 
-//  __strong NSOperationQueue *__guessOperationQueue;
   __strong NSOperationQueue *__completionLookupOperationQueue;
 
-//  BOOL __guessing;
   BOOL __lookingUpCompletions;
 
   Dictionary *__dictionary;
@@ -39,20 +36,33 @@
   __dictionary = [Dictionary sharedInstance];
   __lookupHistory = [LookupHistory sharedInstance];
 
-//  __guessing = NO;
   __lookingUpCompletions = NO;
 
-//  __guesses = @[];
   __completions = @[];
 
-//  __guessOperationQueue = [[NSOperationQueue alloc] init];
   __completionLookupOperationQueue = [[NSOperationQueue alloc] init];
 
+  [self buildViews];
+}
+
+
+- (void)buildViews {
+  [self buildSearchBar];
+  [self buildLookupHistoryTableView];
+  [self buildSearchDisplayController];
+  [self setupViewConstraints];
+}
+
+
+- (void)buildSearchBar {
   __searchBar = [[UISearchBar alloc] init];
   __searchBar.delegate = self;
   __searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
   [__searchBar sizeToFit];
+}
 
+
+- (void)buildLookupHistoryTableView {
   __lookupHistoryTableView = [[UITableView alloc] init];
   [__lookupHistoryTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
   __lookupHistoryTableView.dataSource = self;
@@ -60,12 +70,18 @@
   __lookupHistoryTableView.tableHeaderView = __searchBar;
 
   [self.view addSubview:__lookupHistoryTableView];
+}
 
+
+- (void)buildSearchDisplayController {
   __searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:__searchBar contentsController:self];
   __searchDisplayController.delegate = self;
   __searchDisplayController.searchResultsDataSource = self;
   __searchDisplayController.searchResultsDelegate = self;
+}
 
+
+- (void)setupViewConstraints {
   NSDictionary *views = NSDictionaryOfVariableBindings(__lookupHistoryTableView, self.view);
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[__lookupHistoryTableView]|" options:0 metrics:nil views:views]];
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[__lookupHistoryTableView]|" options:0 metrics:nil views:views]];
@@ -75,16 +91,21 @@
 # pragma mark - history
 
 
--(void)clearHistory {
+- (NSArray *)indexPathsForLookupHistory {
+  NSMutableArray * indexPaths = [[NSMutableArray alloc] initWithCapacity:[__lookupHistory count]];
+
+  for (int i = 0; i < [__lookupHistory count]; i++) {
+    [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+  }
+
+  return indexPaths;
+}
+
+
+- (void)clearHistory {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:[__lookupHistory count]];
-
-    for (int i = 0; i < [__lookupHistory count]; i++) {
-      [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-    }
-
     [__lookupHistoryTableView beginUpdates];
-    [__lookupHistoryTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+    [__lookupHistoryTableView deleteRowsAtIndexPaths:[self indexPathsForLookupHistory] withRowAnimation:UITableViewRowAnimationTop];
     [__lookupHistory clear];
     [__lookupHistoryTableView endUpdates];
   }];
@@ -98,7 +119,7 @@
 # pragma mark - view manipulation
 
 
--(void)makeCellDefault:(UITableViewCell *)cell {
+- (void)makeCellDefault:(UITableViewCell *)cell {
   cell.selectionStyle = UITableViewCellSelectionStyleBlue;
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -106,7 +127,7 @@
 }
 
 
--(void)makeCellDisabled:(UITableViewCell *)cell {
+- (void)makeCellDisabled:(UITableViewCell *)cell {
   [self makeCellDefault:cell];
   cell.textLabel.textColor = [UIColor grayColor];
   cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -114,13 +135,13 @@
 }
 
 
--(void)makeCellNormal:(UITableViewCell *)cell {
+- (void)makeCellNormal:(UITableViewCell *)cell {
   [self makeCellDefault:cell];
   cell.textLabel.textColor = [UIColor blackColor];
 }
 
 
--(void)makeCellHighlighted:(UITableViewCell *)cell {
+- (void)makeCellHighlighted:(UITableViewCell *)cell {
   [self makeCellDefault:cell];
   cell.textLabel.textColor = [UIColor blueColor];
 }
@@ -129,7 +150,7 @@
 # pragma mark - UI presentation
 
 
--(void)showDefinitionForTerm:(NSString *)term {
+- (void)showDefinitionForTerm:(NSString *)term {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     [__lookupHistory addLookupHistoryWithTerm:term];
     [__lookupHistoryTableView reloadData];
@@ -193,6 +214,14 @@
 
   [operation addExecutionBlock:^{
     NSMutableArray *results = [@[] mutableCopy];
+
+    if ([__dictionary hasDefinitionForTerm:searchString]) {
+      [results addObject:searchString];
+    }
+
+    if ([weakOperation isCancelled]) {
+      return;
+    }
 
     for (NSString *completion in [__dictionary completionsForTerm:searchString]) {
       if ([weakOperation isCancelled]) {
