@@ -12,12 +12,14 @@
 
 @implementation MainViewController {
 @private
-  __strong UISearchBar *__searchBar;
-  __strong UITableView *__lookupHistoryTableView;
-  __strong UISearchDisplayController *__searchDisplayController;
+  UISearchBar *__searchBar;
+  UITableView *__lookupHistoryTableView;
+  UISearchDisplayController *__searchDisplayController;
 
   LookupHistory *__lookupHistory;
   LookupResult *__lookupResult;
+
+  NSMutableArray *__completions;
 }
 
 
@@ -29,7 +31,7 @@
 
   __lookupHistory = [LookupHistory sharedInstance];
   __lookupResult = [[LookupResult alloc] init];
-
+  __completions = [@[] mutableCopy];
 
   [self buildViews];
 
@@ -83,7 +85,7 @@
 
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-//  NSLog(@"changed! %@", change);
+  __completions = [__lookupResult.completions mutableCopy];
   [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
@@ -222,9 +224,9 @@
     if (__lookupResult.lookingUpCompletions) {
       [self makeCellDisabled:cell];
       cell.textLabel.text = @"Looking up...";
-    } else if ([__lookupResult.completions count] > 0){
+    } else if ([__completions count] > 0){
       [self makeCellNormal:cell];
-      cell.textLabel.text = [__lookupResult.completions[indexPath.row] description];
+      cell.textLabel.text = [__completions[indexPath.row] description];
     } else {
       [self makeCellDisabled:cell];
       cell.textLabel.text = @"No result";
@@ -276,8 +278,8 @@
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     if (__lookupResult.lookingUpCompletions) {
       return 1;
-    } else if ([__lookupResult.completions count] > 0) {
-      return [__lookupResult.completions count];
+    } else if ([__completions count] > 0) {
+      return [__completions count];
     } else {
       return 1;
     }
@@ -296,8 +298,8 @@
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if ([__searchBar.text length] > 0 && [__lookupResult.completions count] > 0 && indexPath.section == 0) {
-      [self showDefinitionForTerm:__lookupResult.completions[indexPath.row]];
+    if ([__searchBar.text length] > 0 && [__completions count] > 0 && indexPath.section == 0) {
+      [self showDefinitionForTerm:__completions[indexPath.row]];
 
     } else if (__lookupResult.lookingUpCompletions) {
       // guessing, do nothing
@@ -340,7 +342,7 @@
 
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-  if ([searchBar.text length] > 0 && [__lookupResult.completions count] > 0 && [searchBar.text isEqualToString:__lookupResult.completions[0]]) {
+  if ([searchBar.text length] > 0 && [__completions count] > 0 && [searchBar.text isEqualToString:__completions[0]]) {
     [self showDefinitionForTerm:searchBar.text];
   }
 }
