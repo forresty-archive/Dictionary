@@ -8,7 +8,6 @@
 
 #import "MainViewController.h"
 #import "LookupHistory.h"
-#import "LookupResult.h"
 #import "LookupRequest.h"
 
 #define kCellID @"wordCellID"
@@ -120,26 +119,34 @@
 # pragma mark - view manipulation
 
 
-- (void)makeCellDefault:(UITableViewCell *)cell {
+- (void)makeCellDefault:(UITableViewCell *)cell withText:(NSString *)text {
   cell.selectionStyle = UITableViewCellSelectionStyleBlue;
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   cell.textLabel.textAlignment = NSTextAlignmentLeft;
   cell.textLabel.font = [UIFont fontWithName:@"Baskerville" size:24];
+  cell.textLabel.text = text;
 }
 
 
-- (void)makeCellNormal:(UITableViewCell *)cell {
-  [self makeCellDefault:cell];
+- (void)makeCellNormal:(UITableViewCell *)cell withText:(NSString *)text {
+  [self makeCellDefault:cell withText:text];
   cell.textLabel.textColor = [UIColor blackColor];
 }
 
 
 - (void)disableCell:(UITableViewCell *)cell withText:(NSString *)text {
-  [self makeCellDefault:cell];
+  [self makeCellDefault:cell withText:text];
   cell.textLabel.textColor = [UIColor grayColor];
   cell.selectionStyle = UITableViewCellSelectionStyleNone;
   cell.accessoryType = UITableViewCellAccessoryNone;
-  cell.textLabel.text = text;
+}
+
+
+- (void)makeActionCell:(UITableViewCell *)cell withText:(NSString *)text {
+  [self makeCellDefault:cell withText:text];
+  cell.textLabel.textAlignment = NSTextAlignmentCenter;
+  cell.accessoryType = UITableViewCellAccessoryNone;
+  cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:18];
 }
 
 
@@ -178,14 +185,10 @@
   if ([__lookupHistory count] == 0) {
     [self disableCell:cell withText:@"No history"];
   } else {
-    [self makeCellNormal:cell];
     if (indexPath.row == [__lookupHistory count]) {
-      cell.textLabel.textAlignment = NSTextAlignmentCenter;
-      cell.accessoryType = UITableViewCellAccessoryNone;
-      cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:18];
-      cell.textLabel.text = @"Clear History";
+      [self makeActionCell:cell withText:@"Clear History"];
     } else {
-      cell.textLabel.text = [__lookupHistory[indexPath.row] description];
+      [self makeCellNormal:cell withText:[__lookupHistory[indexPath.row] description]];
     }
   }
 }
@@ -194,9 +197,8 @@
 - (void)makeSearchResultCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
   if (__lookingUpCompletions) {
     [self disableCell:cell withText:@"Looking up..."];
-  } else if ([__completions count] > 0){
-    [self makeCellNormal:cell];
-    cell.textLabel.text = [__completions[indexPath.row] description];
+  } else if ([__completions count] > 0) {
+    [self makeCellNormal:cell withText:[__completions[indexPath.row] description]];
   } else {
     [self disableCell:cell withText:@"No result"];
   }
