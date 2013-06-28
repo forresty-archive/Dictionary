@@ -7,18 +7,31 @@
 //
 
 #import "LookupResult.h"
+#import "Dictionary.h"
 
-@implementation LookupResult
+@implementation LookupResult {
+@private
+  __strong NSOperationQueue *__completionLookupOperationQueue;
 
--(NSString *)currentTerm {
-  return @"";
+
+  Dictionary *__dictionary;
+}
+
+
+- (instancetype)init {
+  self = [super init];
+  if (self) {
+    _lookingUpCompletions = NO;
+
+    __completionLookupOperationQueue = [[NSOperationQueue alloc] init];
+
+    __dictionary = [Dictionary sharedInstance];
+  }
+
+  return self;
 }
 
 -(BOOL)guessing {
-  return NO;
-}
-
--(BOOL)lookingUpCompletions {
   return NO;
 }
 
@@ -50,8 +63,45 @@
   return @[];
 }
 
--(NSArray *)completions {
-  return @[];
+
+-(void)startLookupCompletionsForSearchString:(NSString *)searchString {
+  _lookingUpCompletions = YES;
+  [__completionLookupOperationQueue cancelAllOperations];
+  self.completions = @[];
+
+  NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+  __weak NSBlockOperation *weakOperation = operation;
+
+  [operation addExecutionBlock:^{
+    NSMutableArray *results = [@[] mutableCopy];
+
+    if ([__dictionary hasDefinitionForTerm:searchString]) {
+      [results addObject:searchString];
+    }
+
+    if ([weakOperation isCancelled]) {
+      return;
+    }
+
+    for (NSString *completion in [__dictionary completionsForTerm:searchString]) {
+      if ([weakOperation isCancelled]) {
+        break;
+      }
+
+      if (![results containsObject:completion] && [__dictionary hasDefinitionForTerm:completion]) {
+        [results addObject:completion];
+      }
+    }
+
+    if (![weakOperation isCancelled]) {
+      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        _lookingUpCompletions = NO;
+        self.completions = results;
+      }];
+    }
+  }];
+
+  [__completionLookupOperationQueue addOperation:operation];
 }
 
 @end
