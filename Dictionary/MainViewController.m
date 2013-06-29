@@ -316,15 +316,22 @@
     return NO;
   }
 
+  NSArray *filteredResult = [self filteredSearchResultForSearchString:searchString];
+
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    self.lookingUpCompletions = YES;
-    self.completions = [@[] mutableCopy];
+    if (filteredResult.count > 0) {
+      self.completions = [filteredResult mutableCopy];
+    } else {
+      self.lookingUpCompletions = YES;
+      self.completions = [@[] mutableCopy];
+    }
+
     [self.searchDisplayController.searchResultsTableView reloadData];
   }];
 
   [self.lookupRequest startLookingUpDictionaryWithTerm:searchString batchCount:3 progressBlock:^(NSArray *partialResults) {
     self.lookingUpCompletions = self.lookupRequest.lookingUpCompletions;
-    [self.completions addObjectsFromArray:partialResults];
+    [self mergePartialResults:partialResults];
     [self.searchDisplayController.searchResultsTableView reloadData];
 //    [self insertPartialResults:partialResults];
   }];
@@ -333,7 +340,32 @@
 }
 
 
-//# pragma mark private
+# pragma mark private
+
+
+- (void)mergePartialResults:(NSArray *)partialResults {
+  for (NSString *result in partialResults) {
+    if (![self.completions containsObject:result]) {
+      [self.completions addObject:result];
+    }
+  }
+
+  [self.completions sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+    return [obj1 caseInsensitiveCompare:obj2];
+  }];
+}
+
+- (NSArray *)filteredSearchResultForSearchString:(NSString *)searchString {
+  NSMutableArray *result = [@[] mutableCopy];
+
+  for (NSString *word in self.completions) {
+    if ([word hasPrefix:searchString]) {
+      [result addObject:word];
+    }
+  }
+
+  return result;
+}
 
 
 // Note: This will not work since UISearchDisplayController#searchResultsTableView is readonly :(
