@@ -10,10 +10,14 @@
 
 typedef void(^DictionaryLookupPartialResult)(NSArray *partialResults);
 
+
+
 @interface LookupRequest : NSObject
 
-@property BOOL lookingUpCompletions;
+
+@property (nonatomic) BOOL lookingUpCompletions;
 
 - (void)startLookingUpDictionaryWithTerm:(NSString *)term batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupPartialResult)block;
+
 
 @end
