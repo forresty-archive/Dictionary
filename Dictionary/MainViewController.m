@@ -128,7 +128,7 @@
 - (void)clearHistory {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     [self.lookupHistoryTableView beginUpdates];
-    [self.lookupHistoryTableView deleteRowsAtIndexPaths:[self indexPathsFromOffset:0 count:[self.lookupHistory count]] withRowAnimation:UITableViewRowAnimationTop];
+    [self.lookupHistoryTableView deleteRowsAtIndexPaths:[self indexPathsFromOffset:0 count:self.lookupHistory.count] withRowAnimation:UITableViewRowAnimationTop];
     [self.lookupHistory clear];
     [self.lookupHistoryTableView endUpdates];
   }];
@@ -234,13 +234,13 @@
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     if (!self.hasResults) {
       return 1;
-    } else if ([self.completions count] > 0) {
-      return [self.completions count];
+    } else if (self.completions.count > 0) {
+      return self.completions.count;
     } else {
       return 1;
     }
   } else if (tableView == self.lookupHistoryTableView) {
-    return [self.lookupHistory count] + 1;
+    return self.lookupHistory.count + 1;
   }
 
   return 0;
@@ -275,10 +275,10 @@
 
 
 - (void)makeHistoryCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-  if ([self.lookupHistory count] == 0) {
+  if (self.lookupHistory.count == 0) {
     [self disableCell:cell withText:@"No history"];
   } else {
-    if (indexPath.row == [self.lookupHistory count]) {
+    if (indexPath.row == self.lookupHistory.count) {
       [self makeActionCell:cell withText:@"Clear History"];
     } else {
       [self makeCellNormal:cell withText:[self.lookupHistory[indexPath.row] description]];
@@ -290,7 +290,7 @@
 - (void)makeSearchResultCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
   if (!self.hasResults) {
     [self disableCell:cell withText:@"Looking up..."];
-  } else if ([self.completions count] > 0) {
+  } else if (self.completions.count > 0) {
     [self makeCellNormal:cell withText:[self.completions[indexPath.row] description]];
   } else {
     [self disableCell:cell withText:@"No result"];
@@ -305,7 +305,7 @@
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if ([self.searchBar.text length] > 0 && [self.completions count] > 0 && indexPath.section == 0) {
+    if (self.searchBar.text.length > 0 && self.completions.count > 0 && indexPath.section == 0) {
       [self showDefinitionForTerm:self.completions[indexPath.row]];
 
     } else if (!self.hasResults) {
@@ -314,10 +314,10 @@
 
     }
   } else if (tableView == self.lookupHistoryTableView) {
-    if ([self.lookupHistory count] == 0) {
+    if (self.lookupHistory.count == 0) {
       // empty history, do nothing
     } else {
-      if (indexPath.row == [self.lookupHistory count]) {
+      if (indexPath.row == self.lookupHistory.count) {
         [self clearHistory];
       } else {
         [self showDefinitionForTerm:[self.lookupHistory[indexPath.row] description]];
@@ -331,7 +331,7 @@
 
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)searchDisplayController shouldReloadTableForSearchString:(NSString *)searchString {
-  if ([searchString length] < 1) {
+  if (searchString.length < 1) {
     [[MTStatusBarOverlay sharedInstance] hide];
     return NO;
   }
@@ -411,7 +411,7 @@
 
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-  if ([searchBar.text length] > 0 && [self.completions count] > 0 && [searchBar.text isEqualToString:self.completions[0]]) {
+  if (searchBar.text.length > 0 && self.completions.count > 0 && [searchBar.text isEqualToString:self.completions[0]]) {
     [self showDefinitionForTerm:searchBar.text];
   }
 }

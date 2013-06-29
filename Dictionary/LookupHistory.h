@@ -29,7 +29,7 @@
 
 - (void)removeLookupHistoryAtIndex:(NSUInteger)idx;
 
-- (NSUInteger)count;
+@property (readonly, nonatomic) NSUInteger count;
 
 
 # pragma mark - object subscripting
