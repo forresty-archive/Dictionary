@@ -333,21 +333,23 @@
 }
 
 
-# pragma mark private
+//# pragma mark private
 
 
-- (void)insertPartialResults:(NSArray *)partialResults {
-  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    [self.dictionarySearchDisplayController.searchResultsTableView beginUpdates];
-    self.lookingUpCompletions = self.lookupRequest.lookingUpCompletions;
+// Note: This will not work since UISearchDisplayController#searchResultsTableView is readonly :(
 
-    NSArray *indexPaths = [self indexPathsFromOffset:[self.completions count] count:[partialResults count]];
-    [self.dictionarySearchDisplayController.searchResultsTableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-
-    [self.completions addObjectsFromArray:partialResults];
-    [self.dictionarySearchDisplayController.searchResultsTableView endUpdates];
-  }];
-}
+//- (void)insertPartialResults:(NSArray *)partialResults {
+//  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+//    [self.dictionarySearchDisplayController.searchResultsTableView beginUpdates];
+//    self.lookingUpCompletions = self.lookupRequest.lookingUpCompletions;
+//
+//    NSArray *indexPaths = [self indexPathsFromOffset:[self.completions count] count:[partialResults count]];
+//    [self.dictionarySearchDisplayController.searchResultsTableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+//
+//    [self.completions addObjectsFromArray:partialResults];
+//    [self.dictionarySearchDisplayController.searchResultsTableView endUpdates];
+//  }];
+//}
 
 
 # pragma mark - UISearchBarDelegate
