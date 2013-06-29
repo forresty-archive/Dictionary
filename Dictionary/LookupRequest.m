@@ -10,12 +10,16 @@
 #import "Dictionary.h"
 
 
-@implementation LookupRequest {
-@private
-  __strong NSOperationQueue *__completionLookupOperationQueue;
+@interface LookupRequest ()
 
-  Dictionary *__dictionary;
-}
+@property NSOperationQueue *completionLookupOperationQueue;
+
+@property Dictionary *dictionary;
+
+@end
+
+
+@implementation LookupRequest
 
 
 - (instancetype)init {
@@ -23,9 +27,9 @@
   if (self) {
     _lookingUpCompletions = NO;
 
-    __completionLookupOperationQueue = [[NSOperationQueue alloc] init];
+    _completionLookupOperationQueue = [[NSOperationQueue alloc] init];
 
-    __dictionary = [Dictionary sharedInstance];
+    _dictionary = [Dictionary sharedInstance];
   }
 
   return self;
@@ -33,8 +37,8 @@
 
 
 - (void)startLookingUpDictionaryWithTerm:(NSString *)term batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupPartialResult)block {
-  _lookingUpCompletions = YES;
-  [__completionLookupOperationQueue cancelAllOperations];
+  self.lookingUpCompletions = YES;
+  [self.completionLookupOperationQueue cancelAllOperations];
 
   NSBlockOperation *operation = [[NSBlockOperation alloc] init];
   __weak NSBlockOperation *weakOperation = operation;
@@ -47,10 +51,10 @@
       return;
     }
 
-    if ([__dictionary hasDefinitionForTerm:term]) {
+    if ([self.dictionary hasDefinitionForTerm:term]) {
       if (![weakOperation isCancelled]) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          _lookingUpCompletions = NO;
+          self.lookingUpCompletions = NO;
           block(@[term]);
         }];
       }
@@ -62,19 +66,19 @@
 
     NSMutableArray *partialResults = [@[] mutableCopy];
 
-    for (NSString *completion in [__dictionary completionsForTerm:term]) {
+    for (NSString *completion in [self.dictionary completionsForTerm:term]) {
       if ([weakOperation isCancelled]) {
         break;
       }
 
-      if (![term isEqualToString:completion] && [__dictionary hasDefinitionForTerm:completion]) {
+      if (![term isEqualToString:completion] && [self.dictionary hasDefinitionForTerm:completion]) {
         [partialResults addObject:completion];
       }
 
       // send in batch
       if ([partialResults count] >= batchCount) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          _lookingUpCompletions = NO;
+          self.lookingUpCompletions = NO;
           block(partialResults);
         }];
         partialResults = [@[] mutableCopy];
@@ -83,13 +87,13 @@
 
     if (![weakOperation isCancelled]) {
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        _lookingUpCompletions = NO;
+        self.lookingUpCompletions = NO;
         block(partialResults);
       }];
     }
   }];
 
-  [__completionLookupOperationQueue addOperation:operation];
+  [self.completionLookupOperationQueue addOperation:operation];
 }
 
 

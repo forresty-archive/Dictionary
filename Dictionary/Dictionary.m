@@ -10,13 +10,15 @@
 #import "UIKit/UITextChecker.h"
 #import "UIKit/UIReferenceLibraryViewController.h"
 
+@interface Dictionary ()
 
-@implementation Dictionary {
-@private
-  __strong NSMutableSet *validTermsCache;
+@property NSMutableSet *validTermsCache;
+@property UITextChecker *textChecker;
 
-  __strong UITextChecker *__textChecker;
-}
+@end
+
+
+@implementation Dictionary
 
 
 # pragma mark - object life cycle
@@ -38,9 +40,9 @@
 - (instancetype)init {
   self = [super init];
 
-  validTermsCache = [[NSMutableSet alloc] init];
+  _validTermsCache = [[NSMutableSet alloc] init];
 
-  __textChecker = [[UITextChecker alloc] init];
+  _textChecker = [[UITextChecker alloc] init];
 
   return self;
 }
@@ -50,14 +52,14 @@
 
 
 - (BOOL)hasDefinitionForTerm:(NSString *)term {
-  if ([validTermsCache containsObject:term]) {
+  if ([self.validTermsCache containsObject:term]) {
     return YES;
   }
 
   BOOL hasDefinition = [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:term];
 
   if (hasDefinition) {
-    [validTermsCache addObject:term];
+    [self.validTermsCache addObject:term];
   }
 
   return hasDefinition;
@@ -65,12 +67,12 @@
 
 
 - (NSArray *)guessesForTerm:(NSString *)term {
-  return [__textChecker guessesForWordRange:NSMakeRange(0, [term length]) inString:term language:@"en_US"];
+  return [self.textChecker guessesForWordRange:NSMakeRange(0, [term length]) inString:term language:@"en_US"];
 }
 
 
 - (NSArray *)completionsForTerm:(NSString *)term {
-  return [__textChecker completionsForPartialWordRange:NSMakeRange(0, [term length]) inString:term language:@"en_US"];
+  return [self.textChecker completionsForPartialWordRange:NSMakeRange(0, [term length]) inString:term language:@"en_US"];
 }
 
 

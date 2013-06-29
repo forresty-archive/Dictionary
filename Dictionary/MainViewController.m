@@ -82,9 +82,10 @@
 
 
 - (void)setupViewConstraints {
-  NSDictionary *views = NSDictionaryOfVariableBindings(_lookupHistoryTableView, self.view);
-  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_lookupHistoryTableView]|" options:0 metrics:nil views:views]];
-  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_lookupHistoryTableView]|" options:0 metrics:nil views:views]];
+  UITableView *historyTableView = self.lookupHistoryTableView;
+  NSDictionary *views = NSDictionaryOfVariableBindings(historyTableView, self.view);
+  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[historyTableView]|" options:0 metrics:nil views:views]];
+  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[historyTableView]|" options:0 metrics:nil views:views]];
 }
 
 
