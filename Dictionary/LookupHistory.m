@@ -72,6 +72,14 @@ static int kDictionaryLookupHistoryLimit = 15;
 }
 
 
+- (void)removeLookupHistoryAtIndex:(NSUInteger)idx {
+  NSAssert(idx >= 0 && idx < self.count, @"idx must be within range");
+  NSMutableArray *history = [[self recent] mutableCopy];
+  [history removeObjectAtIndex:idx];
+  [self setLookupHistory:history];
+}
+
+
 # pragma mark - object subscripting
 
 

@@ -189,30 +189,6 @@
 }
 
 
-- (void)makeHistoryCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-  if ([self.lookupHistory count] == 0) {
-    [self disableCell:cell withText:@"No history"];
-  } else {
-    if (indexPath.row == [self.lookupHistory count]) {
-      [self makeActionCell:cell withText:@"Clear History"];
-    } else {
-      [self makeCellNormal:cell withText:[self.lookupHistory[indexPath.row] description]];
-    }
-  }
-}
-
-
-- (void)makeSearchResultCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (self.lookingUpCompletions) {
-    [self disableCell:cell withText:@"Looking up..."];
-  } else if ([self.completions count] > 0) {
-    [self makeCellNormal:cell withText:[self.completions[indexPath.row] description]];
-  } else {
-    [self disableCell:cell withText:@"No result"];
-  }
-}
-
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     return 1;
@@ -249,6 +225,57 @@
   }
 
   return 0;
+}
+
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (tableView == self.lookupHistoryTableView && self.lookupHistory.count > 0 && indexPath.row < self.lookupHistory.count) {
+    return YES;
+  }
+
+  return NO;
+}
+
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (tableView == self.lookupHistoryTableView && editingStyle == UITableViewCellEditingStyleDelete) {
+    if (self.lookupHistory.count > 1) {
+      [self.lookupHistoryTableView beginUpdates];
+      [self.lookupHistory removeLookupHistoryAtIndex:indexPath.row];
+      [self.lookupHistoryTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+      [self.lookupHistoryTableView endUpdates];
+    } else {
+      [self.lookupHistory removeLookupHistoryAtIndex:indexPath.row];
+      [self.lookupHistoryTableView reloadData];
+    }
+  }
+}
+
+
+# pragma mark private
+
+
+- (void)makeHistoryCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+  if ([self.lookupHistory count] == 0) {
+    [self disableCell:cell withText:@"No history"];
+  } else {
+    if (indexPath.row == [self.lookupHistory count]) {
+      [self makeActionCell:cell withText:@"Clear History"];
+    } else {
+      [self makeCellNormal:cell withText:[self.lookupHistory[indexPath.row] description]];
+    }
+  }
+}
+
+
+- (void)makeSearchResultCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (self.lookingUpCompletions) {
+    [self disableCell:cell withText:@"Looking up..."];
+  } else if ([self.completions count] > 0) {
+    [self makeCellNormal:cell withText:[self.completions[indexPath.row] description]];
+  } else {
+    [self disableCell:cell withText:@"No result"];
+  }
 }
 
 
@@ -304,6 +331,9 @@
 
   return NO;
 }
+
+
+# pragma mark private
 
 
 - (void)insertPartialResults:(NSArray *)partialResults {

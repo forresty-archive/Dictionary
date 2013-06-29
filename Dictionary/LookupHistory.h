@@ -27,6 +27,8 @@
 
 - (void)addLookupHistoryWithTerm:(NSString *)term;
 
+- (void)removeLookupHistoryAtIndex:(NSUInteger)idx;
+
 - (NSUInteger)count;
 
 
