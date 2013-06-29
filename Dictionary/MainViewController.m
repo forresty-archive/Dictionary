@@ -289,7 +289,7 @@
     [self.searchDisplayController.searchResultsTableView reloadData];
   }];
 
-  [__lookupRequest startLookingUpDictionaryWithTerm:searchString progressBlock:^(NSArray *partialResults) {
+  [__lookupRequest startLookingUpDictionaryWithTerm:searchString batchCount:3 progressBlock:^(NSArray *partialResults) {
     __lookingUpCompletions = __lookupRequest.lookingUpCompletions;
     [__completions addObjectsFromArray:partialResults];
     [self.searchDisplayController.searchResultsTableView reloadData];

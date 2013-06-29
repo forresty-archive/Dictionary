@@ -14,6 +14,6 @@ typedef void(^DictionaryLookupPartialResult)(NSArray *partialResults);
 
 @property BOOL lookingUpCompletions;
 
-- (void)startLookingUpDictionaryWithTerm:(NSString *)term progressBlock:(DictionaryLookupPartialResult)block;
+- (void)startLookingUpDictionaryWithTerm:(NSString *)term batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupPartialResult)block;
 
 @end

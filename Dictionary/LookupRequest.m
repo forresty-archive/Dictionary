@@ -9,8 +9,6 @@
 #import "LookupRequest.h"
 #import "Dictionary.h"
 
-#define kDictionaryLookupResultBatchCount 3
-
 
 @implementation LookupRequest {
 @private
@@ -34,7 +32,7 @@
 }
 
 
-- (void)startLookingUpDictionaryWithTerm:(NSString *)term progressBlock:(DictionaryLookupPartialResult)block {
+- (void)startLookingUpDictionaryWithTerm:(NSString *)term batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupPartialResult)block {
   _lookingUpCompletions = YES;
   [__completionLookupOperationQueue cancelAllOperations];
 
@@ -74,7 +72,7 @@
       }
 
       // send in batch
-      if ([partialResults count] >= kDictionaryLookupResultBatchCount) {
+      if ([partialResults count] >= batchCount) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
           _lookingUpCompletions = NO;
           block(partialResults);
