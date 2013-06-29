@@ -40,11 +40,34 @@
 - (instancetype)init {
   self = [super init];
 
-  _validTermsCache = [[NSMutableSet alloc] init];
+//  _validTermsCache = [[NSMutableSet alloc] init];
+  _validTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithContentsOfFile:[self cacheFilePath]]];
+  NSLog(@"%d terms read", self.validTermsCache.count);
 
   _textChecker = [[UITextChecker alloc] init];
 
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveCache) name:UIApplicationDidEnterBackgroundNotification object:nil];
+
   return self;
+}
+
+
+- (void)saveCache {
+  NSMutableArray *array = [@[] mutableCopy];
+  for (NSString *term in self.validTermsCache) {
+    [array addObject:term];
+  }
+
+  [array writeToFile:[self cacheFilePath] atomically:YES];
+  NSLog(@"%d terms written", array.count);
+}
+
+
+- (NSString *)cacheFilePath {
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+  NSString *documentsDirectory = [paths objectAtIndex:0];
+
+  return [documentsDirectory stringByAppendingPathComponent:@"validTerms.txt"];
 }
 
 
