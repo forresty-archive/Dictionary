@@ -23,6 +23,7 @@
 
 @property NSMutableArray *completions;
 @property BOOL lookingUpCompletions;
+@property BOOL hasResults;
 
 @end
 
@@ -40,6 +41,7 @@
   _lookupRequest = [[LookupRequest alloc] init];
   _completions = [@[] mutableCopy];
   _lookingUpCompletions = NO;
+  _hasResults = NO;
 
   [self buildViews];
 
@@ -49,9 +51,9 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
   if ([@"lookingUpCompletions" isEqualToString:keyPath]) {
     if (self.lookingUpCompletions) {
-//      [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+      [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     } else {
-//      [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+      [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     }
   }
 }
@@ -225,7 +227,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if (self.lookingUpCompletions) {
+    if (!self.hasResults) {
       return 1;
     } else if ([self.completions count] > 0) {
       return [self.completions count];
@@ -281,7 +283,7 @@
 
 
 - (void)makeSearchResultCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (self.lookingUpCompletions) {
+  if (!self.hasResults) {
     [self disableCell:cell withText:@"Looking up..."];
   } else if ([self.completions count] > 0) {
     [self makeCellNormal:cell withText:[self.completions[indexPath.row] description]];
@@ -301,7 +303,7 @@
     if ([self.searchBar.text length] > 0 && [self.completions count] > 0 && indexPath.section == 0) {
       [self showDefinitionForTerm:self.completions[indexPath.row]];
 
-    } else if (self.lookingUpCompletions) {
+    } else if (!self.hasResults) {
       // guessing, do nothing
       return;
 
@@ -335,6 +337,7 @@
       self.completions = [filteredResult mutableCopy];
     } else {
       self.lookingUpCompletions = YES;
+      self.hasResults = NO;
       self.completions = [@[] mutableCopy];
     }
 
@@ -343,6 +346,7 @@
 
   [self.lookupRequest startLookingUpDictionaryWithTerm:searchString batchCount:3 progressBlock:^(NSArray *partialResults) {
     self.lookingUpCompletions = self.lookupRequest.lookingUpCompletions;
+    self.hasResults = self.lookupRequest.hasResults;
     [self mergePartialResults:partialResults];
     [self.searchDisplayController.searchResultsTableView reloadData];
 //    [self insertPartialResults:partialResults];

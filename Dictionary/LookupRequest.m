@@ -26,6 +26,7 @@
   self = [super init];
   if (self) {
     _lookingUpCompletions = NO;
+    _hasResults = NO;
 
     _completionLookupOperationQueue = [[NSOperationQueue alloc] init];
 
@@ -38,6 +39,8 @@
 
 - (void)startLookingUpDictionaryWithTerm:(NSString *)term batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupPartialResult)block {
   self.lookingUpCompletions = YES;
+  self.hasResults = NO;
+
   [self.completionLookupOperationQueue cancelAllOperations];
 
   NSBlockOperation *operation = [[NSBlockOperation alloc] init];
@@ -54,7 +57,7 @@
     if ([self.dictionary hasDefinitionForTerm:term]) {
       if (![weakOperation isCancelled]) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          self.lookingUpCompletions = NO;
+          self.hasResults = YES;
           block(@[term]);
         }];
       }
@@ -78,7 +81,7 @@
       // send in batch
       if ([partialResults count] >= batchCount) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          self.lookingUpCompletions = NO;
+          self.hasResults = YES;
           block(partialResults);
         }];
         partialResults = [@[] mutableCopy];
@@ -87,6 +90,7 @@
 
     if (![weakOperation isCancelled]) {
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        self.hasResults = YES;
         self.lookingUpCompletions = NO;
         block(partialResults);
       }];
