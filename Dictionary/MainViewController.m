@@ -12,18 +12,22 @@
 
 #define kCellID @"wordCellID"
 
-@implementation MainViewController {
-@private
-  UISearchBar *__searchBar;
-  UITableView *__lookupHistoryTableView;
-  UISearchDisplayController *__searchDisplayController;
+@interface MainViewController ()
 
-  LookupHistory *__lookupHistory;
-  LookupRequest *__lookupRequest;
+@property UISearchBar *searchBar;
+@property UITableView *lookupHistoryTableView;
+@property UISearchDisplayController *dictionarySearchDisplayController;
 
-  NSMutableArray *__completions;
-  BOOL __lookingUpCompletions;
-}
+@property LookupHistory *lookupHistory;
+@property LookupRequest *lookupRequest;
+
+@property NSMutableArray *completions;
+@property BOOL lookingUpCompletions;
+
+@end
+
+
+@implementation MainViewController
 
 
 #pragma mark - View lifecycle
@@ -32,16 +36,20 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  __lookupHistory = [LookupHistory sharedInstance];
-  __lookupRequest = [[LookupRequest alloc] init];
-  __completions = [@[] mutableCopy];
-  __lookingUpCompletions = NO;
+  _lookupHistory = [LookupHistory sharedInstance];
+  _lookupRequest = [[LookupRequest alloc] init];
+  _completions = [@[] mutableCopy];
+  _lookingUpCompletions = NO;
 
   [self buildViews];
 }
 
 
 - (void)buildViews {
+  _searchBar = [[UISearchBar alloc] init];
+  _lookupHistoryTableView = [[UITableView alloc] init];
+  _dictionarySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+
   [self buildSearchBar];
   [self buildLookupHistoryTableView];
   [self buildSearchDisplayController];
@@ -50,36 +58,33 @@
 
 
 - (void)buildSearchBar {
-  __searchBar = [[UISearchBar alloc] init];
-  __searchBar.delegate = self;
-  __searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-  [__searchBar sizeToFit];
+  self.searchBar.delegate = self;
+  self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+  [self.searchBar sizeToFit];
 }
 
 
 - (void)buildLookupHistoryTableView {
-  __lookupHistoryTableView = [[UITableView alloc] init];
-  [__lookupHistoryTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-  __lookupHistoryTableView.dataSource = self;
-  __lookupHistoryTableView.delegate = self;
-  __lookupHistoryTableView.tableHeaderView = __searchBar;
+  [self.lookupHistoryTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+  self.lookupHistoryTableView.dataSource = self;
+  self.lookupHistoryTableView.delegate = self;
+  self.lookupHistoryTableView.tableHeaderView = self.searchBar;
 
-  [self.view addSubview:__lookupHistoryTableView];
+  [self.view addSubview:self.lookupHistoryTableView];
 }
 
 
 - (void)buildSearchDisplayController {
-  __searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:__searchBar contentsController:self];
-  __searchDisplayController.delegate = self;
-  __searchDisplayController.searchResultsDataSource = self;
-  __searchDisplayController.searchResultsDelegate = self;
+  self.dictionarySearchDisplayController.delegate = self;
+  self.dictionarySearchDisplayController.searchResultsDataSource = self;
+  self.dictionarySearchDisplayController.searchResultsDelegate = self;
 }
 
 
 - (void)setupViewConstraints {
-  NSDictionary *views = NSDictionaryOfVariableBindings(__lookupHistoryTableView, self.view);
-  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[__lookupHistoryTableView]|" options:0 metrics:nil views:views]];
-  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[__lookupHistoryTableView]|" options:0 metrics:nil views:views]];
+  NSDictionary *views = NSDictionaryOfVariableBindings(_lookupHistoryTableView, self.view);
+  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_lookupHistoryTableView]|" options:0 metrics:nil views:views]];
+  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_lookupHistoryTableView]|" options:0 metrics:nil views:views]];
 }
 
 
@@ -102,14 +107,14 @@
 
 - (void)clearHistory {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    [__lookupHistoryTableView beginUpdates];
-    [__lookupHistoryTableView deleteRowsAtIndexPaths:[self indexPathsFromOffset:0 count:[__lookupHistory count]] withRowAnimation:UITableViewRowAnimationTop];
-    [__lookupHistory clear];
-    [__lookupHistoryTableView endUpdates];
+    [self.lookupHistoryTableView beginUpdates];
+    [self.lookupHistoryTableView deleteRowsAtIndexPaths:[self indexPathsFromOffset:0 count:[self.lookupHistory count]] withRowAnimation:UITableViewRowAnimationTop];
+    [self.lookupHistory clear];
+    [self.lookupHistoryTableView endUpdates];
   }];
 
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    [__lookupHistoryTableView reloadData];
+    [self.lookupHistoryTableView reloadData];
   }];
 }
 
@@ -153,8 +158,8 @@
 
 - (void)showDefinitionForTerm:(NSString *)term {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    [__lookupHistory addLookupHistoryWithTerm:term];
-    [__lookupHistoryTableView reloadData];
+    [self.lookupHistory addLookupHistoryWithTerm:term];
+    [self.lookupHistoryTableView reloadData];
   }];
 
   UIReferenceLibraryViewController *referenceLibraryViewController = [[UIReferenceLibraryViewController alloc] initWithTerm:term];
@@ -175,7 +180,7 @@
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     [self makeSearchResultCell:cell forRowAtIndexPath:indexPath];
-  } else if (tableView == __lookupHistoryTableView) {
+  } else if (tableView == self.lookupHistoryTableView) {
     [self makeHistoryCell:cell forRowAtIndexPath:indexPath];
   }
 
@@ -184,23 +189,23 @@
 
 
 - (void)makeHistoryCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-  if ([__lookupHistory count] == 0) {
+  if ([self.lookupHistory count] == 0) {
     [self disableCell:cell withText:@"No history"];
   } else {
-    if (indexPath.row == [__lookupHistory count]) {
+    if (indexPath.row == [self.lookupHistory count]) {
       [self makeActionCell:cell withText:@"Clear History"];
     } else {
-      [self makeCellNormal:cell withText:[__lookupHistory[indexPath.row] description]];
+      [self makeCellNormal:cell withText:[self.lookupHistory[indexPath.row] description]];
     }
   }
 }
 
 
 - (void)makeSearchResultCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (__lookingUpCompletions) {
+  if (self.lookingUpCompletions) {
     [self disableCell:cell withText:@"Looking up..."];
-  } else if ([__completions count] > 0) {
-    [self makeCellNormal:cell withText:[__completions[indexPath.row] description]];
+  } else if ([self.completions count] > 0) {
+    [self makeCellNormal:cell withText:[self.completions[indexPath.row] description]];
   } else {
     [self disableCell:cell withText:@"No result"];
   }
@@ -210,7 +215,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     return 1;
-  } else if (tableView == __lookupHistoryTableView) {
+  } else if (tableView == self.lookupHistoryTableView) {
     return 1;
   }
 
@@ -221,7 +226,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     return nil;
-  } else if (tableView == __lookupHistoryTableView) {
+  } else if (tableView == self.lookupHistoryTableView) {
     return @"History";
   }
 
@@ -231,15 +236,15 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if (__lookingUpCompletions) {
+    if (self.lookingUpCompletions) {
       return 1;
-    } else if ([__completions count] > 0) {
-      return [__completions count];
+    } else if ([self.completions count] > 0) {
+      return [self.completions count];
     } else {
       return 1;
     }
-  } else if (tableView == __lookupHistoryTableView) {
-    return [__lookupHistory count] + 1;
+  } else if (tableView == self.lookupHistoryTableView) {
+    return [self.lookupHistory count] + 1;
   }
 
   return 0;
@@ -253,22 +258,22 @@
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if ([__searchBar.text length] > 0 && [__completions count] > 0 && indexPath.section == 0) {
-      [self showDefinitionForTerm:__completions[indexPath.row]];
+    if ([self.searchBar.text length] > 0 && [self.completions count] > 0 && indexPath.section == 0) {
+      [self showDefinitionForTerm:self.completions[indexPath.row]];
 
-    } else if (__lookingUpCompletions) {
+    } else if (self.lookingUpCompletions) {
       // guessing, do nothing
       return;
 
     }
-  } else if (tableView == __lookupHistoryTableView) {
-    if ([__lookupHistory count] == 0) {
+  } else if (tableView == self.lookupHistoryTableView) {
+    if ([self.lookupHistory count] == 0) {
       // empty history, do nothing
     } else {
-      if (indexPath.row == [__lookupHistory count]) {
+      if (indexPath.row == [self.lookupHistory count]) {
         [self clearHistory];
       } else {
-        [self showDefinitionForTerm:[__lookupHistory[indexPath.row] description]];
+        [self showDefinitionForTerm:[self.lookupHistory[indexPath.row] description]];
       }
     }
   }
@@ -284,14 +289,14 @@
   }
 
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    __lookingUpCompletions = YES;
-    __completions = [@[] mutableCopy];
+    self.lookingUpCompletions = YES;
+    self.completions = [@[] mutableCopy];
     [self.searchDisplayController.searchResultsTableView reloadData];
   }];
 
-  [__lookupRequest startLookingUpDictionaryWithTerm:searchString batchCount:3 progressBlock:^(NSArray *partialResults) {
-    __lookingUpCompletions = __lookupRequest.lookingUpCompletions;
-    [__completions addObjectsFromArray:partialResults];
+  [self.lookupRequest startLookingUpDictionaryWithTerm:searchString batchCount:3 progressBlock:^(NSArray *partialResults) {
+    self.lookingUpCompletions = self.lookupRequest.lookingUpCompletions;
+    [self.completions addObjectsFromArray:partialResults];
     [self.searchDisplayController.searchResultsTableView reloadData];
 //    [self insertPartialResults:partialResults];
   }];
@@ -302,14 +307,14 @@
 
 - (void)insertPartialResults:(NSArray *)partialResults {
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    [__searchDisplayController.searchResultsTableView beginUpdates];
-    __lookingUpCompletions = __lookupRequest.lookingUpCompletions;
+    [self.dictionarySearchDisplayController.searchResultsTableView beginUpdates];
+    self.lookingUpCompletions = self.lookupRequest.lookingUpCompletions;
 
-    NSArray *indexPaths = [self indexPathsFromOffset:[__completions count] count:[partialResults count]];
-    [__searchDisplayController.searchResultsTableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    NSArray *indexPaths = [self indexPathsFromOffset:[self.completions count] count:[partialResults count]];
+    [self.dictionarySearchDisplayController.searchResultsTableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 
-    [__completions addObjectsFromArray:partialResults];
-    [__searchDisplayController.searchResultsTableView endUpdates];
+    [self.completions addObjectsFromArray:partialResults];
+    [self.dictionarySearchDisplayController.searchResultsTableView endUpdates];
   }];
 }
 
@@ -318,7 +323,7 @@
 
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-  if ([searchBar.text length] > 0 && [__completions count] > 0 && [searchBar.text isEqualToString:__completions[0]]) {
+  if ([searchBar.text length] > 0 && [self.completions count] > 0 && [searchBar.text isEqualToString:self.completions[0]]) {
     [self showDefinitionForTerm:searchBar.text];
   }
 }
