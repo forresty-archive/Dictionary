@@ -42,6 +42,18 @@
   _lookingUpCompletions = NO;
 
   [self buildViews];
+
+  [self addObserver:self forKeyPath:@"lookingUpCompletions" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+  if ([@"lookingUpCompletions" isEqualToString:keyPath]) {
+    if (self.lookingUpCompletions) {
+//      [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    } else {
+//      [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    }
+  }
 }
 
 
@@ -345,7 +357,7 @@
 
 - (void)mergePartialResults:(NSArray *)partialResults {
   for (NSString *result in partialResults) {
-    if (![self.completions containsObject:result]) {
+    if (![self.completions containsObject:result] && [result hasPrefix:self.searchBar.text]) {
       [self.completions addObject:result];
     }
   }
@@ -354,6 +366,7 @@
     return [obj1 caseInsensitiveCompare:obj2];
   }];
 }
+
 
 - (NSArray *)filteredSearchResultForSearchString:(NSString *)searchString {
   NSMutableArray *result = [@[] mutableCopy];
