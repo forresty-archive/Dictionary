@@ -8,31 +8,32 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface LookupHistory : NSObject
 
 
 # pragma mark - object life cycle
 
 
-+(instancetype)sharedInstance;
++ (instancetype)sharedInstance;
 
 
 # pragma mark - history management
 
 
--(NSArray *)recent;
+- (NSArray *)recent;
 
--(void)clear;
+- (void)clear;
 
--(void)addLookupHistoryWithTerm:(NSString *)term;
+- (void)addLookupHistoryWithTerm:(NSString *)term;
 
--(NSUInteger)count;
+- (NSUInteger)count;
 
 
 # pragma mark - object subscripting
 
 
--(NSString *)objectAtIndexedSubscript:(NSUInteger)idx;
+- (NSString *)objectAtIndexedSubscript:(NSUInteger)idx;
 
 
 @end

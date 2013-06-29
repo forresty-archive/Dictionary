@@ -19,6 +19,7 @@
   Dictionary *__dictionary;
 }
 
+
 - (instancetype)init {
   self = [super init];
   if (self) {
@@ -31,6 +32,7 @@
 
   return self;
 }
+
 
 - (void)startLookingUpDictionaryWithTerm:(NSString *)term progressBlock:(DictionaryLookupPartialResult)block {
   _lookingUpCompletions = YES;
@@ -91,9 +93,6 @@
 
   [__completionLookupOperationQueue addOperation:operation];
 }
-
-
-
 
 
 @end

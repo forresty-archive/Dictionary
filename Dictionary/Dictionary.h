@@ -15,18 +15,17 @@
 # pragma mark - object life cycle
 
 
-+(instancetype)sharedInstance;
++ (instancetype)sharedInstance;
 
 
 # pragma mark - look up
 
 
--(BOOL)hasDefinitionForTerm:(NSString *)term;
+- (BOOL)hasDefinitionForTerm:(NSString *)term;
 
+- (NSArray *)guessesForTerm:(NSString *)term;
 
--(NSArray *)guessesForTerm:(NSString *)term;
+- (NSArray *)completionsForTerm:(NSString *)term;
 
-
--(NSArray *)completionsForTerm:(NSString *)term;
 
 @end

@@ -19,7 +19,7 @@ static int kDictionaryLookupHistoryLimit = 15;
 # pragma mark - object life cycle
 
 
-+(instancetype)sharedInstance {
++ (instancetype)sharedInstance {
   static LookupHistory *_instance = nil;
 
   static dispatch_once_t onceToken;
@@ -35,21 +35,21 @@ static int kDictionaryLookupHistoryLimit = 15;
 # pragma mark - history management
 
 
--(NSArray *)recent {
+- (NSArray *)recent {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
   return [defaults objectForKey:kDictionaryLookupHistory];
 }
 
 
--(void)setLookupHistory:(NSArray *)lookupHistory {
+- (void)setLookupHistory:(NSArray *)lookupHistory {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   [defaults setObject:lookupHistory forKey:kDictionaryLookupHistory];
   [defaults synchronize];
 }
 
 
--(void)addLookupHistoryWithTerm:(NSString *)term {
+- (void)addLookupHistoryWithTerm:(NSString *)term {
   NSMutableArray *lookupHistory = [@[term] mutableCopy];
 
   for (NSString *termInHistory in [self recent]) {
@@ -62,12 +62,12 @@ static int kDictionaryLookupHistoryLimit = 15;
 }
 
 
--(void)clear {
+- (void)clear {
   [self setLookupHistory:@[]];
 }
 
 
--(NSUInteger)count {
+- (NSUInteger)count {
   return [[self recent] count];
 }
 
@@ -75,7 +75,7 @@ static int kDictionaryLookupHistoryLimit = 15;
 # pragma mark - object subscripting
 
 
--(NSString *)objectAtIndexedSubscript:(NSUInteger)idx {
+- (NSString *)objectAtIndexedSubscript:(NSUInteger)idx {
   return [self recent][idx];
 }
 

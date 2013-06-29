@@ -12,9 +12,7 @@
 
 
 @implementation Dictionary {
-
 @private
-
   __strong NSMutableSet *validTermsCache;
 
   __strong UITextChecker *__textChecker;
@@ -24,7 +22,7 @@
 # pragma mark - object life cycle
 
 
-+(instancetype)sharedInstance {
++ (instancetype)sharedInstance {
   static Dictionary *_instance = nil;
 
   static dispatch_once_t onceToken;
@@ -37,7 +35,7 @@
 }
 
 
--(instancetype)init {
+- (instancetype)init {
   self = [super init];
 
   validTermsCache = [[NSMutableSet alloc] init];
@@ -51,7 +49,7 @@
 # pragma mark - definition / completion lookup && guesses
 
 
--(BOOL)hasDefinitionForTerm:(NSString *)term {
+- (BOOL)hasDefinitionForTerm:(NSString *)term {
   if ([validTermsCache containsObject:term]) {
     return YES;
   }
@@ -66,12 +64,12 @@
 }
 
 
--(NSArray *)guessesForTerm:(NSString *)term {
+- (NSArray *)guessesForTerm:(NSString *)term {
   return [__textChecker guessesForWordRange:NSMakeRange(0, [term length]) inString:term language:@"en_US"];
 }
 
 
--(NSArray *)completionsForTerm:(NSString *)term {
+- (NSArray *)completionsForTerm:(NSString *)term {
   return [__textChecker completionsForPartialWordRange:NSMakeRange(0, [term length]) inString:term language:@"en_US"];
 }
 
