@@ -336,11 +336,11 @@
     return NO;
   }
 
-  NSArray *filteredResult = [self filteredSearchResultForSearchString:searchString];
+  NSMutableArray *filteredResult = [self filteredSearchResultForSearchString:searchString];
 
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     if (filteredResult.count > 0) {
-      self.completions = [filteredResult mutableCopy];
+      self.completions = filteredResult;
     } else {
       self.lookingUpCompletions = YES;
       self.hasResults = NO;
@@ -378,7 +378,7 @@
 }
 
 
-- (NSArray *)filteredSearchResultForSearchString:(NSString *)searchString {
+- (NSMutableArray *)filteredSearchResultForSearchString:(NSString *)searchString {
   NSMutableArray *result = [@[] mutableCopy];
 
   for (NSString *word in self.completions) {
