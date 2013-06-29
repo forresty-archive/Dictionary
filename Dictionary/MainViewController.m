@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "LookupHistory.h"
 #import "LookupRequest.h"
+#import "MTStatusBarOverlay.h"
 
 #define kCellID @"wordCellID"
 
@@ -50,10 +51,14 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
   if ([@"lookingUpCompletions" isEqualToString:keyPath]) {
-    if (self.lookingUpCompletions) {
-      [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    if (self.searchBar.text.length > 0) {
+      if (self.lookingUpCompletions) {
+        [[MTStatusBarOverlay sharedInstance] postMessage:@"searching..."];
+      } else {
+        [[MTStatusBarOverlay sharedInstance] postFinishMessage:@"finished" duration:1.0];
+      }
     } else {
-      [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+      [[MTStatusBarOverlay sharedInstance] hide];
     }
   }
 }
@@ -327,6 +332,7 @@
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)searchDisplayController shouldReloadTableForSearchString:(NSString *)searchString {
   if ([searchString length] < 1) {
+    [[MTStatusBarOverlay sharedInstance] hide];
     return NO;
   }
 
