@@ -49,20 +49,6 @@
   [self addObserver:self forKeyPath:@"lookingUpCompletions" options:NSKeyValueObservingOptionNew context:nil];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-  if ([@"lookingUpCompletions" isEqualToString:keyPath]) {
-    if (self.searchBar.text.length > 0) {
-      if (self.lookingUpCompletions) {
-        [[MTStatusBarOverlay sharedInstance] postMessage:@"searching..."];
-      } else {
-        [[MTStatusBarOverlay sharedInstance] postFinishMessage:@"finished" duration:1.0];
-      }
-    } else {
-      [[MTStatusBarOverlay sharedInstance] hide];
-    }
-  }
-}
-
 
 - (void)buildViews {
   _searchBar = [[UISearchBar alloc] init];
@@ -105,6 +91,24 @@
   NSDictionary *views = NSDictionaryOfVariableBindings(historyTableView, self.view);
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[historyTableView]|" options:0 metrics:nil views:views]];
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[historyTableView]|" options:0 metrics:nil views:views]];
+}
+
+
+# pragma mark - KVO
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+  if ([@"lookingUpCompletions" isEqualToString:keyPath]) {
+    if (self.searchBar.text.length > 0) {
+      if (self.lookingUpCompletions) {
+        [[MTStatusBarOverlay sharedInstance] postMessage:@"searching..."];
+      } else {
+        [[MTStatusBarOverlay sharedInstance] postFinishMessage:@"finished" duration:1.0];
+      }
+    } else {
+      [[MTStatusBarOverlay sharedInstance] hide];
+    }
+  }
 }
 
 
