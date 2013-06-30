@@ -50,24 +50,28 @@
 
 
 - (void)testAddCache {
-//  NSMutableSet *terms = [NSMutableSet set];
-//
-//  for (int i=0; i < 26; i++) {
-//    unsigned char c1 = 'a' + i;
-//    [terms addObject:[NSString stringWithFormat:@"%c", c1]];
-//    for (int j=0; j < 26; j++) {
-//      unsigned char c2 = 'a' + j;
-//      [terms addObject:[NSString stringWithFormat:@"%c%c", c1, c2]];
-//      for (int k=0; k < 26; k++) {
-//        unsigned char c3 = 'a' + k;
-//        [terms addObject:[NSString stringWithFormat:@"%c%c%c", c1, c2, c3]];
-//      }
-//    }
-//  }
-//
+  NSMutableSet *terms = [NSMutableSet set];
+
+  for (int i=0; i < 26; i++) {
+    unsigned char c1 = 'a' + i;
+    [terms addObject:[NSString stringWithFormat:@"%c", c1]];
+    for (int j=0; j < 26; j++) {
+      unsigned char c2 = 'a' + j;
+      [terms addObject:[NSString stringWithFormat:@"%c%c", c1, c2]];
+      for (int k=0; k < 26; k++) {
+        unsigned char c3 = 'a' + k;
+        [terms addObject:[NSString stringWithFormat:@"%c%c%c", c1, c2, c3]];
+        for (int l=0; l < 26; l++) {
+          unsigned char c4 = 'a' + l;
+          [terms addObject:[NSString stringWithFormat:@"%c%c%c%c", c1, c2, c3, c4]];
+        }
+      }
+    }
+  }
+
 //  NSLog(@"terms count %d", terms.count);
 
-  NSMutableSet *terms = [[_dictionary validTermsCache] copy];
+//  NSMutableSet *terms = [[_dictionary validTermsCache] copy];
 
   [self addCacheWithCollection:terms];
 }
@@ -85,7 +89,7 @@
 
       count++;
 
-      if (count % 1000 == 0) {
+      if (count % 5000 == 0) {
         NSLog(@"%d / %d terms processed", count, [terms count]);
         [_dictionary saveCache];
       }
