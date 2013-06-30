@@ -66,8 +66,6 @@
       if (count % 500 == 0) {
         NSLog(@"%d / %d terms processed", count, terms.count);
         [_dictionary saveCache];
-        NSLog(@"wait for a while...");
-        [NSThread sleepForTimeInterval:5];
       }
     }
   }

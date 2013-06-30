@@ -10,13 +10,7 @@
 #import "UIKit/UITextChecker.h"
 #import "UIKit/UIReferenceLibraryViewController.h"
 
-@interface Dictionary ()
-
-//@property NSMutableSet *validTermsCache;
-@property UITextChecker *textChecker;
-
-@end
-
+#include <stdio.h>
 
 # pragma mark - NSArray WriteAsTXT addition
 
@@ -32,27 +26,56 @@
 
 @implementation NSArray (ReadWriteAsTXT)
 
+
 - (void)writeAsTXTToFile:(NSString *)path {
   NSMutableString *result = [@"" mutableCopy];
 
   for (NSString *term in self) {
-    [result appendString:[term lowercaseString]];
+    [result appendString:term];
     [result appendString:@"\n"];
   }
 
   [result writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 
-+ (NSArray *)arrayWithTXTContentsOfFile:(NSString *)path {
-  NSString *fileContent = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
 
-  return [fileContent componentsSeparatedByString:@"\n"];
++ (NSArray *)arrayWithTXTContentsOfFile:(NSString *)path {
+// read file line by line using C is roughly 1 time slower than obj-c implementation. hmm.
+
+//  NSMutableArray *result = [NSMutableArray arrayWithCapacity:100000];
+//
+//  FILE *file = fopen([path UTF8String], "r");
+//
+//  if (file) {
+//    while(!feof(file)) {
+//      char *line = NULL;
+//      size_t linecap = 0;
+//      ssize_t linelen;
+//      while ((linelen = getline(&line, &linecap, file)) > 0) {
+//        [result addObject:[NSString stringWithCString:line encoding:NSUTF8StringEncoding]];
+//      }
+//    }
+//  }
+//
+//  fclose(file);
+//
+//  return result;
+
+  return [[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil] componentsSeparatedByString:@"\n"];
 }
+
 
 @end
 
 
-# pragma mark - Dictionary implementation
+# pragma mark - Dictionary
+
+
+@interface Dictionary ()
+
+@property UITextChecker *textChecker;
+
+@end
 
 
 @implementation Dictionary
@@ -77,7 +100,6 @@
 - (instancetype)init {
   self = [super init];
 
-//  _validTermsCache = [[NSMutableSet alloc] init];
   [self reloadCache];
 
   _textChecker = [[UITextChecker alloc] init];
@@ -106,7 +128,6 @@
     [array addObject:term];
   }
 
-//  [array writeToFile:[self validTermsCacheFilePath] atomically:YES];
   [array writeAsTXTToFile:[self validTermsCacheFilePath]];
   NSLog(@"%d valid terms written", array.count);
 
@@ -115,7 +136,6 @@
     [array addObject:term];
   }
 
-//  [array writeToFile:[self invalidTermsCacheFilePath] atomically:YES];
   [array writeAsTXTToFile:[self invalidTermsCacheFilePath]];
   NSLog(@"%d invalid terms written", array.count);
 }
