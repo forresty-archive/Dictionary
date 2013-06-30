@@ -20,8 +20,8 @@
 		683A6A5014760152004C3F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 683A6A4E14760152004C3F8C /* InfoPlist.strings */; };
 		683A6A5314760152004C3F8C /* DictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A6A5214760152004C3F8C /* DictionaryTests.m */; };
 		68854488177DD5FB009DF57C /* LookupRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68854487177DD5FB009DF57C /* LookupRequest.m */; };
-		688EEA1217804F9A002DA856 /* invalidTerms.txt in Resources */ = {isa = PBXBuildFile; fileRef = 688EEA1017804F9A002DA856 /* invalidTerms.txt */; };
-		688EEA1317804F9A002DA856 /* validTerms.txt in Resources */ = {isa = PBXBuildFile; fileRef = 688EEA1117804F9A002DA856 /* validTerms.txt */; };
+		688EEA1617805F39002DA856 /* invalidTerms.txt in Resources */ = {isa = PBXBuildFile; fileRef = 688EEA1417805F39002DA856 /* invalidTerms.txt */; };
+		688EEA1717805F39002DA856 /* validTerms.txt in Resources */ = {isa = PBXBuildFile; fileRef = 688EEA1517805F39002DA856 /* validTerms.txt */; };
 		6892932117705C46005187F0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6892932017705C46005187F0 /* Default-568h@2x.png */; };
 		68B0C3B01476047B006AEA06 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* MainViewController.m */; };
 		68B0C3B11476047B006AEA06 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* MainViewController.m */; };
@@ -60,8 +60,8 @@
 		683A6A5214760152004C3F8C /* DictionaryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DictionaryTests.m; sourceTree = "<group>"; };
 		68854486177DD5FB009DF57C /* LookupRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LookupRequest.h; sourceTree = "<group>"; };
 		68854487177DD5FB009DF57C /* LookupRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LookupRequest.m; sourceTree = "<group>"; };
-		688EEA1017804F9A002DA856 /* invalidTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = invalidTerms.txt; sourceTree = "<group>"; };
-		688EEA1117804F9A002DA856 /* validTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = validTerms.txt; sourceTree = "<group>"; };
+		688EEA1417805F39002DA856 /* invalidTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = invalidTerms.txt; sourceTree = "<group>"; };
+		688EEA1517805F39002DA856 /* validTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = validTerms.txt; sourceTree = "<group>"; };
 		6892932017705C46005187F0 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		68B0C3AE1476047B006AEA06 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		68B0C3AF1476047B006AEA06 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
@@ -101,8 +101,8 @@
 		683A6A1814760151004C3F8C = {
 			isa = PBXGroup;
 			children = (
-				688EEA1017804F9A002DA856 /* invalidTerms.txt */,
-				688EEA1117804F9A002DA856 /* validTerms.txt */,
+				688EEA1417805F39002DA856 /* invalidTerms.txt */,
+				688EEA1517805F39002DA856 /* validTerms.txt */,
 				6892932017705C46005187F0 /* Default-568h@2x.png */,
 				68E6AED1149786A10034486E /* Icon.png */,
 				683A6A2F14760152004C3F8C /* Dictionary */,
@@ -273,8 +273,8 @@
 				683A6A3414760152004C3F8C /* InfoPlist.strings in Resources */,
 				68E6AED2149786A10034486E /* Icon.png in Resources */,
 				6892932117705C46005187F0 /* Default-568h@2x.png in Resources */,
-				688EEA1217804F9A002DA856 /* invalidTerms.txt in Resources */,
-				688EEA1317804F9A002DA856 /* validTerms.txt in Resources */,
+				688EEA1617805F39002DA856 /* invalidTerms.txt in Resources */,
+				688EEA1717805F39002DA856 /* validTerms.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
