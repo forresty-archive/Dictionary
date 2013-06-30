@@ -44,7 +44,6 @@
 
 - (void)testCompletionsForTermShouldIncludeTheTermItself {
   NSArray *completions = [_dictionary completionsForTerm:@"history"];
-  NSLog(@"completions: %@", completions);
   NSAssert([completions containsObject:@"history"], @"should include the term history");
 }
 
@@ -75,11 +74,27 @@
 //
 //  [self addCacheWithCollection:terms];
 //}
+
+
+//- (void)testImportWordList {
+//  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+//  NSString *cacheDirectory = [paths objectAtIndex:0];
+//
+//  // this file is in latin encoding
+//  NSString *wordListPath = [cacheDirectory stringByAppendingPathComponent:@"5k.txt"];
+//
+//  NSArray *terms = [[NSString stringWithContentsOfFile:wordListPath encoding:NSISOLatin1StringEncoding error:nil] componentsSeparatedByString:@"\n"];
+//
+//  [self addCacheWithCollection:terms];
+//}
 //
 //- (void)addCacheWithCollection:(id)terms {
 //  int count = 0;
 //  for (NSString *term in terms) {
 //    @autoreleasepool {
+//      // test term itself, only use this when importing word list
+//      [_dictionary hasDefinitionForTerm:term];
+//
 //      for (NSString *completion in [_dictionary completionsForTerm:term]) {
 //        [_dictionary hasDefinitionForTerm:completion];
 //      }
@@ -89,7 +104,7 @@
 //
 //      count++;
 //
-//      if (count % 5000 == 0) {
+//      if (count % 1000 == 0) {
 //        NSLog(@"%d / %d terms processed", count, [terms count]);
 //        [_dictionary saveCache];
 //      }
