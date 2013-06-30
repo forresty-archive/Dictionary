@@ -18,6 +18,43 @@
 @end
 
 
+# pragma mark - NSArray WriteAsTXT addition
+
+
+@interface NSArray (ReadWriteAsTXT)
+
+- (void)writeAsTXTToFile:(NSString *)path;
+
++ (NSArray *)arrayWithTXTContentsOfFile:(NSString *)path;
+
+@end
+
+
+@implementation NSArray (ReadWriteAsTXT)
+
+- (void)writeAsTXTToFile:(NSString *)path {
+  NSMutableString *result = [@"" mutableCopy];
+
+  for (NSString *term in self) {
+    [result appendString:term];
+    [result appendString:@"\n"];
+  }
+
+  [result writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
+}
+
++ (NSArray *)arrayWithTXTContentsOfFile:(NSString *)path {
+  NSString *fileContent = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+
+  return [fileContent componentsSeparatedByString:@"\n"];
+}
+
+@end
+
+
+# pragma mark - Dictionary implementation
+
+
 @implementation Dictionary
 
 
@@ -55,10 +92,10 @@
 
 
 - (void)reloadCache {
-  _validTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithContentsOfFile:[self validTermsCacheFilePath]]];
+  _validTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithTXTContentsOfFile:[self validTermsCacheFilePath]]];
   NSLog(@"%d valid terms read", self.validTermsCache.count);
 
-  _invalidTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithContentsOfFile:[self invalidTermsCacheFilePath]]];
+  _invalidTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithTXTContentsOfFile:[self invalidTermsCacheFilePath]]];
   NSLog(@"%d invalid terms read", self.invalidTermsCache.count);
 }
 
@@ -69,7 +106,8 @@
     [array addObject:term];
   }
 
-  [array writeToFile:[self validTermsCacheFilePath] atomically:YES];
+//  [array writeToFile:[self validTermsCacheFilePath] atomically:YES];
+  [array writeAsTXTToFile:[self validTermsCacheFilePath]];
   NSLog(@"%d valid terms written", array.count);
 
   array = [@[] mutableCopy];
@@ -77,7 +115,8 @@
     [array addObject:term];
   }
 
-  [array writeToFile:[self invalidTermsCacheFilePath] atomically:YES];
+//  [array writeToFile:[self invalidTermsCacheFilePath] atomically:YES];
+  [array writeAsTXTToFile:[self invalidTermsCacheFilePath]];
   NSLog(@"%d invalid terms written", array.count);
 }
 
