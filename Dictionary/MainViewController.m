@@ -9,7 +9,7 @@
 #import "MainViewController.h"
 #import "LookupHistory.h"
 #import "LookupRequest.h"
-#import "MTStatusBarOverlay.h"
+//#import "MTStatusBarOverlay.h"
 
 #define kCellID @"wordCellID"
 
@@ -46,7 +46,7 @@
 
   [self buildViews];
 
-  [self addObserver:self forKeyPath:@"lookingUpCompletions" options:NSKeyValueObservingOptionNew context:nil];
+//  [self addObserver:self forKeyPath:@"lookingUpCompletions" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 
@@ -94,22 +94,22 @@
 }
 
 
-# pragma mark - KVO
-
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-  if ([@"lookingUpCompletions" isEqualToString:keyPath]) {
-    if (self.searchBar.text.length > 0) {
-      if (self.lookingUpCompletions) {
-        [[MTStatusBarOverlay sharedInstance] postMessage:@"searching..."];
-      } else {
-        [[MTStatusBarOverlay sharedInstance] postFinishMessage:@"finished" duration:1.0];
-      }
-    } else {
-      [[MTStatusBarOverlay sharedInstance] hide];
-    }
-  }
-}
+//# pragma mark - KVO
+//
+//
+//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+//  if ([@"lookingUpCompletions" isEqualToString:keyPath]) {
+//    if (self.searchBar.text.length > 0) {
+//      if (self.lookingUpCompletions) {
+//        [[MTStatusBarOverlay sharedInstance] postMessage:@"searching..."];
+//      } else {
+//        [[MTStatusBarOverlay sharedInstance] postFinishMessage:@"finished" duration:1.0];
+//      }
+//    } else {
+//      [[MTStatusBarOverlay sharedInstance] hide];
+//    }
+//  }
+//}
 
 
 # pragma mark - internal
@@ -336,7 +336,7 @@
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)searchDisplayController shouldReloadTableForSearchString:(NSString *)searchString {
   if (searchString.length < 1) {
-    [[MTStatusBarOverlay sharedInstance] hide];
+//    [[MTStatusBarOverlay sharedInstance] hide];
     return NO;
   }
 
