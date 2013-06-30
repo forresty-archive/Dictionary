@@ -30,13 +30,16 @@
 
 # pragma mark - cache
 
-@property NSMutableSet *validTermsCache;
+@property (nonatomic) NSMutableSet *validTermsCache;
+
+@property (nonatomic) NSMutableSet *invalidTermsCache;
 
 - (void)saveCache;
 
-- (NSString *)cacheFilePath;
-
 - (void)reloadCache;
 
+@property (readonly) NSString *validTermsCacheFilePath;
+
+@property (readonly) NSString *invalidTermsCacheFilePath;
 
 @end

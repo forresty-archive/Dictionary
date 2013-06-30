@@ -49,27 +49,29 @@
 //}
 
 - (void)testAddCache {
-//  NSMutableSet *terms = [[_dictionary validTermsCache] copy];
-//
-//  int count = 0;
-//  for (NSString *term in terms) {
-//    for (NSString *completion in [_dictionary completionsForTerm:term]) {
-//      [_dictionary hasDefinitionForTerm:completion];
-//    }
-//    for (NSString *guess in [_dictionary guessesForTerm:term]) {
-//      [_dictionary hasDefinitionForTerm:guess];
-//    }
-//
-//    count++;
-//
-//    if (count % 100 == 0) {
-//      NSLog(@"%d / %d terms processed", count, terms.count);
-//      [_dictionary saveCache];
-//    }
-//  }
-//
-//  [_dictionary saveCache];
-  NSLog(@"file at %@", [_dictionary cacheFilePath]);
+  NSMutableSet *terms = [[_dictionary validTermsCache] copy];
+
+  int count = 0;
+  for (NSString *term in terms) {
+    @autoreleasepool {
+      for (NSString *completion in [_dictionary completionsForTerm:term]) {
+        [_dictionary hasDefinitionForTerm:completion];
+      }
+      for (NSString *guess in [_dictionary guessesForTerm:term]) {
+        [_dictionary hasDefinitionForTerm:guess];
+      }
+
+      count++;
+
+      if (count % 1000 == 0) {
+        NSLog(@"%d / %d terms processed", count, terms.count);
+        [_dictionary saveCache];
+      }
+    }
+  }
+
+  [_dictionary saveCache];
+  NSLog(@"file at %@", [_dictionary validTermsCacheFilePath]);
 }
 
 @end

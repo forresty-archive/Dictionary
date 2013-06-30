@@ -30,11 +30,19 @@
 
 
 - (void)copyCacheIfNeeded {
-  NSString *bundleCacheFilePath = [[NSBundle mainBundle] pathForResource:@"validTerms" ofType:@"txt"];
-//  NSLog(@"bundle path %@", bundleCacheFilePath);
-  if (![[NSFileManager defaultManager] fileExistsAtPath:[[Dictionary sharedInstance] cacheFilePath]]) {
+  NSString *bundleValidTermsCacheFilePath = [[NSBundle mainBundle] pathForResource:@"validTerms" ofType:@"txt"];
+
+  if (![[NSFileManager defaultManager] fileExistsAtPath:[[Dictionary sharedInstance] validTermsCacheFilePath]]) {
     // cache file not exist, copy from bundle
-    [[NSFileManager defaultManager] copyItemAtPath:bundleCacheFilePath toPath:[[Dictionary sharedInstance] cacheFilePath] error:nil];
+    [[NSFileManager defaultManager] copyItemAtPath:bundleValidTermsCacheFilePath toPath:[[Dictionary sharedInstance] validTermsCacheFilePath] error:nil];
+    [[Dictionary sharedInstance] reloadCache];
+  }
+
+  NSString *bundleInvalidTermsCacheFilePath = [[NSBundle mainBundle] pathForResource:@"invalidTerms" ofType:@"txt"];
+
+  if (![[NSFileManager defaultManager] fileExistsAtPath:[[Dictionary sharedInstance] invalidTermsCacheFilePath]]) {
+    // cache file not exist, copy from bundle
+    [[NSFileManager defaultManager] copyItemAtPath:bundleInvalidTermsCacheFilePath toPath:[[Dictionary sharedInstance] invalidTermsCacheFilePath] error:nil];
     [[Dictionary sharedInstance] reloadCache];
   }
 }

@@ -50,10 +50,18 @@
   return self;
 }
 
+
+# pragma mark - cache manipulation
+
+
 - (void)reloadCache {
-  _validTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithContentsOfFile:[self cacheFilePath]]];
-  NSLog(@"%d terms read", self.validTermsCache.count);
+  _validTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithContentsOfFile:[self validTermsCacheFilePath]]];
+  NSLog(@"%d valid terms read", self.validTermsCache.count);
+
+  _invalidTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithContentsOfFile:[self invalidTermsCacheFilePath]]];
+  NSLog(@"%d invalid terms read", self.invalidTermsCache.count);
 }
+
 
 - (void)saveCache {
   NSMutableArray *array = [@[] mutableCopy];
@@ -61,18 +69,33 @@
     [array addObject:term];
   }
 
-  [array writeToFile:[self cacheFilePath] atomically:YES];
-  NSLog(@"%d terms written", array.count);
+  [array writeToFile:[self validTermsCacheFilePath] atomically:YES];
+  NSLog(@"%d valid terms written", array.count);
+
+  array = [@[] mutableCopy];
+  for (NSString *term in self.invalidTermsCache) {
+    [array addObject:term];
+  }
+
+  [array writeToFile:[self invalidTermsCacheFilePath] atomically:YES];
+  NSLog(@"%d invalid terms written", array.count);
 }
 
 
-- (NSString *)cacheFilePath {
+- (NSString *)validTermsCacheFilePath {
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-  NSString *documentsDirectory = [paths objectAtIndex:0];
+  NSString *cacheDirectory = [paths objectAtIndex:0];
 
-  return [documentsDirectory stringByAppendingPathComponent:@"validTerms.txt"];
+  return [cacheDirectory stringByAppendingPathComponent:@"validTerms.txt"];
 }
 
+
+- (NSString *)invalidTermsCacheFilePath {
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+  NSString *cacheDirectory = [paths objectAtIndex:0];
+
+  return [cacheDirectory stringByAppendingPathComponent:@"invalidTerms.txt"];
+}
 
 # pragma mark - definition / completion lookup && guesses
 
@@ -82,10 +105,16 @@
     return YES;
   }
 
+  if ([self.invalidTermsCache containsObject:term]) {
+    return NO;
+  }
+
   BOOL hasDefinition = [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:term];
 
   if (hasDefinition) {
     [self.validTermsCache addObject:term];
+  } else {
+    [self.invalidTermsCache addObject:term];
   }
 
   return hasDefinition;
