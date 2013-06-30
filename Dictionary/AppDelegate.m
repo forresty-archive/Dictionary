@@ -8,11 +8,14 @@
 
 #import "AppDelegate.h"
 #import "MainViewController.h"
+#import "Dictionary.h"
 
 @implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+  [self copyCacheIfNeeded];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
@@ -23,6 +26,28 @@
   [self.window makeKeyAndVisible];
 
   return YES;
+}
+
+
+- (void)copyCacheIfNeeded {
+  BOOL needReload = NO;
+
+  NSString *bundleValidTermsCacheFilePath = [[NSBundle mainBundle] pathForResource:@"validTerms" ofType:@"txt"];
+  if (![[NSFileManager defaultManager] fileExistsAtPath:[[Dictionary sharedInstance] validTermsCacheFilePath]]) {
+    [[NSFileManager defaultManager] copyItemAtPath:bundleValidTermsCacheFilePath toPath:[[Dictionary sharedInstance] validTermsCacheFilePath] error:nil];
+    needReload = YES;
+  }
+
+  NSString *bundleInvalidTermsCacheFilePath = [[NSBundle mainBundle] pathForResource:@"invalidTerms" ofType:@"txt"];
+
+  if (![[NSFileManager defaultManager] fileExistsAtPath:[[Dictionary sharedInstance] invalidTermsCacheFilePath]]) {
+    [[NSFileManager defaultManager] copyItemAtPath:bundleInvalidTermsCacheFilePath toPath:[[Dictionary sharedInstance] invalidTermsCacheFilePath] error:nil];
+    needReload = YES;
+  }
+
+  if (needReload) {
+    [[Dictionary sharedInstance] reloadCache];
+  }
 }
 
 
