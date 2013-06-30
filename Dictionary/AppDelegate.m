@@ -8,11 +8,14 @@
 
 #import "AppDelegate.h"
 #import "MainViewController.h"
+#import "Dictionary.h"
 
 @implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+  [self copyCacheIfNeeded];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
@@ -23,6 +26,17 @@
   [self.window makeKeyAndVisible];
 
   return YES;
+}
+
+
+- (void)copyCacheIfNeeded {
+  NSString *bundleCacheFilePath = [[NSBundle mainBundle] pathForResource:@"validTerms" ofType:@"txt"];
+//  NSLog(@"bundle path %@", bundleCacheFilePath);
+  if (![[NSFileManager defaultManager] fileExistsAtPath:[[Dictionary sharedInstance] cacheFilePath]]) {
+    // cache file not exist, copy from bundle
+    [[NSFileManager defaultManager] copyItemAtPath:bundleCacheFilePath toPath:[[Dictionary sharedInstance] cacheFilePath] error:nil];
+    [[Dictionary sharedInstance] reloadCache];
+  }
 }
 
 

@@ -12,7 +12,7 @@
 
 @interface Dictionary ()
 
-@property NSMutableSet *validTermsCache;
+//@property NSMutableSet *validTermsCache;
 @property UITextChecker *textChecker;
 
 @end
@@ -41,8 +41,7 @@
   self = [super init];
 
 //  _validTermsCache = [[NSMutableSet alloc] init];
-  _validTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithContentsOfFile:[self cacheFilePath]]];
-  NSLog(@"%d terms read", self.validTermsCache.count);
+  [self reloadCache];
 
   _textChecker = [[UITextChecker alloc] init];
 
@@ -51,6 +50,10 @@
   return self;
 }
 
+- (void)reloadCache {
+  _validTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithContentsOfFile:[self cacheFilePath]]];
+  NSLog(@"%d terms read", self.validTermsCache.count);
+}
 
 - (void)saveCache {
   NSMutableArray *array = [@[] mutableCopy];
