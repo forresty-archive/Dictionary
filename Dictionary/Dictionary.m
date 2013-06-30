@@ -36,7 +36,7 @@
   NSMutableString *result = [@"" mutableCopy];
 
   for (NSString *term in self) {
-    [result appendString:term];
+    [result appendString:[term lowercaseString]];
     [result appendString:@"\n"];
   }
 
@@ -140,20 +140,22 @@
 
 
 - (BOOL)hasDefinitionForTerm:(NSString *)term {
-  if ([self.validTermsCache containsObject:term]) {
+  NSString *lowercaseTerm = [term lowercaseString];
+
+  if ([self.validTermsCache containsObject:lowercaseTerm]) {
     return YES;
   }
 
-  if ([self.invalidTermsCache containsObject:term]) {
+  if ([self.invalidTermsCache containsObject:lowercaseTerm]) {
     return NO;
   }
 
-  BOOL hasDefinition = [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:term];
+  BOOL hasDefinition = [UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:lowercaseTerm];
 
   if (hasDefinition) {
-    [self.validTermsCache addObject:term];
+    [self.validTermsCache addObject:lowercaseTerm];
   } else {
-    [self.invalidTermsCache addObject:term];
+    [self.invalidTermsCache addObject:lowercaseTerm];
   }
 
   return hasDefinition;
