@@ -13,12 +13,6 @@
 #import "DictionaryTermCell.h"
 #import "DictionaryViewDefinitions.h"
 
-typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
-  DictionaryTableViewCellTypeNormal,
-  DictionaryTableViewCellTypeAction,
-  DictionaryTableViewCellTypeDisabled
-};
-
 
 @interface MainViewController ()
 
@@ -152,47 +146,6 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
 }
 
 
-# pragma mark - view manipulation
-
-
-- (void)makeCellNormal:(UITableViewCell *)cell withText:(NSString *)text {
-  [self makeCell:cell withText:text type:DictionaryTableViewCellTypeNormal];
-}
-
-
-- (void)disableCell:(UITableViewCell *)cell withText:(NSString *)text {
-  [self makeCell:cell withText:text type:DictionaryTableViewCellTypeDisabled];
-
-  cell.textLabel.textColor = [UIColor grayColor];
-  cell.selectionStyle = UITableViewCellSelectionStyleNone;
-  cell.accessoryType = UITableViewCellAccessoryNone;
-}
-
-
-- (void)makeActionCell:(UITableViewCell *)cell withText:(NSString *)text {
-  [self makeCell:cell withText:text type:DictionaryTableViewCellTypeAction];
-
-  cell.textLabel.textAlignment = NSTextAlignmentCenter;
-  cell.accessoryType = UITableViewCellAccessoryNone;
-  cell.textLabel.font = DICTIONARY_BASIC_ACTION_FONT;
-}
-
-
-# pragma mark private
-
-
-- (void)makeCell:(UITableViewCell *)cell withText:(NSString *)text type:(DictionaryTableViewCellType)type {
-  cell.tag = type;
-  cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-  cell.textLabel.textAlignment = NSTextAlignmentLeft;
-  cell.textLabel.font = DICTIONARY_BASIC_TEXT_FONT;
-  cell.textLabel.text = text;
-  cell.textLabel.textColor = DICTIONARY_BASIC_TEXT_COLOR;
-  cell.textLabel.highlightedTextColor = DICTIONARY_BASIC_TEXT_COLOR;
-}
-
-
 # pragma mark - UI presentation
 
 
@@ -212,7 +165,7 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDictionaryTermCellID];
+  DictionaryTermCell *cell = [tableView dequeueReusableCellWithIdentifier:kDictionaryTermCellID];
 
   if (!cell) {
     cell = [[DictionaryTermCell alloc] init];
@@ -297,29 +250,29 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
 # pragma mark private
 
 
-- (void)makeHistoryCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)makeHistoryCell:(DictionaryTermCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
   if (self.lookupHistory.count == 0) {
-    [self disableCell:cell withText:@"No history"];
+    [cell changeToType:DictionaryTableViewCellTypeDisabled withText:@"No history"];
   } else if (indexPath.row == self.lookupHistory.count) {
-    [self makeActionCell:cell withText:@"Clear History"];
+    [cell changeToType:DictionaryTableViewCellTypeAction withText:@"Clear History"];
   } else {
-    [self makeCellNormal:cell withText:[self.lookupHistory[indexPath.row] description]];
+    [cell changeToType:DictionaryTableViewCellTypeNormal withText:[self.lookupHistory[indexPath.row] description]];
   }
 }
 
 
-- (void)makeSearchResultCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)makeSearchResultCell:(DictionaryTermCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
   switch (self.lookupResponse.lookupState) {
     case DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet:
-      return [self disableCell:cell withText:@"Looking up..."];
+      return [cell changeToType:DictionaryTableViewCellTypeDisabled withText:@"Looking up..."];
     case DictionaryLookupProgressStateFoundNoCompletionsLookingUpGuessesButNoResultsYet:
-      return [self disableCell:cell withText:@"No results, guessing..."];
+      return [cell changeToType:DictionaryTableViewCellTypeDisabled withText:@"No results, guessing..."];
     case DictionaryLookupProgressStateHasPartialResults:
     case DictionaryLookupProgressStateFinishedWithCompletions:
     case DictionaryLookupProgressStateFinishedWithGuesses:
-      return [self makeCellNormal:cell withText:[self.lookupResponse.terms[indexPath.row] description]];
+      return [cell changeToType:DictionaryTableViewCellTypeNormal withText:self.lookupResponse.terms[indexPath.row]];
     default:
-      return [self disableCell:cell withText:@"No result"];
+      return [cell changeToType:DictionaryTableViewCellTypeDisabled withText:@"No result"];
   }
 }
 
