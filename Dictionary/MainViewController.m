@@ -10,17 +10,8 @@
 #import "LookupHistory.h"
 #import "LookupRequest.h"
 #import "LookupResponse.h"
-
-#define kCellID @"wordCellID"
-
-
-// from UIReferenceLibraryViewController
-#define DICTIONARY_BASIC_TINT_COLOR [UIColor colorWithRed:0.945098 green:0.933333 blue:0.898039 alpha:1]
-#define DICTIONARY_BASIC_TEXT_COLOR [UIColor colorWithRed:87.0/255 green:57.0/255 blue:32.0/255 alpha:1]
-//#define DICTIONARY_BASIC_CELL_SELECTED_COLOR [UIColor colorWithRed:175.0/255 green:114.0/255 blue:65.0/255 alpha:1]
-
-#define DICTIONARY_BASIC_TEXT_FONT [UIFont fontWithName:@"Baskerville" size:24]
-#define DICTIONARY_BASIC_ACTION_FONT [UIFont fontWithName:@"Helvetica-Bold" size:18]
+#import "DictionaryTermCell.h"
+#import "DictionaryViewDefinitions.h"
 
 typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
   DictionaryTableViewCellTypeNormal,
@@ -221,13 +212,10 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
+  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDictionaryTermCellID];
 
   if (!cell) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID];
-    UIView *backgroundView = [[UIView alloc] initWithFrame:cell.bounds];
-    backgroundView.backgroundColor = DICTIONARY_BASIC_TINT_COLOR;
-    cell.selectedBackgroundView = backgroundView;
+    cell = [[DictionaryTermCell alloc] init];
   }
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
