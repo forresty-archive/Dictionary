@@ -55,7 +55,7 @@
   [self buildLookupHistoryTableView];
   [self buildSearchDisplayController];
   [self setupViewConstraints];
-  [self setupAppearance];
+  [self setupUIAppearances];
 }
 
 
@@ -90,20 +90,16 @@
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[historyTableView]|" options:0 metrics:nil views:views]];
 }
 
-- (void)setupAppearance {
+
+- (void)setupUIAppearances {
   [[UISearchBar appearance] setTintColor:DICTIONARY_BASIC_TINT_COLOR];
 
-  [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                                                                DICTIONARY_BASIC_TEXT_COLOR,
-                                                                                                UITextAttributeTextColor,
-                                                                                                DICTIONARY_BASIC_TINT_COLOR,
-                                                                                                UITextAttributeTextShadowColor,
-                                                                                                [NSValue valueWithUIOffset:UIOffsetMake(0, -1)],
-                                                                                                UITextAttributeTextShadowOffset,
-                                                                                                nil]
-                                                                                      forState:UIControlStateNormal];
+  // http://stackoverflow.com/questions/11572372/modifying-uisearchbar-cancel-button-font-text-color-and-style
+  NSDictionary *attributes = @{ UITextAttributeTextColor: DICTIONARY_BASIC_TEXT_COLOR,
+                          UITextAttributeTextShadowColor: DICTIONARY_BASIC_TINT_COLOR,
+                         UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, -1)] };
+  [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTitleTextAttributes:attributes forState:UIControlStateNormal];
 
-  //  self.lookupHistoryTableView.backgroundColor = BASIC_TINT_COLOR;
   UITableViewHeaderFooterView *headerViewProxy = [UITableViewHeaderFooterView appearance];
   headerViewProxy.tintColor = DICTIONARY_BASIC_TEXT_COLOR;
 

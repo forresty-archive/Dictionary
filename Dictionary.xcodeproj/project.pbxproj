@@ -27,6 +27,7 @@
 		68E5E7031779389900AB0684 /* LookupHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E5E7021779389900AB0684 /* LookupHistory.m */; };
 		68E6AED2149786A10034486E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68E6AED1149786A10034486E /* Icon.png */; };
 		68EECF921781D57C000166FD /* DictionaryTermCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EECF911781D57C000166FD /* DictionaryTermCell.m */; };
+		68EECF971781E04A000166FD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2B14760152004C3F8C /* CoreGraphics.framework */; };
 		68FDC3171781424A00D167CC /* LookupResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FDC3161781424A00D167CC /* LookupResponse.m */; };
 		68FDC31A1781764500D167CC /* invalidTerms.txt in Resources */ = {isa = PBXBuildFile; fileRef = 68FDC3181781764500D167CC /* invalidTerms.txt */; };
 		68FDC31B1781764500D167CC /* validTerms.txt in Resources */ = {isa = PBXBuildFile; fileRef = 68FDC3191781764500D167CC /* validTerms.txt */; };
@@ -103,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68EECF971781E04A000166FD /* CoreGraphics.framework in Frameworks */,
 				683A6A4514760152004C3F8C /* SenTestingKit.framework in Frameworks */,
 				683A6A4614760152004C3F8C /* UIKit.framework in Frameworks */,
 				683A6A4714760152004C3F8C /* Foundation.framework in Frameworks */,

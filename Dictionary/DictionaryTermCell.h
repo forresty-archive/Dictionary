@@ -26,4 +26,5 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
 
 - (void)changeToType:(DictionaryTableViewCellType)type;
 
+
 @end
