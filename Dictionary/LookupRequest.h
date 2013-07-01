@@ -8,18 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void(^DictionaryLookupPartialResult)(NSArray *partialResults);
+@class LookupResponse;
 
+typedef void(^DictionaryLookupProgress)(LookupResponse* response);
 
 
 @interface LookupRequest : NSObject
 
 
-@property (nonatomic) BOOL lookingUpCompletions;
+- (void)startLookingUpDictionaryWithTerm:(NSString *)term existingTerms:(NSArray *)existingTerms batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupProgress)block;
 
-@property (nonatomic) BOOL hasResults;
-
-- (void)startLookingUpDictionaryWithTerm:(NSString *)term batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupPartialResult)block;
-
+- (void)startLookingUpDictionaryWithTerm:(NSString *)term existingTerms:(NSArray *)existingTerms progressBlock:(DictionaryLookupProgress)block;
 
 @end
