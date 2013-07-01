@@ -15,7 +15,6 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
   DictionaryTableViewCellTypeNormal,
   DictionaryTableViewCellTypeAction,
   DictionaryTableViewCellTypeDisabled,
-  DictionaryTableViewCellTypeHighlighted,
 };
 
 

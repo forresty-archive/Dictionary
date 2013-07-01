@@ -11,6 +11,7 @@
 #import "LookupRequest.h"
 #import "LookupResponse.h"
 #import "DictionaryTermCell.h"
+#import "DictionaryTableHeaderView.h"
 #import "DictionaryViewDefinitions.h"
 
 
@@ -23,8 +24,6 @@
 @property LookupHistory *lookupHistory;
 @property LookupRequest *lookupRequest;
 @property LookupResponse *lookupResponse;
-
-@property NSIndexPath *lastHighlightedIndexPath;
 
 @end
 
@@ -182,18 +181,6 @@
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-  if (tableView == self.lookupHistoryTableView) {
-    return @"History";
-  }
-  if (self.lookupResponse.lookupState == DictionaryLookupProgressStateFinishedWithGuesses) {
-    return @"Did you mean?";
-  }
-
-  return nil;
-}
-
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     switch (self.lookupResponse.lookupState) {
@@ -275,46 +262,25 @@
 
 # pragma mark - UITableViewDelegate
 
-
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-//  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 300, 30)];
-//  label.backgroundColor = DICTIONARY_BASIC_TEXT_COLOR;
-//  label.textColor = [UIColor whiteColor];
-//  label.text = @"History";
-//  label.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
-//
-//  return label;
-//}
-
-
 # pragma mark view customization
 
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+  if (tableView == self.lookupHistoryTableView) {
+    return [DictionaryTableHeaderView viewWithText:@"History"];
+  }
+  if (self.lookupResponse.lookupState == DictionaryLookupProgressStateFinishedWithGuesses) {
+    return [DictionaryTableHeaderView viewWithText:@"Did you mean?"];
+  }
+
+  return nil;
+}
+
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-  if ([self tableView:tableView titleForHeaderInSection:section]) {
-    return 30;
-  }
+  UIView *headerView = [self tableView:tableView viewForHeaderInSection:section];
 
-  return -1;
-}
-
-
-- (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
-  DictionaryTermCell *cell = (DictionaryTermCell *)[tableView cellForRowAtIndexPath:indexPath];
-  if (cell.tag == DictionaryTableViewCellTypeNormal) {
-    self.lastHighlightedIndexPath = indexPath;
-    [cell changeToType:DictionaryTableViewCellTypeHighlighted];
-  }
-}
-
-
--(void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath {
-  // indexPath incorrect
-  // see http://openradar.appspot.com/13731538
-  DictionaryTermCell *cell = (DictionaryTermCell *)[tableView cellForRowAtIndexPath:self.lastHighlightedIndexPath];
-  if (cell.tag == DictionaryTableViewCellTypeHighlighted) {
-    [cell changeToType:DictionaryTableViewCellTypeNormal];
-  }
+  return headerView.bounds.size.height;
 }
 
 
