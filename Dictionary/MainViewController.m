@@ -19,6 +19,8 @@
 #define DICTIONARY_BASIC_TEXT_COLOR [UIColor colorWithRed:87.0/255 green:57.0/255 blue:32.0/255 alpha:1]
 //#define DICTIONARY_BASIC_CELL_SELECTED_COLOR [UIColor colorWithRed:175.0/255 green:114.0/255 blue:65.0/255 alpha:1]
 
+#define DICTIONARY_BASIC_TEXT_FONT [UIFont fontWithName:@"Baskerville" size:24]
+#define DICTIONARY_BASIC_ACTION_FONT [UIFont fontWithName:@"Helvetica-Bold" size:18]
 
 typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
   DictionaryTableViewCellTypeNormal,
@@ -162,26 +164,14 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
 # pragma mark - view manipulation
 
 
-- (void)makeCellDefault:(UITableViewCell *)cell withText:(NSString *)text {
-  cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-  cell.textLabel.textAlignment = NSTextAlignmentLeft;
-  cell.textLabel.font = [UIFont fontWithName:@"Baskerville" size:24];
-  cell.textLabel.text = text;
-  cell.textLabel.highlightedTextColor = DICTIONARY_BASIC_TEXT_COLOR;
-}
-
-
 - (void)makeCellNormal:(UITableViewCell *)cell withText:(NSString *)text {
-  [self makeCellDefault:cell withText:text];
-  cell.tag = DictionaryTableViewCellTypeNormal;
-  cell.textLabel.textColor = DICTIONARY_BASIC_TEXT_COLOR;
+  [self makeCell:cell withText:text type:DictionaryTableViewCellTypeNormal];
 }
 
 
 - (void)disableCell:(UITableViewCell *)cell withText:(NSString *)text {
-  [self makeCellDefault:cell withText:text];
-  cell.tag = DictionaryTableViewCellTypeDisabled;
+  [self makeCell:cell withText:text type:DictionaryTableViewCellTypeDisabled];
+
   cell.textLabel.textColor = [UIColor grayColor];
   cell.selectionStyle = UITableViewCellSelectionStyleNone;
   cell.accessoryType = UITableViewCellAccessoryNone;
@@ -189,11 +179,26 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
 
 
 - (void)makeActionCell:(UITableViewCell *)cell withText:(NSString *)text {
-  [self makeCellNormal:cell withText:text];
-  cell.tag = DictionaryTableViewCellTypeAction;
+  [self makeCell:cell withText:text type:DictionaryTableViewCellTypeAction];
+
   cell.textLabel.textAlignment = NSTextAlignmentCenter;
   cell.accessoryType = UITableViewCellAccessoryNone;
-  cell.textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
+  cell.textLabel.font = DICTIONARY_BASIC_ACTION_FONT;
+}
+
+
+# pragma mark private
+
+
+- (void)makeCell:(UITableViewCell *)cell withText:(NSString *)text type:(DictionaryTableViewCellType)type {
+  cell.tag = type;
+  cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+  cell.textLabel.textAlignment = NSTextAlignmentLeft;
+  cell.textLabel.font = DICTIONARY_BASIC_TEXT_FONT;
+  cell.textLabel.text = text;
+  cell.textLabel.textColor = DICTIONARY_BASIC_TEXT_COLOR;
+  cell.textLabel.highlightedTextColor = DICTIONARY_BASIC_TEXT_COLOR;
 }
 
 
@@ -227,7 +232,7 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     [self makeSearchResultCell:cell forRowAtIndexPath:indexPath];
-  } else if (tableView == self.lookupHistoryTableView) {
+  } else {
     [self makeHistoryCell:cell forRowAtIndexPath:indexPath];
   }
 
@@ -273,6 +278,9 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
     return self.lookupHistory.count + 1;
   }
 }
+
+
+# pragma mark delete history
 
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -342,6 +350,9 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
 //}
 
 
+# pragma mark view customization
+
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
   if ([self tableView:tableView titleForHeaderInSection:section]) {
     return 30;
@@ -368,6 +379,9 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   }
 }
+
+
+# pragma mark user actions
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
