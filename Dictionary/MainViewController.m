@@ -11,6 +11,7 @@
 #import "LookupRequest.h"
 #import "LookupResponse.h"
 #import "DictionaryTermCell.h"
+#import "DictionaryTableHeaderView.h"
 #import "DictionaryViewDefinitions.h"
 
 
@@ -180,18 +181,6 @@
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-  if (tableView == self.lookupHistoryTableView) {
-    return @"History";
-  }
-  if (self.lookupResponse.lookupState == DictionaryLookupProgressStateFinishedWithGuesses) {
-    return @"Did you mean?";
-  }
-
-  return nil;
-}
-
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     switch (self.lookupResponse.lookupState) {
@@ -273,27 +262,25 @@
 
 # pragma mark - UITableViewDelegate
 
-
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-//  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 300, 30)];
-//  label.backgroundColor = DICTIONARY_BASIC_TEXT_COLOR;
-//  label.textColor = [UIColor whiteColor];
-//  label.text = @"History";
-//  label.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
-//
-//  return label;
-//}
-
-
 # pragma mark view customization
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-  if ([self tableView:tableView titleForHeaderInSection:section]) {
-    return 30;
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+  if (tableView == self.lookupHistoryTableView) {
+    return [DictionaryTableHeaderView viewWithText:@"History"];
+  }
+  if (self.lookupResponse.lookupState == DictionaryLookupProgressStateFinishedWithGuesses) {
+    return [DictionaryTableHeaderView viewWithText:@"Did you mean?"];
   }
 
-  return -1;
+  return nil;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+  UIView *headerView = [self tableView:tableView viewForHeaderInSection:section];
+
+  return headerView.bounds.size.height;
 }
 
 
