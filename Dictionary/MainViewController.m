@@ -261,12 +261,14 @@
 
 
 - (void)makeSearchResultCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (self.lookupResponse.lookupState == DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet) {
-    [self disableCell:cell withText:@"Looking up..."];
-  } else if (self.lookupResponse.lookupState == DictionaryLookupProgressStateHasPartialResults || self.lookupResponse.lookupState == DictionaryLookupProgressStateFinishedWithCompletions) {
-    [self makeCellNormal:cell withText:[self.lookupResponse.terms[indexPath.row] description]];
-  } else {
-    [self disableCell:cell withText:@"No result"];
+  switch (self.lookupResponse.lookupState) {
+    case DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet:
+      return [self disableCell:cell withText:@"Looking up..."];
+    case DictionaryLookupProgressStateHasPartialResults:
+    case DictionaryLookupProgressStateFinishedWithCompletions:
+      return [self makeCellNormal:cell withText:[self.lookupResponse.terms[indexPath.row] description]];
+    default:
+      return [self disableCell:cell withText:@"No result"];
   }
 }
 
