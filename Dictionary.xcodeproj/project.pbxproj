@@ -29,6 +29,8 @@
 		68FDC3171781424A00D167CC /* LookupResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FDC3161781424A00D167CC /* LookupResponse.m */; };
 		68FDC31A1781764500D167CC /* invalidTerms.txt in Resources */ = {isa = PBXBuildFile; fileRef = 68FDC3181781764500D167CC /* invalidTerms.txt */; };
 		68FDC31B1781764500D167CC /* validTerms.txt in Resources */ = {isa = PBXBuildFile; fileRef = 68FDC3191781764500D167CC /* validTerms.txt */; };
+		68FDC31E17817DA600D167CC /* libFlurry_4.2.2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68FDC31D17817DA600D167CC /* libFlurry_4.2.2.a */; };
+		68FDC32417817F7800D167CC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68FDC32317817F7800D167CC /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +75,9 @@
 		68FDC3161781424A00D167CC /* LookupResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LookupResponse.m; sourceTree = "<group>"; };
 		68FDC3181781764500D167CC /* invalidTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = invalidTerms.txt; sourceTree = "<group>"; };
 		68FDC3191781764500D167CC /* validTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = validTerms.txt; sourceTree = "<group>"; };
+		68FDC31C17817DA600D167CC /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		68FDC31D17817DA600D167CC /* libFlurry_4.2.2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurry_4.2.2.a; path = Dictionary/libFlurry_4.2.2.a; sourceTree = "<group>"; };
+		68FDC32317817F7800D167CC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		AA4BCB22A4CB48EEAC5E0BC8 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -81,10 +86,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68FDC32417817F7800D167CC /* SystemConfiguration.framework in Frameworks */,
 				683A6A2814760152004C3F8C /* UIKit.framework in Frameworks */,
 				683A6A2A14760152004C3F8C /* Foundation.framework in Frameworks */,
 				683A6A2C14760152004C3F8C /* CoreGraphics.framework in Frameworks */,
 				2659B76977BD40CB8C3FF315 /* libPods.a in Frameworks */,
+				68FDC31E17817DA600D167CC /* libFlurry_4.2.2.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,11 +135,13 @@
 		683A6A2614760152004C3F8C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68FDC32317817F7800D167CC /* SystemConfiguration.framework */,
 				683A6A2714760152004C3F8C /* UIKit.framework */,
 				683A6A2914760152004C3F8C /* Foundation.framework */,
 				683A6A2B14760152004C3F8C /* CoreGraphics.framework */,
 				683A6A4414760152004C3F8C /* SenTestingKit.framework */,
 				206B5FAD4EF0452B9D4F0FCB /* libPods.a */,
+				68FDC31D17817DA600D167CC /* libFlurry_4.2.2.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -140,6 +149,7 @@
 		683A6A2F14760152004C3F8C /* Dictionary */ = {
 			isa = PBXGroup;
 			children = (
+				68FDC31C17817DA600D167CC /* Flurry.h */,
 				68E5E6FD1778753C00AB0684 /* Controllers */,
 				68E5E6FC177874E200AB0684 /* Models */,
 				683A6A3814760152004C3F8C /* AppDelegate.h */,
@@ -458,6 +468,10 @@
 				GCC_PREFIX_HEADER = "Dictionary/Dictionary-Prefix.pch";
 				INFOPLIST_FILE = "Dictionary/Dictionary-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Dictionary\"",
+				);
 				OTHER_CFLAGS = "-Wall";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -477,6 +491,10 @@
 				GCC_PREFIX_HEADER = "Dictionary/Dictionary-Prefix.pch";
 				INFOPLIST_FILE = "Dictionary/Dictionary-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Dictionary\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";

@@ -9,11 +9,14 @@
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import "Dictionary.h"
+#import "Flurry.h"
 
 @implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+  [Flurry startSession:@"29W38MKGVJXS7Y92C4ZX"];
 
   [self copyCacheIfNeeded];
 
