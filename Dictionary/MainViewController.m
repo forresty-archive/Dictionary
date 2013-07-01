@@ -310,7 +310,7 @@
     return NO;
   }
 
-  [self.lookupRequest startLookingUpDictionaryWithTerm:searchString existingTerms:self.lookupResponse.terms batchCount:3 progressBlock:^(LookupResponse *response) {
+  [self.lookupRequest startLookingUpDictionaryWithTerm:searchString existingTerms:self.lookupResponse.terms progressBlock:^(LookupResponse *response) {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
       self.lookupResponse = response;
       [self.searchDisplayController.searchResultsTableView reloadData];

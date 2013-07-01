@@ -36,6 +36,11 @@
 }
 
 
+- (void)startLookingUpDictionaryWithTerm:(NSString *)term existingTerms:(NSArray *)existingTerms progressBlock:(DictionaryLookupProgress)block {
+  [self startLookingUpDictionaryWithTerm:term existingTerms:existingTerms batchCount:3 progressBlock:block];
+}
+
+
 - (void)startLookingUpDictionaryWithTerm:(NSString *)term existingTerms:(NSArray *)existingTerms batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupProgress)block {
 
   [self.completionLookupOperationQueue cancelAllOperations];
