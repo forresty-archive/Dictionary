@@ -29,7 +29,7 @@
 @implementation MainViewController
 
 
-#pragma mark - View lifecycle
+# pragma mark - View lifecycle
 
 
 - (void)viewDidLoad {
@@ -37,7 +37,6 @@
 
   _lookupHistory = [LookupHistory sharedInstance];
   _lookupRequest = [[LookupRequest alloc] init];
-  _lookupResponse = [[LookupResponse alloc] init];
   _lookupResponse = [LookupResponse responseWithProgressState:DictionaryLookupProgressStateIdle terms:@[]];
 
   [self buildViews];
@@ -253,12 +252,10 @@
 - (void)makeHistoryCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
   if (self.lookupHistory.count == 0) {
     [self disableCell:cell withText:@"No history"];
+  } else if (indexPath.row == self.lookupHistory.count) {
+    [self makeActionCell:cell withText:@"Clear History"];
   } else {
-    if (indexPath.row == self.lookupHistory.count) {
-      [self makeActionCell:cell withText:@"Clear History"];
-    } else {
-      [self makeCellNormal:cell withText:[self.lookupHistory[indexPath.row] description]];
-    }
+    [self makeCellNormal:cell withText:[self.lookupHistory[indexPath.row] description]];
   }
 }
 
