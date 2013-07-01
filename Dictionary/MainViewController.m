@@ -325,8 +325,10 @@
 //  }];
 
   [self.lookupRequest startLookingUpDictionaryWithTerm:searchString existingTerms:self.lookupResponse.terms batchCount:3 progressBlock:^(LookupResponse *response) {
-    self.lookupResponse = response;
-    [self.searchDisplayController.searchResultsTableView reloadData];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      self.lookupResponse = response;
+      [self.searchDisplayController.searchResultsTableView reloadData];
+    }];
 //    [self insertPartialResults:partialResults];
   }];
 

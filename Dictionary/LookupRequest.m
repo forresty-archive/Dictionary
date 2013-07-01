@@ -47,13 +47,11 @@
 
     NSMutableArray *terms = [self filteredSearchResultForSearchString:term existingTerms:existingTerms];
 
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      if (terms.count > 0) {
-        block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
-      } else {
-        block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet terms:terms]);
-      }
-    }];
+    if (terms.count > 0) {
+      block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
+    } else {
+      block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet terms:terms]);
+    }
 
     [NSThread sleepForTimeInterval:0.3];
 
@@ -65,9 +63,7 @@
       [terms addObject:term];
 
       if (![weakOperation isCancelled]) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
-        }];
+        block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
       }
     }
 
@@ -86,20 +82,16 @@
 
       // send in batch
       if ([terms count] % batchCount == 3) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
-        }];
+        block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
       }
     }
 
     if (![weakOperation isCancelled]) {
-      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        if (terms.count > 0) {
-          block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithCompletions terms:terms]);
-        } else {
-          block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithNoResultsAtAll terms:terms]);
-        }
-      }];
+      if (terms.count > 0) {
+        block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithCompletions terms:terms]);
+      } else {
+        block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithNoResultsAtAll terms:terms]);
+      }
     }
   }];
 
