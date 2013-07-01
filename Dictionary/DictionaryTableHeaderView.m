@@ -8,11 +8,6 @@
 
 #import "DictionaryTableHeaderView.h"
 
-#import "DictionaryViewDefinitions.h"
-
-@interface DictionaryTableHeaderView ()
-
-@end
 
 @implementation DictionaryTableHeaderView
 
@@ -29,7 +24,6 @@
 
 + (instancetype)sharedInstanceWithText:(NSString *)text {
   static NSMutableDictionary* _instances = nil;
-
 
   static dispatch_once_t onceToken;
 
@@ -50,7 +44,7 @@
   self = [super initWithFrame:CGRectMake(0, 0, 320, 30)];
 
   if (self) {
-    self.backgroundColor = DICTIONARY_BASIC_TEXT_COLOR;
+    self.backgroundColor = [UIColor colorWithRed:130.0/255 green:85.0/255 blue:48.0/255 alpha:1];
     self.alpha = 0.9;
 
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 310, 30)];
