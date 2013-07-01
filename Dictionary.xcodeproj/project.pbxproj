@@ -29,6 +29,8 @@
 		68EECF921781D57C000166FD /* DictionaryTermCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EECF911781D57C000166FD /* DictionaryTermCell.m */; };
 		68EECF971781E04A000166FD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2B14760152004C3F8C /* CoreGraphics.framework */; };
 		68EECF9A1781F11E000166FD /* DictionaryTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EECF991781F11E000166FD /* DictionaryTableHeaderView.m */; };
+		68EECF9D17820536000166FD /* 57.png in Resources */ = {isa = PBXBuildFile; fileRef = 68EECF9B17820536000166FD /* 57.png */; };
+		68EECF9E17820536000166FD /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = 68EECF9C17820536000166FD /* 114.png */; };
 		68FDC3171781424A00D167CC /* LookupResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FDC3161781424A00D167CC /* LookupResponse.m */; };
 		68FDC31A1781764500D167CC /* invalidTerms.txt in Resources */ = {isa = PBXBuildFile; fileRef = 68FDC3181781764500D167CC /* invalidTerms.txt */; };
 		68FDC31B1781764500D167CC /* validTerms.txt in Resources */ = {isa = PBXBuildFile; fileRef = 68FDC3191781764500D167CC /* validTerms.txt */; };
@@ -79,6 +81,8 @@
 		68EECF941781D679000166FD /* DictionaryViewDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DictionaryViewDefinitions.h; sourceTree = "<group>"; };
 		68EECF981781F11E000166FD /* DictionaryTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DictionaryTableHeaderView.h; sourceTree = "<group>"; };
 		68EECF991781F11E000166FD /* DictionaryTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DictionaryTableHeaderView.m; sourceTree = "<group>"; };
+		68EECF9B17820536000166FD /* 57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 57.png; sourceTree = "<group>"; };
+		68EECF9C17820536000166FD /* 114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 114.png; sourceTree = "<group>"; };
 		68FDC3151781424A00D167CC /* LookupResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LookupResponse.h; sourceTree = "<group>"; };
 		68FDC3161781424A00D167CC /* LookupResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LookupResponse.m; sourceTree = "<group>"; };
 		68FDC3181781764500D167CC /* invalidTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = invalidTerms.txt; sourceTree = "<group>"; };
@@ -120,6 +124,8 @@
 		683A6A1814760151004C3F8C = {
 			isa = PBXGroup;
 			children = (
+				68EECF9B17820536000166FD /* 57.png */,
+				68EECF9C17820536000166FD /* 114.png */,
 				68FDC3181781764500D167CC /* invalidTerms.txt */,
 				68FDC3191781764500D167CC /* validTerms.txt */,
 				6892932017705C46005187F0 /* Default-568h@2x.png */,
@@ -312,6 +318,8 @@
 				6892932117705C46005187F0 /* Default-568h@2x.png in Resources */,
 				68FDC31A1781764500D167CC /* invalidTerms.txt in Resources */,
 				68FDC31B1781764500D167CC /* validTerms.txt in Resources */,
+				68EECF9D17820536000166FD /* 57.png in Resources */,
+				68EECF9E17820536000166FD /* 114.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
