@@ -13,6 +13,13 @@
 
 #define kCellID @"wordCellID"
 
+
+// from UIReferenceLibraryViewController
+
+#define DICTIONARY_BASIC_TINT_COLOR [UIColor colorWithRed:0.945098 green:0.933333 blue:0.898039 alpha:1]
+#define DICTIONARY_BASIC_TEXT_COLOR [UIColor colorWithRed:87.0/255 green:57.0/255 blue:32.0/255 alpha:1]
+
+
 @interface MainViewController ()
 
 @property UISearchBar *searchBar;
@@ -44,6 +51,8 @@
 
 
 - (void)buildViews {
+  [[UISearchBar appearance] setTintColor:DICTIONARY_BASIC_TINT_COLOR];
+
   _searchBar = [[UISearchBar alloc] init];
   _lookupHistoryTableView = [[UITableView alloc] init];
   _dictionarySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
@@ -56,6 +65,15 @@
 
 
 - (void)buildSearchBar {
+  [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                                                                DICTIONARY_BASIC_TEXT_COLOR,
+                                                                                                UITextAttributeTextColor,
+                                                                                                DICTIONARY_BASIC_TINT_COLOR,
+                                                                                                UITextAttributeTextShadowColor,
+                                                                                                [NSValue valueWithUIOffset:UIOffsetMake(0, -1)],
+                                                                                                UITextAttributeTextShadowOffset,
+                                                                                                nil]
+                                                                                      forState:UIControlStateNormal];
   self.searchBar.delegate = self;
   self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
   [self.searchBar sizeToFit];
@@ -63,6 +81,12 @@
 
 
 - (void)buildLookupHistoryTableView {
+//  self.lookupHistoryTableView.backgroundColor = BASIC_TINT_COLOR;
+  [[UITableViewHeaderFooterView appearance] setTintColor:DICTIONARY_BASIC_TINT_COLOR];
+  UILabel *labelProxy = [UILabel appearanceWhenContainedIn:[UITableViewHeaderFooterView class], nil];
+  labelProxy.textColor = DICTIONARY_BASIC_TEXT_COLOR;
+  labelProxy.font = [UIFont boldSystemFontOfSize:16];
+
   [self.lookupHistoryTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
   self.lookupHistoryTableView.dataSource = self;
   self.lookupHistoryTableView.delegate = self;
