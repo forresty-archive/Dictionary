@@ -310,9 +310,6 @@
     return NO;
   }
 
-  self.lookupResponse = [LookupResponse responseWithProgressState:DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet terms:@[]];
-  [self.dictionarySearchDisplayController.searchResultsTableView reloadData];
-
 //  NSMutableArray *filteredResult = [self filteredSearchResultForSearchString:searchString];
 //
 //  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -327,7 +324,7 @@
 //    [self.searchDisplayController.searchResultsTableView reloadData];
 //  }];
 
-  [self.lookupRequest startLookingUpDictionaryWithTerm:searchString batchCount:3 progressBlock:^(LookupResponse *response) {
+  [self.lookupRequest startLookingUpDictionaryWithTerm:searchString existingTerms:self.lookupResponse.terms batchCount:3 progressBlock:^(LookupResponse *response) {
     self.lookupResponse = response;
     [self.searchDisplayController.searchResultsTableView reloadData];
 //    [self insertPartialResults:partialResults];
@@ -350,19 +347,6 @@
 //  [self.completions sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 //    return [obj1 caseInsensitiveCompare:obj2];
 //  }];
-//}
-//
-//
-//- (NSMutableArray *)filteredSearchResultForSearchString:(NSString *)searchString {
-//  NSMutableArray *result = [@[] mutableCopy];
-//
-//  for (NSString *word in self.completions) {
-//    if ([word hasPrefix:searchString]) {
-//      [result addObject:word];
-//    }
-//  }
-//
-//  return result;
 //}
 
 

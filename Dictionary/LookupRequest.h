@@ -16,7 +16,7 @@ typedef void(^DictionaryLookupProgress)(LookupResponse* response);
 @interface LookupRequest : NSObject
 
 
-- (void)startLookingUpDictionaryWithTerm:(NSString *)term batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupProgress)block;
+- (void)startLookingUpDictionaryWithTerm:(NSString *)term existingTerms:(NSArray *)existingTerms batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupProgress)block;
 
 
 @end

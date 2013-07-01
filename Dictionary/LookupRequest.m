@@ -36,16 +36,24 @@
 }
 
 
-- (void)startLookingUpDictionaryWithTerm:(NSString *)term batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupProgress)block {
+- (void)startLookingUpDictionaryWithTerm:(NSString *)term existingTerms:(NSArray *)existingTerms batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupProgress)block {
 
   [self.completionLookupOperationQueue cancelAllOperations];
 
   NSBlockOperation *operation = [[NSBlockOperation alloc] init];
   __weak NSBlockOperation *weakOperation = operation;
 
-  NSMutableArray *terms = [@[] mutableCopy];
-
   [operation addExecutionBlock:^{
+
+    NSMutableArray *terms = [self filteredSearchResultForSearchString:term existingTerms:existingTerms];
+
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      if (terms.count > 0) {
+        block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
+      } else {
+        block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet terms:terms]);
+      }
+    }];
 
     [NSThread sleepForTimeInterval:0.3];
 
@@ -96,6 +104,22 @@
   }];
 
   [self.completionLookupOperationQueue addOperation:operation];
+}
+
+
+# pragma mark - private
+
+
+- (NSMutableArray *)filteredSearchResultForSearchString:(NSString *)searchString existingTerms:(NSArray *)existingTerms {
+  NSMutableArray *result = [@[] mutableCopy];
+
+  for (NSString *word in existingTerms) {
+    if ([word hasPrefix:searchString]) {
+      [result addObject:word];
+    }
+  }
+
+  return result;
 }
 
 
