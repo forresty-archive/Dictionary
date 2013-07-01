@@ -26,36 +26,35 @@
 
 - (void)changeToType:(DictionaryTableViewCellType)type withText:(NSString *)text {
   self.tag = type;
-  self.selectionStyle = UITableViewCellSelectionStyleBlue;
-  self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-  self.textLabel.textAlignment = NSTextAlignmentLeft;
-  self.textLabel.font = DICTIONARY_BASIC_TEXT_FONT;
-  self.textLabel.text = text;
-  self.textLabel.textColor = DICTIONARY_BASIC_TEXT_COLOR;
   self.textLabel.highlightedTextColor = DICTIONARY_BASIC_TEXT_COLOR;
+  self.textLabel.text = text;
 
   switch (type) {
-    case DictionaryTableViewCellTypeAction:
-      return [self makeActionWithText:text];
-    case DictionaryTableViewCellTypeDisabled:
-      return [self disableWithText:text];
-    default:
+    case DictionaryTableViewCellTypeNormal: {
+      self.selectionStyle = UITableViewCellSelectionStyleBlue;
+      self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+      self.textLabel.textAlignment = NSTextAlignmentLeft;
+      self.textLabel.font = DICTIONARY_BASIC_TEXT_FONT;
+      self.textLabel.textColor = DICTIONARY_BASIC_TEXT_COLOR;
       break;
+    }
+    case DictionaryTableViewCellTypeAction: {
+      self.selectionStyle = UITableViewCellSelectionStyleBlue;
+      self.accessoryType = UITableViewCellAccessoryNone;
+      self.textLabel.textAlignment = NSTextAlignmentCenter;
+      self.textLabel.font = DICTIONARY_BASIC_ACTION_FONT;
+      self.textLabel.textColor = DICTIONARY_BASIC_TEXT_COLOR;
+      break;
+    }
+    case DictionaryTableViewCellTypeDisabled: {
+      self.selectionStyle = UITableViewCellSelectionStyleNone;
+      self.accessoryType = UITableViewCellAccessoryNone;
+      self.textLabel.textAlignment = NSTextAlignmentLeft;
+      self.textLabel.font = DICTIONARY_BASIC_TEXT_FONT;
+      self.textLabel.textColor = [UIColor grayColor];
+      break;
+    }
   }
-}
-
-
-- (void)disableWithText:(NSString *)text {
-  self.textLabel.textColor = [UIColor grayColor];
-  self.selectionStyle = UITableViewCellSelectionStyleNone;
-  self.accessoryType = UITableViewCellAccessoryNone;
-}
-
-
-- (void)makeActionWithText:(NSString *)text {
-  self.textLabel.textAlignment = NSTextAlignmentCenter;
-  self.accessoryType = UITableViewCellAccessoryNone;
-  self.textLabel.font = DICTIONARY_BASIC_ACTION_FONT;
 }
 
 
