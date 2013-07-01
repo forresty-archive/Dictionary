@@ -13,7 +13,7 @@
 + (LookupResponse *)responseWithProgressState:(DictionaryLookupProgressState)state terms:(NSArray *)terms {
   LookupResponse *response = [[self alloc] init];
   response.lookupState = state;
-  response.terms = [terms sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+  response.terms = [[[NSSet setWithArray:terms] allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
     return [obj1 caseInsensitiveCompare:obj2];
   }];
 
