@@ -60,8 +60,6 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
 
 
 - (void)buildViews {
-  [[UISearchBar appearance] setTintColor:DICTIONARY_BASIC_TINT_COLOR];
-
   _searchBar = [[UISearchBar alloc] init];
   _lookupHistoryTableView = [[UITableView alloc] init];
   _dictionarySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
@@ -70,19 +68,11 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
   [self buildLookupHistoryTableView];
   [self buildSearchDisplayController];
   [self setupViewConstraints];
+  [self setupAppearance];
 }
 
 
 - (void)buildSearchBar {
-  [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                                                                DICTIONARY_BASIC_TEXT_COLOR,
-                                                                                                UITextAttributeTextColor,
-                                                                                                DICTIONARY_BASIC_TINT_COLOR,
-                                                                                                UITextAttributeTextShadowColor,
-                                                                                                [NSValue valueWithUIOffset:UIOffsetMake(0, -1)],
-                                                                                                UITextAttributeTextShadowOffset,
-                                                                                                nil]
-                                                                                      forState:UIControlStateNormal];
   self.searchBar.delegate = self;
   self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
   [self.searchBar sizeToFit];
@@ -90,15 +80,6 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
 
 
 - (void)buildLookupHistoryTableView {
-//  self.lookupHistoryTableView.backgroundColor = BASIC_TINT_COLOR;
-  UITableViewHeaderFooterView *headerViewProxy = [UITableViewHeaderFooterView appearance];
-  headerViewProxy.tintColor = DICTIONARY_BASIC_TEXT_COLOR;
-
-  UILabel *labelProxy = [UILabel appearanceWhenContainedIn:[UITableViewHeaderFooterView class], nil];
-  labelProxy.textColor = DICTIONARY_BASIC_TINT_COLOR;
-  labelProxy.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
-  labelProxy.shadowOffset = CGSizeZero;
-
   [self.lookupHistoryTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
   self.lookupHistoryTableView.dataSource = self;
   self.lookupHistoryTableView.delegate = self;
@@ -120,6 +101,29 @@ typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
   NSDictionary *views = NSDictionaryOfVariableBindings(historyTableView, self.view);
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[historyTableView]|" options:0 metrics:nil views:views]];
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[historyTableView]|" options:0 metrics:nil views:views]];
+}
+
+- (void)setupAppearance {
+  [[UISearchBar appearance] setTintColor:DICTIONARY_BASIC_TINT_COLOR];
+
+  [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                                                                DICTIONARY_BASIC_TEXT_COLOR,
+                                                                                                UITextAttributeTextColor,
+                                                                                                DICTIONARY_BASIC_TINT_COLOR,
+                                                                                                UITextAttributeTextShadowColor,
+                                                                                                [NSValue valueWithUIOffset:UIOffsetMake(0, -1)],
+                                                                                                UITextAttributeTextShadowOffset,
+                                                                                                nil]
+                                                                                      forState:UIControlStateNormal];
+
+  //  self.lookupHistoryTableView.backgroundColor = BASIC_TINT_COLOR;
+  UITableViewHeaderFooterView *headerViewProxy = [UITableViewHeaderFooterView appearance];
+  headerViewProxy.tintColor = DICTIONARY_BASIC_TEXT_COLOR;
+
+  UILabel *labelProxy = [UILabel appearanceWhenContainedIn:[UITableViewHeaderFooterView class], nil];
+  labelProxy.textColor = DICTIONARY_BASIC_TINT_COLOR;
+  labelProxy.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
+  labelProxy.shadowOffset = CGSizeZero;
 }
 
 
