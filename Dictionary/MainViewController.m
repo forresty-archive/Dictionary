@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "LookupHistory.h"
 #import "LookupRequest.h"
+#import "LookupResponse.h"
 //#import "MTStatusBarOverlay.h"
 
 #define kCellID @"wordCellID"
@@ -21,10 +22,7 @@
 
 @property LookupHistory *lookupHistory;
 @property LookupRequest *lookupRequest;
-
-@property NSMutableArray *completions;
-@property BOOL lookingUpCompletions;
-@property BOOL hasResults;
+@property LookupResponse *lookupResponse;
 
 @end
 
@@ -40,9 +38,10 @@
 
   _lookupHistory = [LookupHistory sharedInstance];
   _lookupRequest = [[LookupRequest alloc] init];
-  _completions = [@[] mutableCopy];
-  _lookingUpCompletions = NO;
-  _hasResults = NO;
+  _lookupResponse = [[LookupResponse alloc] init];
+  self.lookupResponse.lookupState = DictionaryLookupProgressStateIdle;
+  self.lookupResponse.terms = @[];
+
 
   [self buildViews];
 
@@ -236,10 +235,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if (!self.hasResults) {
+    if (self.lookupResponse.lookupState == DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet) {
       return 1;
-    } else if (self.completions.count > 0) {
-      return self.completions.count;
+    } else if (self.lookupResponse.lookupState == DictionaryLookupProgressStateHasPartialResults || self.lookupResponse.lookupState == DictionaryLookupProgressStateFinishedWithCompletions) {
+      return self.lookupResponse.terms.count;
     } else {
       return 1;
     }
@@ -292,10 +291,10 @@
 
 
 - (void)makeSearchResultCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (!self.hasResults) {
+  if (self.lookupResponse.lookupState == DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet) {
     [self disableCell:cell withText:@"Looking up..."];
-  } else if (self.completions.count > 0) {
-    [self makeCellNormal:cell withText:[self.completions[indexPath.row] description]];
+  } else if (self.lookupResponse.lookupState == DictionaryLookupProgressStateHasPartialResults || self.lookupResponse.lookupState == DictionaryLookupProgressStateFinishedWithCompletions) {
+    [self makeCellNormal:cell withText:[self.lookupResponse.terms[indexPath.row] description]];
   } else {
     [self disableCell:cell withText:@"No result"];
   }
@@ -309,10 +308,10 @@
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if (self.searchBar.text.length > 0 && self.completions.count > 0 && indexPath.section == 0) {
-      [self showDefinitionForTerm:self.completions[indexPath.row]];
+    if (self.searchBar.text.length > 0 && self.lookupResponse.terms.count > 0 && indexPath.section == 0) {
+      [self showDefinitionForTerm:self.lookupResponse.terms[indexPath.row]];
 
-    } else if (!self.hasResults) {
+    } else if (self.lookupResponse.lookupState == DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet) {
       // guessing, do nothing
       return;
 
@@ -340,24 +339,22 @@
     return NO;
   }
 
-  NSMutableArray *filteredResult = [self filteredSearchResultForSearchString:searchString];
+//  NSMutableArray *filteredResult = [self filteredSearchResultForSearchString:searchString];
+//
+//  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+//    if (filteredResult.count > 0) {
+//      self.completions = filteredResult;
+//    } else {
+//      self.lookingUpCompletions = YES;
+//      self.hasResults = NO;
+//      self.completions = [@[] mutableCopy];
+//    }
+//
+//    [self.searchDisplayController.searchResultsTableView reloadData];
+//  }];
 
-  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    if (filteredResult.count > 0) {
-      self.completions = filteredResult;
-    } else {
-      self.lookingUpCompletions = YES;
-      self.hasResults = NO;
-      self.completions = [@[] mutableCopy];
-    }
-
-    [self.searchDisplayController.searchResultsTableView reloadData];
-  }];
-
-  [self.lookupRequest startLookingUpDictionaryWithTerm:searchString batchCount:3 progressBlock:^(NSArray *partialResults) {
-    self.lookingUpCompletions = self.lookupRequest.lookingUpCompletions;
-    self.hasResults = self.lookupRequest.hasResults;
-    [self mergePartialResults:partialResults];
+  [self.lookupRequest startLookingUpDictionaryWithTerm:searchString batchCount:3 progressBlock:^(LookupResponse *response) {
+    self.lookupResponse = response;
     [self.searchDisplayController.searchResultsTableView reloadData];
 //    [self insertPartialResults:partialResults];
   }];
@@ -369,30 +366,30 @@
 # pragma mark private
 
 
-- (void)mergePartialResults:(NSArray *)partialResults {
-  for (NSString *result in partialResults) {
-    if (![self.completions containsObject:result] && [result hasPrefix:self.searchBar.text]) {
-      [self.completions addObject:result];
-    }
-  }
-
-  [self.completions sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-    return [obj1 caseInsensitiveCompare:obj2];
-  }];
-}
-
-
-- (NSMutableArray *)filteredSearchResultForSearchString:(NSString *)searchString {
-  NSMutableArray *result = [@[] mutableCopy];
-
-  for (NSString *word in self.completions) {
-    if ([word hasPrefix:searchString]) {
-      [result addObject:word];
-    }
-  }
-
-  return result;
-}
+//- (void)mergePartialResults:(NSArray *)partialResults {
+//  for (NSString *result in partialResults) {
+//    if (![self.completions containsObject:result] && [result hasPrefix:self.searchBar.text]) {
+//      [self.completions addObject:result];
+//    }
+//  }
+//
+//  [self.completions sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+//    return [obj1 caseInsensitiveCompare:obj2];
+//  }];
+//}
+//
+//
+//- (NSMutableArray *)filteredSearchResultForSearchString:(NSString *)searchString {
+//  NSMutableArray *result = [@[] mutableCopy];
+//
+//  for (NSString *word in self.completions) {
+//    if ([word hasPrefix:searchString]) {
+//      [result addObject:word];
+//    }
+//  }
+//
+//  return result;
+//}
 
 
 // Note: This will not work since UISearchDisplayController#searchResultsTableView is readonly :(
@@ -415,7 +412,7 @@
 
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-  if (searchBar.text.length > 0 && self.completions.count > 0 && [searchBar.text isEqualToString:self.completions[0]]) {
+  if (searchBar.text.length > 0 && self.lookupResponse.terms.count > 0 && [searchBar.text isEqualToString:self.lookupResponse.terms[0]]) {
     [self showDefinitionForTerm:searchBar.text];
   }
 }

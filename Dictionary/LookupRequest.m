@@ -8,7 +8,7 @@
 
 #import "LookupRequest.h"
 #import "Dictionary.h"
-
+#import "LookupResponse.h"
 
 @interface LookupRequest ()
 
@@ -25,8 +25,6 @@
 - (instancetype)init {
   self = [super init];
   if (self) {
-    _lookingUpCompletions = NO;
-    _hasResults = NO;
 
     _completionLookupOperationQueue = [[NSOperationQueue alloc] init];
 
@@ -37,16 +35,23 @@
 }
 
 
-- (void)startLookingUpDictionaryWithTerm:(NSString *)term batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupPartialResult)block {
-  self.lookingUpCompletions = YES;
-  self.hasResults = NO;
+- (void)startLookingUpDictionaryWithTerm:(NSString *)term batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupProgress)block {
 
   [self.completionLookupOperationQueue cancelAllOperations];
 
   NSBlockOperation *operation = [[NSBlockOperation alloc] init];
   __weak NSBlockOperation *weakOperation = operation;
 
+  NSMutableArray *terms = [@[] mutableCopy];
+
   [operation addExecutionBlock:^{
+
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      LookupResponse *response = [[LookupResponse alloc] init];
+      response.lookupState = DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet;
+      response.terms = terms;
+      block(response);
+    }];
 
     [NSThread sleepForTimeInterval:0.3];
 
@@ -57,8 +62,11 @@
     if ([self.dictionary hasDefinitionForTerm:term]) {
       if (![weakOperation isCancelled]) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          self.hasResults = YES;
-          block(@[term]);
+          [terms addObject:term];
+          LookupResponse *response = [[LookupResponse alloc] init];
+          response.lookupState = DictionaryLookupProgressStateHasPartialResults;
+          response.terms = terms;
+          block(response);
         }];
       }
     }
@@ -67,32 +75,38 @@
       return;
     }
 
-    NSMutableArray *partialResults = [@[] mutableCopy];
-
     for (NSString *completion in [self.dictionary completionsForTerm:term]) {
       if ([weakOperation isCancelled]) {
         break;
       }
 
       if (![term isEqualToString:completion] && [self.dictionary hasDefinitionForTerm:completion]) {
-        [partialResults addObject:completion];
+        [terms addObject:completion];
       }
 
       // send in batch
-      if ([partialResults count] >= batchCount) {
+      if ([terms count] % batchCount == 3) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          self.hasResults = YES;
-          block(partialResults);
+          LookupResponse *response = [[LookupResponse alloc] init];
+          response.lookupState = DictionaryLookupProgressStateHasPartialResults;
+          response.terms = terms;
+          block(response);
         }];
-        partialResults = [@[] mutableCopy];
       }
     }
 
     if (![weakOperation isCancelled]) {
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        self.hasResults = YES;
-        self.lookingUpCompletions = NO;
-        block(partialResults);
+        LookupResponse *response = [[LookupResponse alloc] init];
+        response.terms = terms;
+
+        if (terms.count > 0) {
+          response.lookupState = DictionaryLookupProgressStateFinishedWithCompletions;
+        } else {
+          response.lookupState = DictionaryLookupProgressStateFinishedWithNoResultsAtAll;
+        }
+
+        block(response);
       }];
     }
   }];

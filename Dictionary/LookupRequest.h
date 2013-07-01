@@ -8,38 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void(^DictionaryLookupPartialResult)(NSArray *partialResults);
+@class LookupResponse;
 
-typedef NS_ENUM(NSUInteger, DictionaryLookupProgressState) {
-  // start looking up completions, but no results yet
-  DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet,
-
-  // still working on term completions, some results are found
-  DictionaryLookupProgressStateHasPartialResults,
-
-  // found no completions, looking up guesses, but no results yet
-  DictionaryLookupProgressStateFoundNoCompletionsLookingUpGuessesButNoResultsYet,
-
-  // finished, completions found
-  DictionaryLookupProgressStateFinishedWithCompletions,
-
-  // finished, can not find completions, but found guesses
-  DictionaryLookupProgressStateFinishedWithGuesses,
-
-  // finished, but no completions or guesses were found
-  DictionaryLookupProgressStateFinishedWithNoResultsAtAll
-};
-
+typedef void(^DictionaryLookupProgress)(LookupResponse* response);
 
 
 @interface LookupRequest : NSObject
 
 
-@property (nonatomic) BOOL lookingUpCompletions;
-
-@property (nonatomic) BOOL hasResults;
-
-- (void)startLookingUpDictionaryWithTerm:(NSString *)term batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupPartialResult)block;
+- (void)startLookingUpDictionaryWithTerm:(NSString *)term batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupProgress)block;
 
 
 @end
