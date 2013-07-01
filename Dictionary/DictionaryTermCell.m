@@ -59,13 +59,18 @@
       self.textLabel.textColor = [UIColor grayColor];
       break;
     }
-    case DictionaryTableViewCellTypeHighlighted: {
-      self.selectionStyle = UITableViewCellSelectionStyleBlue;
+  }
+}
+
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+  [super setHighlighted:highlighted animated:animated];
+
+  if (self.tag == DictionaryTableViewCellTypeNormal) {
+    if (highlighted) {
       self.accessoryType = UITableViewCellAccessoryNone;
-      self.textLabel.textAlignment = NSTextAlignmentLeft;
-      self.textLabel.font = DICTIONARY_BASIC_TEXT_FONT;
-      self.textLabel.textColor = DICTIONARY_BASIC_TEXT_COLOR;
-      break;
+    } else {
+      self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
   }
 }

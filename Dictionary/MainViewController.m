@@ -24,8 +24,6 @@
 @property LookupRequest *lookupRequest;
 @property LookupResponse *lookupResponse;
 
-@property NSIndexPath *lastHighlightedIndexPath;
-
 @end
 
 
@@ -296,25 +294,6 @@
   }
 
   return -1;
-}
-
-
-- (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
-  DictionaryTermCell *cell = (DictionaryTermCell *)[tableView cellForRowAtIndexPath:indexPath];
-  if (cell.tag == DictionaryTableViewCellTypeNormal) {
-    self.lastHighlightedIndexPath = indexPath;
-    [cell changeToType:DictionaryTableViewCellTypeHighlighted];
-  }
-}
-
-
--(void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath {
-  // indexPath incorrect
-  // see http://openradar.appspot.com/13731538
-  DictionaryTermCell *cell = (DictionaryTermCell *)[tableView cellForRowAtIndexPath:self.lastHighlightedIndexPath];
-  if (cell.tag == DictionaryTableViewCellTypeHighlighted) {
-    [cell changeToType:DictionaryTableViewCellTypeNormal];
-  }
 }
 
 
