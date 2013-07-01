@@ -114,6 +114,7 @@
 
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     [self.lookupHistoryTableView reloadData];
+    [self.lookupHistoryTableView setContentOffset:CGPointZero animated:YES];
   }];
 }
 
