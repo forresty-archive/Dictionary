@@ -310,62 +310,15 @@
     return NO;
   }
 
-//  NSMutableArray *filteredResult = [self filteredSearchResultForSearchString:searchString];
-//
-//  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-//    if (filteredResult.count > 0) {
-//      self.completions = filteredResult;
-//    } else {
-//      self.lookingUpCompletions = YES;
-//      self.hasResults = NO;
-//      self.completions = [@[] mutableCopy];
-//    }
-//
-//    [self.searchDisplayController.searchResultsTableView reloadData];
-//  }];
-
   [self.lookupRequest startLookingUpDictionaryWithTerm:searchString existingTerms:self.lookupResponse.terms batchCount:3 progressBlock:^(LookupResponse *response) {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
       self.lookupResponse = response;
       [self.searchDisplayController.searchResultsTableView reloadData];
     }];
-//    [self insertPartialResults:partialResults];
   }];
 
   return NO;
 }
-
-
-# pragma mark private
-
-
-//- (void)mergePartialResults:(NSArray *)partialResults {
-//  for (NSString *result in partialResults) {
-//    if (![self.completions containsObject:result] && [result hasPrefix:self.searchBar.text]) {
-//      [self.completions addObject:result];
-//    }
-//  }
-//
-//  [self.completions sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-//    return [obj1 caseInsensitiveCompare:obj2];
-//  }];
-//}
-
-
-// Note: This will not work since UISearchDisplayController#searchResultsTableView is readonly :(
-
-//- (void)insertPartialResults:(NSArray *)partialResults {
-//  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-//    [self.dictionarySearchDisplayController.searchResultsTableView beginUpdates];
-//    self.lookingUpCompletions = self.lookupRequest.lookingUpCompletions;
-//
-//    NSArray *indexPaths = [self indexPathsFromOffset:[self.completions count] count:[partialResults count]];
-//    [self.dictionarySearchDisplayController.searchResultsTableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-//
-//    [self.completions addObjectsFromArray:partialResults];
-//    [self.dictionarySearchDisplayController.searchResultsTableView endUpdates];
-//  }];
-//}
 
 
 # pragma mark - UISearchBarDelegate
