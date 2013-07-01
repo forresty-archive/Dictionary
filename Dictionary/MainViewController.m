@@ -15,10 +15,17 @@
 
 
 // from UIReferenceLibraryViewController
-
 #define DICTIONARY_BASIC_TINT_COLOR [UIColor colorWithRed:0.945098 green:0.933333 blue:0.898039 alpha:1]
 #define DICTIONARY_BASIC_TEXT_COLOR [UIColor colorWithRed:87.0/255 green:57.0/255 blue:32.0/255 alpha:1]
 //#define DICTIONARY_BASIC_CELL_SELECTED_COLOR [UIColor colorWithRed:175.0/255 green:114.0/255 blue:65.0/255 alpha:1]
+
+
+typedef NS_ENUM(NSInteger, DictionaryTableViewCellType) {
+  DictionaryTableViewCellTypeNormal,
+  DictionaryTableViewCellTypeAction,
+  DictionaryTableViewCellTypeDisabled
+};
+
 
 @interface MainViewController ()
 
@@ -163,12 +170,14 @@
 
 - (void)makeCellNormal:(UITableViewCell *)cell withText:(NSString *)text {
   [self makeCellDefault:cell withText:text];
+  cell.tag = DictionaryTableViewCellTypeNormal;
   cell.textLabel.textColor = DICTIONARY_BASIC_TEXT_COLOR;
 }
 
 
 - (void)disableCell:(UITableViewCell *)cell withText:(NSString *)text {
   [self makeCellDefault:cell withText:text];
+  cell.tag = DictionaryTableViewCellTypeDisabled;
   cell.textLabel.textColor = [UIColor grayColor];
   cell.selectionStyle = UITableViewCellSelectionStyleNone;
   cell.accessoryType = UITableViewCellAccessoryNone;
@@ -177,6 +186,7 @@
 
 - (void)makeActionCell:(UITableViewCell *)cell withText:(NSString *)text {
   [self makeCellNormal:cell withText:text];
+  cell.tag = DictionaryTableViewCellTypeAction;
   cell.textLabel.textAlignment = NSTextAlignmentCenter;
   cell.accessoryType = UITableViewCellAccessoryNone;
   cell.textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
@@ -338,15 +348,21 @@
 
 
 - (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
-  self.lastHighlightedIndexPath = indexPath;
-  [[tableView cellForRowAtIndexPath:indexPath] setAccessoryType:UITableViewCellAccessoryNone];
+  UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+  if (cell.tag == DictionaryTableViewCellTypeNormal) {
+    self.lastHighlightedIndexPath = indexPath;
+    cell.accessoryType = UITableViewCellAccessoryNone;
+  }
 }
 
 
 -(void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath {
   // indexPath incorrect
   // http://openradar.appspot.com/13731538
-  [[tableView cellForRowAtIndexPath:self.lastHighlightedIndexPath] setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+  UITableViewCell *cell = [tableView cellForRowAtIndexPath:self.lastHighlightedIndexPath];
+  if (cell.tag == DictionaryTableViewCellTypeNormal) {
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+  }
 }
 
 
