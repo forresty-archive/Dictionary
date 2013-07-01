@@ -18,7 +18,7 @@
 
 #define DICTIONARY_BASIC_TINT_COLOR [UIColor colorWithRed:0.945098 green:0.933333 blue:0.898039 alpha:1]
 #define DICTIONARY_BASIC_TEXT_COLOR [UIColor colorWithRed:87.0/255 green:57.0/255 blue:32.0/255 alpha:1]
-
+#define DICTIONARY_BASIC_CELL_SELECTED_COLOR [UIColor colorWithRed:175.0/255 green:114.0/255 blue:65.0/255 alpha:1]
 
 @interface MainViewController ()
 
@@ -82,10 +82,11 @@
 
 - (void)buildLookupHistoryTableView {
 //  self.lookupHistoryTableView.backgroundColor = BASIC_TINT_COLOR;
-  [[UITableViewHeaderFooterView appearance] setTintColor:DICTIONARY_BASIC_TINT_COLOR];
+  [[UITableViewHeaderFooterView appearance] setTintColor:DICTIONARY_BASIC_TEXT_COLOR];
   UILabel *labelProxy = [UILabel appearanceWhenContainedIn:[UITableViewHeaderFooterView class], nil];
-  labelProxy.textColor = DICTIONARY_BASIC_TEXT_COLOR;
-  labelProxy.font = [UIFont boldSystemFontOfSize:16];
+  labelProxy.textColor = DICTIONARY_BASIC_TINT_COLOR;
+  labelProxy.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
+  labelProxy.shadowOffset = CGSizeZero;
 
   [self.lookupHistoryTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
   self.lookupHistoryTableView.dataSource = self;
@@ -152,12 +153,13 @@
   cell.textLabel.textAlignment = NSTextAlignmentLeft;
   cell.textLabel.font = [UIFont fontWithName:@"Baskerville" size:24];
   cell.textLabel.text = text;
+  cell.textLabel.highlightedTextColor = DICTIONARY_BASIC_TEXT_COLOR;
 }
 
 
 - (void)makeCellNormal:(UITableViewCell *)cell withText:(NSString *)text {
   [self makeCellDefault:cell withText:text];
-  cell.textLabel.textColor = [UIColor blackColor];
+  cell.textLabel.textColor = DICTIONARY_BASIC_TEXT_COLOR;
 }
 
 
@@ -170,10 +172,10 @@
 
 
 - (void)makeActionCell:(UITableViewCell *)cell withText:(NSString *)text {
-  [self makeCellDefault:cell withText:text];
+  [self makeCellNormal:cell withText:text];
   cell.textLabel.textAlignment = NSTextAlignmentCenter;
   cell.accessoryType = UITableViewCellAccessoryNone;
-  cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:18];
+  cell.textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
 }
 
 
@@ -200,6 +202,9 @@
 
   if (!cell) {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID];
+    UIView *backgroundView = [[UIView alloc] initWithFrame:cell.bounds];
+    backgroundView.backgroundColor = DICTIONARY_BASIC_TINT_COLOR;
+    cell.selectedBackgroundView = backgroundView;
   }
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
@@ -275,6 +280,13 @@
   }
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+  if ([self tableView:tableView titleForHeaderInSection:section]) {
+    return 30;
+  }
+
+  return 0;
+}
 
 # pragma mark private
 
