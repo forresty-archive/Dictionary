@@ -10,7 +10,6 @@
 #import "LookupHistory.h"
 #import "LookupRequest.h"
 #import "LookupResponse.h"
-//#import "MTStatusBarOverlay.h"
 
 #define kCellID @"wordCellID"
 
@@ -39,13 +38,9 @@
   _lookupHistory = [LookupHistory sharedInstance];
   _lookupRequest = [[LookupRequest alloc] init];
   _lookupResponse = [[LookupResponse alloc] init];
-  self.lookupResponse.lookupState = DictionaryLookupProgressStateIdle;
-  self.lookupResponse.terms = @[];
-
+  _lookupResponse = [LookupResponse responseWithProgressState:DictionaryLookupProgressStateIdle terms:@[]];
 
   [self buildViews];
-
-//  [self addObserver:self forKeyPath:@"lookingUpCompletions" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 
@@ -91,24 +86,6 @@
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[historyTableView]|" options:0 metrics:nil views:views]];
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[historyTableView]|" options:0 metrics:nil views:views]];
 }
-
-
-//# pragma mark - KVO
-//
-//
-//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-//  if ([@"lookingUpCompletions" isEqualToString:keyPath]) {
-//    if (self.searchBar.text.length > 0) {
-//      if (self.lookingUpCompletions) {
-//        [[MTStatusBarOverlay sharedInstance] postMessage:@"searching..."];
-//      } else {
-//        [[MTStatusBarOverlay sharedInstance] postFinishMessage:@"finished" duration:1.0];
-//      }
-//    } else {
-//      [[MTStatusBarOverlay sharedInstance] hide];
-//    }
-//  }
-//}
 
 
 # pragma mark - internal
@@ -331,7 +308,6 @@
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)searchDisplayController shouldReloadTableForSearchString:(NSString *)searchString {
   if (searchString.length < 1) {
-//    [[MTStatusBarOverlay sharedInstance] hide];
     return NO;
   }
 
