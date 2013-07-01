@@ -143,17 +143,15 @@
 
 - (NSString *)validTermsCacheFilePath {
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-  NSString *cacheDirectory = [paths objectAtIndex:0];
 
-  return [cacheDirectory stringByAppendingPathComponent:@"validTerms.txt"];
+  return [paths[0] stringByAppendingPathComponent:@"validTerms.txt"];
 }
 
 
 - (NSString *)invalidTermsCacheFilePath {
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-  NSString *cacheDirectory = [paths objectAtIndex:0];
 
-  return [cacheDirectory stringByAppendingPathComponent:@"invalidTerms.txt"];
+  return [paths[0] stringByAppendingPathComponent:@"invalidTerms.txt"];
 }
 
 

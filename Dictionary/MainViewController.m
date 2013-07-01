@@ -10,8 +10,9 @@
 #import "LookupHistory.h"
 #import "LookupRequest.h"
 #import "LookupResponse.h"
+#import "DictionaryTermCell.h"
+#import "DictionaryViewDefinitions.h"
 
-#define kCellID @"wordCellID"
 
 @interface MainViewController ()
 
@@ -22,6 +23,8 @@
 @property LookupHistory *lookupHistory;
 @property LookupRequest *lookupRequest;
 @property LookupResponse *lookupResponse;
+
+@property NSIndexPath *lastHighlightedIndexPath;
 
 @end
 
@@ -52,6 +55,7 @@
   [self buildLookupHistoryTableView];
   [self buildSearchDisplayController];
   [self setupViewConstraints];
+  [self setupUIAppearances];
 }
 
 
@@ -87,6 +91,25 @@
 }
 
 
+- (void)setupUIAppearances {
+  [[UISearchBar appearance] setTintColor:DICTIONARY_BASIC_TINT_COLOR];
+
+  // http://stackoverflow.com/questions/11572372/modifying-uisearchbar-cancel-button-font-text-color-and-style
+  NSDictionary *attributes = @{ UITextAttributeTextColor: DICTIONARY_BASIC_TEXT_COLOR,
+                          UITextAttributeTextShadowColor: DICTIONARY_BASIC_TINT_COLOR,
+                         UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, -1)] };
+  [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTitleTextAttributes:attributes forState:UIControlStateNormal];
+
+  UITableViewHeaderFooterView *headerViewProxy = [UITableViewHeaderFooterView appearance];
+  headerViewProxy.tintColor = DICTIONARY_BASIC_TEXT_COLOR;
+
+  UILabel *labelProxy = [UILabel appearanceWhenContainedIn:[UITableViewHeaderFooterView class], nil];
+  labelProxy.textColor = DICTIONARY_BASIC_TINT_COLOR;
+  labelProxy.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
+  labelProxy.shadowOffset = CGSizeZero;
+}
+
+
 # pragma mark - internal
 
 
@@ -119,40 +142,6 @@
 }
 
 
-# pragma mark - view manipulation
-
-
-- (void)makeCellDefault:(UITableViewCell *)cell withText:(NSString *)text {
-  cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-  cell.textLabel.textAlignment = NSTextAlignmentLeft;
-  cell.textLabel.font = [UIFont fontWithName:@"Baskerville" size:24];
-  cell.textLabel.text = text;
-}
-
-
-- (void)makeCellNormal:(UITableViewCell *)cell withText:(NSString *)text {
-  [self makeCellDefault:cell withText:text];
-  cell.textLabel.textColor = [UIColor blackColor];
-}
-
-
-- (void)disableCell:(UITableViewCell *)cell withText:(NSString *)text {
-  [self makeCellDefault:cell withText:text];
-  cell.textLabel.textColor = [UIColor grayColor];
-  cell.selectionStyle = UITableViewCellSelectionStyleNone;
-  cell.accessoryType = UITableViewCellAccessoryNone;
-}
-
-
-- (void)makeActionCell:(UITableViewCell *)cell withText:(NSString *)text {
-  [self makeCellDefault:cell withText:text];
-  cell.textLabel.textAlignment = NSTextAlignmentCenter;
-  cell.accessoryType = UITableViewCellAccessoryNone;
-  cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:18];
-}
-
-
 # pragma mark - UI presentation
 
 
@@ -172,15 +161,15 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
+  DictionaryTermCell *cell = [tableView dequeueReusableCellWithIdentifier:kDictionaryTermCellID];
 
   if (!cell) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID];
+    cell = [[DictionaryTermCell alloc] init];
   }
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
     [self makeSearchResultCell:cell forRowAtIndexPath:indexPath];
-  } else if (tableView == self.lookupHistoryTableView) {
+  } else {
     [self makeHistoryCell:cell forRowAtIndexPath:indexPath];
   }
 
@@ -228,6 +217,9 @@
 }
 
 
+# pragma mark delete history
+
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
   if (tableView == self.lookupHistoryTableView && self.lookupHistory.count > 0 && indexPath.row < self.lookupHistory.count) {
     return YES;
@@ -251,38 +243,82 @@
   }
 }
 
-
 # pragma mark private
 
 
-- (void)makeHistoryCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)makeHistoryCell:(DictionaryTermCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
   if (self.lookupHistory.count == 0) {
-    [self disableCell:cell withText:@"No history"];
+    [cell changeToType:DictionaryTableViewCellTypeDisabled withText:@"No history"];
   } else if (indexPath.row == self.lookupHistory.count) {
-    [self makeActionCell:cell withText:@"Clear History"];
+    [cell changeToType:DictionaryTableViewCellTypeAction withText:@"Clear History"];
   } else {
-    [self makeCellNormal:cell withText:[self.lookupHistory[indexPath.row] description]];
+    [cell changeToType:DictionaryTableViewCellTypeNormal withText:[self.lookupHistory[indexPath.row] description]];
   }
 }
 
 
-- (void)makeSearchResultCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)makeSearchResultCell:(DictionaryTermCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
   switch (self.lookupResponse.lookupState) {
     case DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet:
-      return [self disableCell:cell withText:@"Looking up..."];
+      return [cell changeToType:DictionaryTableViewCellTypeDisabled withText:@"Looking up..."];
     case DictionaryLookupProgressStateFoundNoCompletionsLookingUpGuessesButNoResultsYet:
-      return [self disableCell:cell withText:@"No results, guessing..."];
+      return [cell changeToType:DictionaryTableViewCellTypeDisabled withText:@"No results, guessing..."];
     case DictionaryLookupProgressStateHasPartialResults:
     case DictionaryLookupProgressStateFinishedWithCompletions:
     case DictionaryLookupProgressStateFinishedWithGuesses:
-      return [self makeCellNormal:cell withText:[self.lookupResponse.terms[indexPath.row] description]];
+      return [cell changeToType:DictionaryTableViewCellTypeNormal withText:self.lookupResponse.terms[indexPath.row]];
     default:
-      return [self disableCell:cell withText:@"No result"];
+      return [cell changeToType:DictionaryTableViewCellTypeDisabled withText:@"No result"];
   }
 }
 
 
 # pragma mark - UITableViewDelegate
+
+
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+//  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 300, 30)];
+//  label.backgroundColor = DICTIONARY_BASIC_TEXT_COLOR;
+//  label.textColor = [UIColor whiteColor];
+//  label.text = @"History";
+//  label.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
+//
+//  return label;
+//}
+
+
+# pragma mark view customization
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+  if ([self tableView:tableView titleForHeaderInSection:section]) {
+    return 30;
+  }
+
+  return -1;
+}
+
+
+- (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+  DictionaryTermCell *cell = (DictionaryTermCell *)[tableView cellForRowAtIndexPath:indexPath];
+  if (cell.tag == DictionaryTableViewCellTypeNormal) {
+    self.lastHighlightedIndexPath = indexPath;
+    [cell changeToType:DictionaryTableViewCellTypeHighlighted];
+  }
+}
+
+
+-(void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+  // indexPath incorrect
+  // see http://openradar.appspot.com/13731538
+  DictionaryTermCell *cell = (DictionaryTermCell *)[tableView cellForRowAtIndexPath:self.lastHighlightedIndexPath];
+  if (cell.tag == DictionaryTableViewCellTypeHighlighted) {
+    [cell changeToType:DictionaryTableViewCellTypeNormal];
+  }
+}
+
+
+# pragma mark user actions
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
