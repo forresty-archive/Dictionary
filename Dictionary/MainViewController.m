@@ -30,6 +30,8 @@
 @property LookupRequest *lookupRequest;
 @property LookupResponse *lookupResponse;
 
+@property NSIndexPath *lastHighlightedIndexPath;
+
 @end
 
 
@@ -319,6 +321,19 @@
 
 
 # pragma mark - UITableViewDelegate
+
+
+- (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+  self.lastHighlightedIndexPath = indexPath;
+  [[tableView cellForRowAtIndexPath:indexPath] setAccessoryType:UITableViewCellAccessoryNone];
+}
+
+
+-(void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+  // indexPath incorrect
+  // http://openradar.appspot.com/13731538
+  [[tableView cellForRowAtIndexPath:self.lastHighlightedIndexPath] setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+}
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
