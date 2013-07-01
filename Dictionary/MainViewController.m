@@ -196,6 +196,9 @@
   if (tableView == self.lookupHistoryTableView) {
     return @"History";
   }
+  if (self.lookupResponse.lookupState == DictionaryLookupProgressStateFinishedWithGuesses) {
+    return @"Did you mean?";
+  }
 
   return nil;
 }
@@ -207,9 +210,11 @@
       case DictionaryLookupProgressStateIdle:
         return 0;
       case DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet:
+      case DictionaryLookupProgressStateFoundNoCompletionsLookingUpGuessesButNoResultsYet:
         return 1;
       case DictionaryLookupProgressStateHasPartialResults:
       case DictionaryLookupProgressStateFinishedWithCompletions:
+      case DictionaryLookupProgressStateFinishedWithGuesses:
         return self.lookupResponse.terms.count;
       case DictionaryLookupProgressStateFinishedWithNoResultsAtAll:
         return 1;
@@ -264,8 +269,11 @@
   switch (self.lookupResponse.lookupState) {
     case DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet:
       return [self disableCell:cell withText:@"Looking up..."];
+    case DictionaryLookupProgressStateFoundNoCompletionsLookingUpGuessesButNoResultsYet:
+      return [self disableCell:cell withText:@"No results, guessing..."];
     case DictionaryLookupProgressStateHasPartialResults:
     case DictionaryLookupProgressStateFinishedWithCompletions:
+    case DictionaryLookupProgressStateFinishedWithGuesses:
       return [self makeCellNormal:cell withText:[self.lookupResponse.terms[indexPath.row] description]];
     default:
       return [self disableCell:cell withText:@"No result"];
@@ -283,6 +291,7 @@
     switch (self.lookupResponse.lookupState) {
       case DictionaryLookupProgressStateHasPartialResults:
       case DictionaryLookupProgressStateFinishedWithCompletions:
+      case DictionaryLookupProgressStateFinishedWithGuesses:
         return [self showDefinitionForTerm:self.lookupResponse.terms[indexPath.row]];
       default:
         return;

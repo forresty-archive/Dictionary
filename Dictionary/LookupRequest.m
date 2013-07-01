@@ -37,7 +37,7 @@
 
 
 - (void)startLookingUpDictionaryWithTerm:(NSString *)term existingTerms:(NSArray *)existingTerms progressBlock:(DictionaryLookupProgress)block {
-  [self startLookingUpDictionaryWithTerm:term existingTerms:existingTerms batchCount:3 progressBlock:block];
+  [self startLookingUpDictionaryWithTerm:term existingTerms:existingTerms batchCount:5 progressBlock:block];
 }
 
 
@@ -81,12 +81,12 @@
         break;
       }
 
-      if (![term isEqualToString:completion] && [self.dictionary hasDefinitionForTerm:completion]) {
+      if ([self.dictionary hasDefinitionForTerm:completion]) {
         [terms addObject:completion];
       }
 
       // send in batch
-      if ([terms count] % batchCount == 3) {
+      if ([terms count] % batchCount == 0) {
         block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
       }
     }
@@ -95,7 +95,27 @@
       if (terms.count > 0) {
         block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithCompletions terms:terms]);
       } else {
-        block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithNoResultsAtAll terms:terms]);
+        block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFoundNoCompletionsLookingUpGuessesButNoResultsYet terms:terms]);
+
+        for (NSString *guess in [self.dictionary guessesForTerm:term]) {
+          if ([weakOperation isCancelled]) {
+            break;
+          }
+
+          if ([self.dictionary hasDefinitionForTerm:guess]) {
+            [terms addObject:guess];
+          }
+        }
+
+        if ([weakOperation isCancelled]) {
+          return;
+        }
+
+        if (terms.count > 0) {
+          block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithGuesses terms:terms]);
+        } else {
+          block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithNoResultsAtAll terms:terms]);
+        }
       }
     }
   }];
