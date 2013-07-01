@@ -280,23 +280,20 @@
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if (self.searchBar.text.length > 0 && self.lookupResponse.terms.count > 0 && indexPath.section == 0) {
-      [self showDefinitionForTerm:self.lookupResponse.terms[indexPath.row]];
-
-    } else if (self.lookupResponse.lookupState == DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet) {
-      // guessing, do nothing
-      return;
-
+    switch (self.lookupResponse.lookupState) {
+      case DictionaryLookupProgressStateHasPartialResults:
+      case DictionaryLookupProgressStateFinishedWithCompletions:
+        return [self showDefinitionForTerm:self.lookupResponse.terms[indexPath.row]];
+      default:
+        return;
     }
-  } else if (tableView == self.lookupHistoryTableView) {
+  } else {
     if (self.lookupHistory.count == 0) {
       // empty history, do nothing
+    } else if (indexPath.row == self.lookupHistory.count) {
+      [self clearHistory];
     } else {
-      if (indexPath.row == self.lookupHistory.count) {
-        [self clearHistory];
-      } else {
-        [self showDefinitionForTerm:[self.lookupHistory[indexPath.row] description]];
-      }
+      [self showDefinitionForTerm:[self.lookupHistory[indexPath.row] description]];
     }
   }
 }
