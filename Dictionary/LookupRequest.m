@@ -10,6 +10,7 @@
 #import "Dictionary.h"
 #import "LookupResponse.h"
 
+
 @interface LookupRequest ()
 
 @property NSOperationQueue *completionLookupOperationQueue;
@@ -46,27 +47,22 @@
 
   [operation addExecutionBlock:^{
 
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      LookupResponse *response = [[LookupResponse alloc] init];
-      response.lookupState = DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet;
-      response.terms = terms;
-      block(response);
-    }];
-
     [NSThread sleepForTimeInterval:0.3];
 
     if ([weakOperation isCancelled]) {
       return;
     }
 
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet terms:terms]);
+    }];
+
     if ([self.dictionary hasDefinitionForTerm:term]) {
+      [terms addObject:term];
+
       if (![weakOperation isCancelled]) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          [terms addObject:term];
-          LookupResponse *response = [[LookupResponse alloc] init];
-          response.lookupState = DictionaryLookupProgressStateHasPartialResults;
-          response.terms = terms;
-          block(response);
+          block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
         }];
       }
     }
@@ -87,26 +83,18 @@
       // send in batch
       if ([terms count] % batchCount == 3) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          LookupResponse *response = [[LookupResponse alloc] init];
-          response.lookupState = DictionaryLookupProgressStateHasPartialResults;
-          response.terms = terms;
-          block(response);
+          block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
         }];
       }
     }
 
     if (![weakOperation isCancelled]) {
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        LookupResponse *response = [[LookupResponse alloc] init];
-        response.terms = terms;
-
         if (terms.count > 0) {
-          response.lookupState = DictionaryLookupProgressStateFinishedWithCompletions;
+          block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithCompletions terms:terms]);
         } else {
-          response.lookupState = DictionaryLookupProgressStateFinishedWithNoResultsAtAll;
+          block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithNoResultsAtAll terms:terms]);
         }
-
-        block(response);
       }];
     }
   }];

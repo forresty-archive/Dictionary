@@ -212,20 +212,12 @@
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-  if (tableView == self.searchDisplayController.searchResultsTableView) {
-    return 1;
-  } else if (tableView == self.lookupHistoryTableView) {
-    return 1;
-  }
-
-  return 0;
+  return 1;
 }
 
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-  if (tableView == self.searchDisplayController.searchResultsTableView) {
-    return nil;
-  } else if (tableView == self.lookupHistoryTableView) {
+  if (tableView == self.lookupHistoryTableView) {
     return @"History";
   }
 
@@ -235,18 +227,22 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   if (tableView == self.searchDisplayController.searchResultsTableView) {
-    if (self.lookupResponse.lookupState == DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet) {
-      return 1;
-    } else if (self.lookupResponse.lookupState == DictionaryLookupProgressStateHasPartialResults || self.lookupResponse.lookupState == DictionaryLookupProgressStateFinishedWithCompletions) {
-      return self.lookupResponse.terms.count;
-    } else {
-      return 1;
+    switch (self.lookupResponse.lookupState) {
+      case DictionaryLookupProgressStateIdle:
+        return 0;
+      case DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet:
+        return 1;
+      case DictionaryLookupProgressStateHasPartialResults:
+      case DictionaryLookupProgressStateFinishedWithCompletions:
+        return self.lookupResponse.terms.count;
+      case DictionaryLookupProgressStateFinishedWithNoResultsAtAll:
+        return 1;
+      default:
+        return 0;
     }
-  } else if (tableView == self.lookupHistoryTableView) {
+  } else {
     return self.lookupHistory.count + 1;
   }
-
-  return 0;
 }
 
 

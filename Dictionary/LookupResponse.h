@@ -40,5 +40,7 @@ typedef NS_ENUM(NSUInteger, DictionaryLookupProgressState) {
 
 @property (nonatomic) NSArray *terms;
 
++ (LookupResponse *)responseWithProgressState:(DictionaryLookupProgressState)state terms:(NSArray *)terms;
+
 
 @end
