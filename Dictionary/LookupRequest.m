@@ -53,10 +53,6 @@
       return;
     }
 
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet terms:terms]);
-    }];
-
     if ([self.dictionary hasDefinitionForTerm:term]) {
       [terms addObject:term];
 

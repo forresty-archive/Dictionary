@@ -310,6 +310,9 @@
     return NO;
   }
 
+  self.lookupResponse = [LookupResponse responseWithProgressState:DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet terms:@[]];
+  [self.dictionarySearchDisplayController.searchResultsTableView reloadData];
+
 //  NSMutableArray *filteredResult = [self filteredSearchResultForSearchString:searchString];
 //
 //  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
