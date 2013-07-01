@@ -18,7 +18,7 @@
 
 #define DICTIONARY_BASIC_TINT_COLOR [UIColor colorWithRed:0.945098 green:0.933333 blue:0.898039 alpha:1]
 #define DICTIONARY_BASIC_TEXT_COLOR [UIColor colorWithRed:87.0/255 green:57.0/255 blue:32.0/255 alpha:1]
-#define DICTIONARY_BASIC_CELL_SELECTED_COLOR [UIColor colorWithRed:175.0/255 green:114.0/255 blue:65.0/255 alpha:1]
+//#define DICTIONARY_BASIC_CELL_SELECTED_COLOR [UIColor colorWithRed:175.0/255 green:114.0/255 blue:65.0/255 alpha:1]
 
 @interface MainViewController ()
 
@@ -84,7 +84,9 @@
 
 - (void)buildLookupHistoryTableView {
 //  self.lookupHistoryTableView.backgroundColor = BASIC_TINT_COLOR;
-  [[UITableViewHeaderFooterView appearance] setTintColor:DICTIONARY_BASIC_TEXT_COLOR];
+  UITableViewHeaderFooterView *headerViewProxy = [UITableViewHeaderFooterView appearance];
+  headerViewProxy.tintColor = DICTIONARY_BASIC_TEXT_COLOR;
+
   UILabel *labelProxy = [UILabel appearanceWhenContainedIn:[UITableViewHeaderFooterView class], nil];
   labelProxy.textColor = DICTIONARY_BASIC_TINT_COLOR;
   labelProxy.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
@@ -282,14 +284,6 @@
   }
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-  if ([self tableView:tableView titleForHeaderInSection:section]) {
-    return 30;
-  }
-
-  return 0;
-}
-
 # pragma mark private
 
 
@@ -321,6 +315,26 @@
 
 
 # pragma mark - UITableViewDelegate
+
+
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+//  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 300, 30)];
+//  label.backgroundColor = DICTIONARY_BASIC_TEXT_COLOR;
+//  label.textColor = [UIColor whiteColor];
+//  label.text = @"History";
+//  label.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
+//
+//  return label;
+//}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+  if ([self tableView:tableView titleForHeaderInSection:section]) {
+    return 30;
+  }
+
+  return -1;
+}
 
 
 - (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
