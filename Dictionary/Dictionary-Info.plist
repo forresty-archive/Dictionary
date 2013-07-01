@@ -21,8 +21,6 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>57.png</string>
-				<string>114.png</string>
 				<string>Icon.png</string>
 				<string>Icon@2x.png</string>
 			</array>
@@ -39,11 +37,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1</string>
+	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>20111214.1</string>
+	<string>20130702</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIPrerenderedIcon</key>
