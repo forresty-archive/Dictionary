@@ -28,7 +28,7 @@ typedef NS_ENUM(NSUInteger, DictionaryLookupProgressState) {
   DictionaryLookupProgressStateFinishedWithGuesses,
 
   // finished, but no completions or guesses were found
-  DictionaryLookupProgressStateFinishedWithNoResultsAtAll
+  DictionaryLookupProgressStateFinishedWithNoResultsAtAll,
 };
 
 

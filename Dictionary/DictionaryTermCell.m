@@ -24,6 +24,11 @@
 }
 
 
+- (void)changeToType:(DictionaryTableViewCellType)type {
+  [self changeToType:type withText:self.textLabel.text];
+}
+
+
 - (void)changeToType:(DictionaryTableViewCellType)type withText:(NSString *)text {
   self.tag = type;
   self.textLabel.highlightedTextColor = DICTIONARY_BASIC_TEXT_COLOR;
@@ -52,6 +57,14 @@
       self.textLabel.textAlignment = NSTextAlignmentLeft;
       self.textLabel.font = DICTIONARY_BASIC_TEXT_FONT;
       self.textLabel.textColor = [UIColor grayColor];
+      break;
+    }
+    case DictionaryTableViewCellTypeHighlighted: {
+      self.selectionStyle = UITableViewCellSelectionStyleBlue;
+      self.accessoryType = UITableViewCellAccessoryNone;
+      self.textLabel.textAlignment = NSTextAlignmentLeft;
+      self.textLabel.font = DICTIONARY_BASIC_TEXT_FONT;
+      self.textLabel.textColor = DICTIONARY_BASIC_TEXT_COLOR;
       break;
     }
   }

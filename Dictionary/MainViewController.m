@@ -304,20 +304,20 @@
 
 
 - (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
-  UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+  DictionaryTermCell *cell = (DictionaryTermCell *)[tableView cellForRowAtIndexPath:indexPath];
   if (cell.tag == DictionaryTableViewCellTypeNormal) {
     self.lastHighlightedIndexPath = indexPath;
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    [cell changeToType:DictionaryTableViewCellTypeHighlighted];
   }
 }
 
 
 -(void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath {
   // indexPath incorrect
-  // http://openradar.appspot.com/13731538
-  UITableViewCell *cell = [tableView cellForRowAtIndexPath:self.lastHighlightedIndexPath];
-  if (cell.tag == DictionaryTableViewCellTypeNormal) {
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+  // see http://openradar.appspot.com/13731538
+  DictionaryTermCell *cell = (DictionaryTermCell *)[tableView cellForRowAtIndexPath:self.lastHighlightedIndexPath];
+  if (cell.tag == DictionaryTableViewCellTypeHighlighted) {
+    [cell changeToType:DictionaryTableViewCellTypeNormal];
   }
 }
 
