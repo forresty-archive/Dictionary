@@ -10,9 +10,9 @@
 #import "UIKit/UITextChecker.h"
 #import "UIKit/UIReferenceLibraryViewController.h"
 
-#include <stdio.h>
+//#include <stdio.h>
 
-# pragma mark - NSArray WriteAsTXT addition
+# pragma mark - NSArray ReadWriteAsTXT addition
 
 
 @interface NSArray (ReadWriteAsTXT)
@@ -155,6 +155,7 @@
 
   return [cacheDirectory stringByAppendingPathComponent:@"invalidTerms.txt"];
 }
+
 
 # pragma mark - definition / completion lookup && guesses
 
