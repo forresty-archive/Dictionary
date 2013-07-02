@@ -36,6 +36,8 @@
     _instances[text] = view;
   }
 
+  NSAssert(_instances.count == 1 || _instances.count == 2, @"should have 1 or 2 items");
+
   return _instances[text];
 }
 
