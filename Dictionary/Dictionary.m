@@ -31,8 +31,10 @@
   NSMutableString *result = [@"" mutableCopy];
 
   for (NSString *term in self) {
-    [result appendString:term];
-    [result appendString:@"\n"];
+    @autoreleasepool {
+      [result appendString:term];
+      [result appendString:@"\n"];
+    }
   }
 
   [result writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
@@ -204,11 +206,15 @@
 
 
 - (void)saveCache {
-  [self.validTermsCache writeAsTXTToFile:[self validTermsCacheFilePath]];
-  NSLog(@"%d valid terms written", self.validTermsCache.count);
+  @autoreleasepool {
+    [self.validTermsCache writeAsTXTToFile:[self validTermsCacheFilePath]];
+    NSLog(@"%d valid terms written", self.validTermsCache.count);
+  }
 
-  [self.invalidTermsCache writeAsTXTToFile:[self invalidTermsCacheFilePath]];
-  NSLog(@"%d invalid terms written", self.invalidTermsCache.count);
+  @autoreleasepool {
+    [self.invalidTermsCache writeAsTXTToFile:[self invalidTermsCacheFilePath]];
+    NSLog(@"%d invalid terms written", self.invalidTermsCache.count);
+  }
 }
 
 
