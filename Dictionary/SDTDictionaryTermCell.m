@@ -6,10 +6,10 @@
 //
 //
 
-#import "DictionaryTermCell.h"
-#import "DictionaryViewDefinitions.h"
+#import "SDTDictionaryTermCell.h"
+#import "SDTDictionaryViewDefinitions.h"
 
-@implementation DictionaryTermCell
+@implementation SDTDictionaryTermCell
 
 - (instancetype)init {
   self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kDictionaryTermCellID];

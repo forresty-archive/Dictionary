@@ -6,29 +6,29 @@
 //  Copyright (c) 2011 @forresty. All rights reserved.
 //
 
-#import "MainViewController.h"
-#import "LookupHistory.h"
-#import "LookupRequest.h"
-#import "LookupResponse.h"
-#import "DictionaryTermCell.h"
-#import "DictionaryTableHeaderView.h"
-#import "DictionaryViewDefinitions.h"
+#import "SDTMainViewController.h"
+#import "SDTLookupHistory.h"
+#import "SDTLookupRequest.h"
+#import "SDTLookupResponse.h"
+#import "SDTDictionaryTermCell.h"
+#import "SDTDictionaryTableHeaderView.h"
+#import "SDTDictionaryViewDefinitions.h"
 
 
-@interface MainViewController ()
+@interface SDTMainViewController ()
 
 @property UISearchBar *searchBar;
 @property UITableView *lookupHistoryTableView;
 @property UISearchDisplayController *dictionarySearchDisplayController;
 
-@property LookupHistory *lookupHistory;
-@property LookupRequest *lookupRequest;
-@property LookupResponse *lookupResponse;
+@property SDTLookupHistory *lookupHistory;
+@property SDTLookupRequest *lookupRequest;
+@property SDTLookupResponse *lookupResponse;
 
 @end
 
 
-@implementation MainViewController
+@implementation SDTMainViewController
 
 
 # pragma mark - View lifecycle
@@ -37,9 +37,9 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  _lookupHistory = [LookupHistory sharedInstance];
-  _lookupRequest = [[LookupRequest alloc] init];
-  _lookupResponse = [LookupResponse responseWithProgressState:DictionaryLookupProgressStateIdle terms:@[]];
+  _lookupHistory = [SDTLookupHistory sharedInstance];
+  _lookupRequest = [[SDTLookupRequest alloc] init];
+  _lookupResponse = [SDTLookupResponse responseWithProgressState:DictionaryLookupProgressStateIdle terms:@[]];
 
   [self buildViews];
 }
@@ -160,10 +160,10 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  DictionaryTermCell *cell = [tableView dequeueReusableCellWithIdentifier:kDictionaryTermCellID];
+  SDTDictionaryTermCell *cell = [tableView dequeueReusableCellWithIdentifier:kDictionaryTermCellID];
 
   if (!cell) {
-    cell = [[DictionaryTermCell alloc] init];
+    cell = [[SDTDictionaryTermCell alloc] init];
   }
 
   if (tableView == self.searchDisplayController.searchResultsTableView) {
@@ -233,7 +233,7 @@
 # pragma mark private
 
 
-- (void)makeHistoryCell:(DictionaryTermCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)makeHistoryCell:(SDTDictionaryTermCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
   if (self.lookupHistory.count == 0) {
     [cell changeToType:DictionaryTableViewCellTypeDisabled withText:@"No history"];
   } else if (indexPath.row == self.lookupHistory.count) {
@@ -244,7 +244,7 @@
 }
 
 
-- (void)makeSearchResultCell:(DictionaryTermCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)makeSearchResultCell:(SDTDictionaryTermCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
   switch (self.lookupResponse.lookupState) {
     case DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet:
       return [cell changeToType:DictionaryTableViewCellTypeDisabled withText:@"Looking up..."];
@@ -267,10 +267,10 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
   if (tableView == self.lookupHistoryTableView) {
-    return [DictionaryTableHeaderView viewWithText:@"History"];
+    return [SDTDictionaryTableHeaderView viewWithText:@"History"];
   }
   if (self.lookupResponse.lookupState == DictionaryLookupProgressStateFinishedWithGuesses) {
-    return [DictionaryTableHeaderView viewWithText:@"Did you mean?"];
+    return [SDTDictionaryTableHeaderView viewWithText:@"Did you mean?"];
   }
 
   return nil;
@@ -319,7 +319,7 @@
     return NO;
   }
 
-  [self.lookupRequest startLookingUpDictionaryWithTerm:searchString existingTerms:self.lookupResponse.terms progressBlock:^(LookupResponse *response) {
+  [self.lookupRequest startLookingUpDictionaryWithTerm:searchString existingTerms:self.lookupResponse.terms progressBlock:^(SDTLookupResponse *response) {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
       self.lookupResponse = response;
       [self.searchDisplayController.searchResultsTableView reloadData];

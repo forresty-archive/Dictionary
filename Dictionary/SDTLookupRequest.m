@@ -6,21 +6,21 @@
 //
 //
 
-#import "LookupRequest.h"
-#import "Dictionary.h"
-#import "LookupResponse.h"
+#import "SDTLookupRequest.h"
+#import "SDTDictionary.h"
+#import "SDTLookupResponse.h"
 
 
-@interface LookupRequest ()
+@interface SDTLookupRequest ()
 
 @property NSOperationQueue *completionLookupOperationQueue;
 
-@property Dictionary *dictionary;
+@property SDTDictionary *dictionary;
 
 @end
 
 
-@implementation LookupRequest
+@implementation SDTLookupRequest
 
 
 - (instancetype)init {
@@ -29,7 +29,7 @@
 
     _completionLookupOperationQueue = [[NSOperationQueue alloc] init];
 
-    _dictionary = [Dictionary sharedInstance];
+    _dictionary = [SDTDictionary sharedInstance];
   }
 
   return self;
@@ -53,9 +53,9 @@
     NSMutableArray *terms = [self filteredSearchResultForSearchString:term existingTerms:existingTerms];
 
     if (terms.count > 0) {
-      block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
+      block([SDTLookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
     } else {
-      block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet terms:terms]);
+      block([SDTLookupResponse responseWithProgressState:DictionaryLookupProgressStateLookingUpCompletionsButNoResultYet terms:terms]);
     }
 
     [NSThread sleepForTimeInterval:0.3];
@@ -68,7 +68,7 @@
       [terms addObject:term];
 
       if (![weakOperation isCancelled]) {
-        block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
+        block([SDTLookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
       }
     }
 
@@ -87,15 +87,15 @@
 
       // send in batch
       if ([terms count] % batchCount == 0) {
-        block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
+        block([SDTLookupResponse responseWithProgressState:DictionaryLookupProgressStateHasPartialResults terms:terms]);
       }
     }
 
     if (![weakOperation isCancelled]) {
       if (terms.count > 0) {
-        block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithCompletions terms:terms]);
+        block([SDTLookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithCompletions terms:terms]);
       } else {
-        block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFoundNoCompletionsLookingUpGuessesButNoResultsYet terms:terms]);
+        block([SDTLookupResponse responseWithProgressState:DictionaryLookupProgressStateFoundNoCompletionsLookingUpGuessesButNoResultsYet terms:terms]);
 
         for (NSString *guess in [self.dictionary guessesForTerm:term]) {
           if ([weakOperation isCancelled]) {
@@ -112,9 +112,9 @@
         }
 
         if (terms.count > 0) {
-          block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithGuesses terms:terms]);
+          block([SDTLookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithGuesses terms:terms]);
         } else {
-          block([LookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithNoResultsAtAll terms:terms]);
+          block([SDTLookupResponse responseWithProgressState:DictionaryLookupProgressStateFinishedWithNoResultsAtAll terms:terms]);
         }
       }
     }

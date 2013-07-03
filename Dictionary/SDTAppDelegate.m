@@ -6,12 +6,12 @@
 //  Copyright (c) 2011 @forresty. All rights reserved.
 //
 
-#import "AppDelegate.h"
-#import "MainViewController.h"
-#import "Dictionary.h"
+#import "SDTAppDelegate.h"
+#import "SDTMainViewController.h"
+#import "SDTDictionary.h"
 #import "Flurry.h"
 
-@implementation AppDelegate
+@implementation SDTAppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -22,7 +22,7 @@
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-  self.window.rootViewController = [[MainViewController alloc] init];
+  self.window.rootViewController = [[SDTMainViewController alloc] init];
 
   self.window.backgroundColor = [UIColor whiteColor];
 
@@ -33,7 +33,7 @@
 
 
 - (void)copyCacheIfNeeded {
-  Dictionary *dictionary = [Dictionary sharedInstance];
+  SDTDictionary *dictionary = [SDTDictionary sharedInstance];
 
   NSString *bundleValidTermsCacheFilePath = [[NSBundle mainBundle] pathForResource:@"validTerms" ofType:@"txt"];
   if (![[NSFileManager defaultManager] fileExistsAtPath:dictionary.validTermsCacheFilePath]) {

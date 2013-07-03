@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface Dictionary : NSObject
+@interface SDTDictionary : NSObject
 
 
 # pragma mark - object life cycle

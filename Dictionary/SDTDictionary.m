@@ -6,7 +6,7 @@
 //
 //
 
-#import "Dictionary.h"
+#import "SDTDictionary.h"
 #import "UIKit/UITextChecker.h"
 #import "UIKit/UIReferenceLibraryViewController.h"
 #import "SVProgressHUD.h"
@@ -70,7 +70,7 @@
 # pragma mark - Dictionary
 
 
-@interface Dictionary ()
+@interface SDTDictionary ()
 
 @property UITextChecker *textChecker;
 
@@ -79,19 +79,19 @@
 @end
 
 
-@implementation Dictionary
+@implementation SDTDictionary
 
 
 # pragma mark - object life cycle
 
 
 + (instancetype)sharedInstance {
-  static Dictionary *_instance = nil;
+  static SDTDictionary *_instance = nil;
 
   static dispatch_once_t onceToken;
 
   dispatch_once(&onceToken, ^{
-    _instance = [[Dictionary alloc] init];
+    _instance = [[SDTDictionary alloc] init];
   });
 
   return _instance;

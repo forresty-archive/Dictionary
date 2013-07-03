@@ -7,17 +7,17 @@
 //
 
 #import "DictionaryTests.h"
-#import "Dictionary.h"
+#import "SDTDictionary.h"
 
 @implementation DictionaryTests {
 @private
-  Dictionary *_dictionary;
+  SDTDictionary *_dictionary;
 }
 
 - (void)setUp {
   [super setUp];
 
-  _dictionary = [Dictionary sharedInstance];
+  _dictionary = [SDTDictionary sharedInstance];
 }
 
 - (void)tearDown {

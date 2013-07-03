@@ -33,14 +33,14 @@ typedef NS_ENUM(NSUInteger, DictionaryLookupProgressState) {
 
 
 
-@interface LookupResponse : NSObject
+@interface SDTLookupResponse : NSObject
 
 
 @property (nonatomic) DictionaryLookupProgressState lookupState;
 
 @property (nonatomic) NSArray *terms;
 
-+ (LookupResponse *)responseWithProgressState:(DictionaryLookupProgressState)state terms:(NSArray *)terms;
++ (SDTLookupResponse *)responseWithProgressState:(DictionaryLookupProgressState)state terms:(NSArray *)terms;
 
 
 @end

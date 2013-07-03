@@ -13,26 +13,26 @@
 		683A6A2C14760152004C3F8C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2B14760152004C3F8C /* CoreGraphics.framework */; };
 		683A6A3414760152004C3F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 683A6A3214760152004C3F8C /* InfoPlist.strings */; };
 		683A6A3614760152004C3F8C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A6A3514760152004C3F8C /* main.m */; };
-		683A6A3A14760152004C3F8C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A6A3914760152004C3F8C /* AppDelegate.m */; };
+		683A6A3A14760152004C3F8C /* SDTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A6A3914760152004C3F8C /* SDTAppDelegate.m */; };
 		683A6A4514760152004C3F8C /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A4414760152004C3F8C /* SenTestingKit.framework */; };
 		683A6A4614760152004C3F8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2714760152004C3F8C /* UIKit.framework */; };
 		683A6A4714760152004C3F8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2914760152004C3F8C /* Foundation.framework */; };
 		683A6A5014760152004C3F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 683A6A4E14760152004C3F8C /* InfoPlist.strings */; };
 		683A6A5314760152004C3F8C /* DictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A6A5214760152004C3F8C /* DictionaryTests.m */; };
-		68854488177DD5FB009DF57C /* LookupRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68854487177DD5FB009DF57C /* LookupRequest.m */; };
-		68B0C3B01476047B006AEA06 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* MainViewController.m */; };
-		68B0C3B11476047B006AEA06 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* MainViewController.m */; };
-		68E5E6FB177874DC00AB0684 /* Dictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E5E6FA177874DC00AB0684 /* Dictionary.m */; };
-		68E5E7031779389900AB0684 /* LookupHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E5E7021779389900AB0684 /* LookupHistory.m */; };
-		68EECF921781D57C000166FD /* DictionaryTermCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EECF911781D57C000166FD /* DictionaryTermCell.m */; };
+		68854488177DD5FB009DF57C /* SDTLookupRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68854487177DD5FB009DF57C /* SDTLookupRequest.m */; };
+		68B0C3B01476047B006AEA06 /* SDTMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* SDTMainViewController.m */; };
+		68B0C3B11476047B006AEA06 /* SDTMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B0C3AF1476047B006AEA06 /* SDTMainViewController.m */; };
+		68E5E6FB177874DC00AB0684 /* SDTDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E5E6FA177874DC00AB0684 /* SDTDictionary.m */; };
+		68E5E7031779389900AB0684 /* SDTLookupHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E5E7021779389900AB0684 /* SDTLookupHistory.m */; };
+		68EECF921781D57C000166FD /* SDTDictionaryTermCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EECF911781D57C000166FD /* SDTDictionaryTermCell.m */; };
 		68EECF971781E04A000166FD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2B14760152004C3F8C /* CoreGraphics.framework */; };
-		68EECF9A1781F11E000166FD /* DictionaryTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EECF991781F11E000166FD /* DictionaryTableHeaderView.m */; };
+		68EECF9A1781F11E000166FD /* SDTDictionaryTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EECF991781F11E000166FD /* SDTDictionaryTableHeaderView.m */; };
 		68EECF9D17820536000166FD /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68EECF9B17820536000166FD /* Icon.png */; };
 		68EECF9E17820536000166FD /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68EECF9C17820536000166FD /* Icon@2x.png */; };
 		68EECFA817820883000166FD /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 68EECFA517820883000166FD /* Default.png */; };
 		68EECFA917820883000166FD /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68EECFA617820883000166FD /* Default-568h@2x.png */; };
 		68EECFAA17820883000166FD /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68EECFA717820883000166FD /* Default@2x.png */; };
-		68FDC3171781424A00D167CC /* LookupResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FDC3161781424A00D167CC /* LookupResponse.m */; };
+		68FDC3171781424A00D167CC /* SDTLookupResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FDC3161781424A00D167CC /* SDTLookupResponse.m */; };
 		68FDC31A1781764500D167CC /* invalidTerms.txt in Resources */ = {isa = PBXBuildFile; fileRef = 68FDC3181781764500D167CC /* invalidTerms.txt */; };
 		68FDC31B1781764500D167CC /* validTerms.txt in Resources */ = {isa = PBXBuildFile; fileRef = 68FDC3191781764500D167CC /* validTerms.txt */; };
 		68FDC31E17817DA600D167CC /* libFlurry_4.2.2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68FDC31D17817DA600D167CC /* libFlurry_4.2.2.a */; };
@@ -59,34 +59,34 @@
 		683A6A3314760152004C3F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		683A6A3514760152004C3F8C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		683A6A3714760152004C3F8C /* Dictionary-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dictionary-Prefix.pch"; sourceTree = "<group>"; };
-		683A6A3814760152004C3F8C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		683A6A3914760152004C3F8C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		683A6A3814760152004C3F8C /* SDTAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDTAppDelegate.h; sourceTree = "<group>"; };
+		683A6A3914760152004C3F8C /* SDTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDTAppDelegate.m; sourceTree = "<group>"; };
 		683A6A4314760152004C3F8C /* DictionaryTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DictionaryTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		683A6A4414760152004C3F8C /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		683A6A4D14760152004C3F8C /* DictionaryTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DictionaryTests-Info.plist"; sourceTree = "<group>"; };
 		683A6A4F14760152004C3F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		683A6A5114760152004C3F8C /* DictionaryTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DictionaryTests.h; sourceTree = "<group>"; };
 		683A6A5214760152004C3F8C /* DictionaryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DictionaryTests.m; sourceTree = "<group>"; };
-		68854486177DD5FB009DF57C /* LookupRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LookupRequest.h; sourceTree = "<group>"; };
-		68854487177DD5FB009DF57C /* LookupRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LookupRequest.m; sourceTree = "<group>"; };
-		68B0C3AE1476047B006AEA06 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
-		68B0C3AF1476047B006AEA06 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		68E5E6F9177874DC00AB0684 /* Dictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dictionary.h; sourceTree = "<group>"; };
-		68E5E6FA177874DC00AB0684 /* Dictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dictionary.m; sourceTree = "<group>"; };
-		68E5E7011779389900AB0684 /* LookupHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LookupHistory.h; sourceTree = "<group>"; };
-		68E5E7021779389900AB0684 /* LookupHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LookupHistory.m; sourceTree = "<group>"; };
-		68EECF901781D57C000166FD /* DictionaryTermCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DictionaryTermCell.h; sourceTree = "<group>"; };
-		68EECF911781D57C000166FD /* DictionaryTermCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DictionaryTermCell.m; sourceTree = "<group>"; };
-		68EECF941781D679000166FD /* DictionaryViewDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DictionaryViewDefinitions.h; sourceTree = "<group>"; };
-		68EECF981781F11E000166FD /* DictionaryTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DictionaryTableHeaderView.h; sourceTree = "<group>"; };
-		68EECF991781F11E000166FD /* DictionaryTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DictionaryTableHeaderView.m; sourceTree = "<group>"; };
+		68854486177DD5FB009DF57C /* SDTLookupRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTLookupRequest.h; sourceTree = "<group>"; };
+		68854487177DD5FB009DF57C /* SDTLookupRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDTLookupRequest.m; sourceTree = "<group>"; };
+		68B0C3AE1476047B006AEA06 /* SDTMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTMainViewController.h; sourceTree = "<group>"; };
+		68B0C3AF1476047B006AEA06 /* SDTMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDTMainViewController.m; sourceTree = "<group>"; };
+		68E5E6F9177874DC00AB0684 /* SDTDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTDictionary.h; sourceTree = "<group>"; };
+		68E5E6FA177874DC00AB0684 /* SDTDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDTDictionary.m; sourceTree = "<group>"; };
+		68E5E7011779389900AB0684 /* SDTLookupHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTLookupHistory.h; sourceTree = "<group>"; };
+		68E5E7021779389900AB0684 /* SDTLookupHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDTLookupHistory.m; sourceTree = "<group>"; };
+		68EECF901781D57C000166FD /* SDTDictionaryTermCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTDictionaryTermCell.h; sourceTree = "<group>"; };
+		68EECF911781D57C000166FD /* SDTDictionaryTermCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDTDictionaryTermCell.m; sourceTree = "<group>"; };
+		68EECF941781D679000166FD /* SDTDictionaryViewDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTDictionaryViewDefinitions.h; sourceTree = "<group>"; };
+		68EECF981781F11E000166FD /* SDTDictionaryTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTDictionaryTableHeaderView.h; sourceTree = "<group>"; };
+		68EECF991781F11E000166FD /* SDTDictionaryTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDTDictionaryTableHeaderView.m; sourceTree = "<group>"; };
 		68EECF9B17820536000166FD /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		68EECF9C17820536000166FD /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		68EECFA517820883000166FD /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		68EECFA617820883000166FD /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		68EECFA717820883000166FD /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		68FDC3151781424A00D167CC /* LookupResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LookupResponse.h; sourceTree = "<group>"; };
-		68FDC3161781424A00D167CC /* LookupResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LookupResponse.m; sourceTree = "<group>"; };
+		68FDC3151781424A00D167CC /* SDTLookupResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTLookupResponse.h; sourceTree = "<group>"; };
+		68FDC3161781424A00D167CC /* SDTLookupResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDTLookupResponse.m; sourceTree = "<group>"; };
 		68FDC3181781764500D167CC /* invalidTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = invalidTerms.txt; sourceTree = "<group>"; };
 		68FDC3191781764500D167CC /* validTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = validTerms.txt; sourceTree = "<group>"; };
 		68FDC31C17817DA600D167CC /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
@@ -166,8 +166,8 @@
 				68E5E6FD1778753C00AB0684 /* Controllers */,
 				68E5E6FC177874E200AB0684 /* Models */,
 				68EECF931781D581000166FD /* Views */,
-				683A6A3814760152004C3F8C /* AppDelegate.h */,
-				683A6A3914760152004C3F8C /* AppDelegate.m */,
+				683A6A3814760152004C3F8C /* SDTAppDelegate.h */,
+				683A6A3914760152004C3F8C /* SDTAppDelegate.m */,
 				68FDC31C17817DA600D167CC /* Flurry.h */,
 				683A6A3014760152004C3F8C /* Supporting Files */,
 			);
@@ -207,14 +207,14 @@
 		68E5E6FC177874E200AB0684 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				68E5E6F9177874DC00AB0684 /* Dictionary.h */,
-				68E5E6FA177874DC00AB0684 /* Dictionary.m */,
-				68E5E7011779389900AB0684 /* LookupHistory.h */,
-				68E5E7021779389900AB0684 /* LookupHistory.m */,
-				68854486177DD5FB009DF57C /* LookupRequest.h */,
-				68854487177DD5FB009DF57C /* LookupRequest.m */,
-				68FDC3151781424A00D167CC /* LookupResponse.h */,
-				68FDC3161781424A00D167CC /* LookupResponse.m */,
+				68E5E6F9177874DC00AB0684 /* SDTDictionary.h */,
+				68E5E6FA177874DC00AB0684 /* SDTDictionary.m */,
+				68E5E7011779389900AB0684 /* SDTLookupHistory.h */,
+				68E5E7021779389900AB0684 /* SDTLookupHistory.m */,
+				68854486177DD5FB009DF57C /* SDTLookupRequest.h */,
+				68854487177DD5FB009DF57C /* SDTLookupRequest.m */,
+				68FDC3151781424A00D167CC /* SDTLookupResponse.h */,
+				68FDC3161781424A00D167CC /* SDTLookupResponse.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -222,8 +222,8 @@
 		68E5E6FD1778753C00AB0684 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				68B0C3AE1476047B006AEA06 /* MainViewController.h */,
-				68B0C3AF1476047B006AEA06 /* MainViewController.m */,
+				68B0C3AE1476047B006AEA06 /* SDTMainViewController.h */,
+				68B0C3AF1476047B006AEA06 /* SDTMainViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -231,11 +231,11 @@
 		68EECF931781D581000166FD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				68EECF941781D679000166FD /* DictionaryViewDefinitions.h */,
-				68EECF901781D57C000166FD /* DictionaryTermCell.h */,
-				68EECF911781D57C000166FD /* DictionaryTermCell.m */,
-				68EECF981781F11E000166FD /* DictionaryTableHeaderView.h */,
-				68EECF991781F11E000166FD /* DictionaryTableHeaderView.m */,
+				68EECF941781D679000166FD /* SDTDictionaryViewDefinitions.h */,
+				68EECF901781D57C000166FD /* SDTDictionaryTermCell.h */,
+				68EECF911781D57C000166FD /* SDTDictionaryTermCell.m */,
+				68EECF981781F11E000166FD /* SDTDictionaryTableHeaderView.h */,
+				68EECF991781F11E000166FD /* SDTDictionaryTableHeaderView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -395,14 +395,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				683A6A3614760152004C3F8C /* main.m in Sources */,
-				683A6A3A14760152004C3F8C /* AppDelegate.m in Sources */,
-				68B0C3B01476047B006AEA06 /* MainViewController.m in Sources */,
-				68E5E6FB177874DC00AB0684 /* Dictionary.m in Sources */,
-				68E5E7031779389900AB0684 /* LookupHistory.m in Sources */,
-				68854488177DD5FB009DF57C /* LookupRequest.m in Sources */,
-				68FDC3171781424A00D167CC /* LookupResponse.m in Sources */,
-				68EECF921781D57C000166FD /* DictionaryTermCell.m in Sources */,
-				68EECF9A1781F11E000166FD /* DictionaryTableHeaderView.m in Sources */,
+				683A6A3A14760152004C3F8C /* SDTAppDelegate.m in Sources */,
+				68B0C3B01476047B006AEA06 /* SDTMainViewController.m in Sources */,
+				68E5E6FB177874DC00AB0684 /* SDTDictionary.m in Sources */,
+				68E5E7031779389900AB0684 /* SDTLookupHistory.m in Sources */,
+				68854488177DD5FB009DF57C /* SDTLookupRequest.m in Sources */,
+				68FDC3171781424A00D167CC /* SDTLookupResponse.m in Sources */,
+				68EECF921781D57C000166FD /* SDTDictionaryTermCell.m in Sources */,
+				68EECF9A1781F11E000166FD /* SDTDictionaryTableHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,7 +411,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				683A6A5314760152004C3F8C /* DictionaryTests.m in Sources */,
-				68B0C3B11476047B006AEA06 /* MainViewController.m in Sources */,
+				68B0C3B11476047B006AEA06 /* SDTMainViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

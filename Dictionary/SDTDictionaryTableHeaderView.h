@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DictionaryTableHeaderView : UIView
+@interface SDTDictionaryTableHeaderView : UIView
 
 + (instancetype)viewWithText:(NSString *)text;
 

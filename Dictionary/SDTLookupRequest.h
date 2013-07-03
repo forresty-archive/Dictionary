@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@class LookupResponse;
+@class SDTLookupResponse;
 
-typedef void(^DictionaryLookupProgress)(LookupResponse* response);
+typedef void(^DictionaryLookupProgress)(SDTLookupResponse* response);
 
 
-@interface LookupRequest : NSObject
+@interface SDTLookupRequest : NSObject
 
 
 - (void)startLookingUpDictionaryWithTerm:(NSString *)term existingTerms:(NSArray *)existingTerms batchCount:(NSUInteger)batchCount progressBlock:(DictionaryLookupProgress)block;

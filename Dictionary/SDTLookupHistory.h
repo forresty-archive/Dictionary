@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface LookupHistory : NSObject
+@interface SDTLookupHistory : NSObject
 
 
 # pragma mark - object life cycle

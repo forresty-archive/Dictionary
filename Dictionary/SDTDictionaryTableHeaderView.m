@@ -6,14 +6,14 @@
 //
 //
 
-#import "DictionaryTableHeaderView.h"
+#import "SDTDictionaryTableHeaderView.h"
 
 
-@implementation DictionaryTableHeaderView
+@implementation SDTDictionaryTableHeaderView
 
 
 + (instancetype)viewWithText:(NSString *)text {
-  DictionaryTableHeaderView *view = [self sharedInstanceWithText:text];
+  SDTDictionaryTableHeaderView *view = [self sharedInstanceWithText:text];
 
   return view;
 }
@@ -32,7 +32,7 @@
   });
 
   if (!_instances[text]) {
-    DictionaryTableHeaderView *view = [[self alloc] initWithText:text];
+    SDTDictionaryTableHeaderView *view = [[self alloc] initWithText:text];
     _instances[text] = view;
   }
 

@@ -6,26 +6,26 @@
 //
 //
 
-#import "LookupHistory.h"
+#import "SDTLookupHistory.h"
 
 
 static NSString *kDictionaryLookupHistory = @"kDictionaryLookupHistory";
 static int kDictionaryLookupHistoryLimit = 15;
 
 
-@implementation LookupHistory
+@implementation SDTLookupHistory
 
 
 # pragma mark - object life cycle
 
 
 + (instancetype)sharedInstance {
-  static LookupHistory *_instance = nil;
+  static SDTLookupHistory *_instance = nil;
 
   static dispatch_once_t onceToken;
 
   dispatch_once(&onceToken, ^{
-    _instance = [[LookupHistory alloc] init];
+    _instance = [[SDTLookupHistory alloc] init];
   });
 
   return _instance;
