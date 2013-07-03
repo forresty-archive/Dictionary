@@ -37,6 +37,7 @@
 
   NSString *bundleValidTermsCacheFilePath = [[NSBundle mainBundle] pathForResource:@"validTerms" ofType:@"txt"];
   if (![[NSFileManager defaultManager] fileExistsAtPath:dictionary.validTermsCacheFilePath]) {
+    NSLog(@"copying valid terms from bundle");
     [[NSFileManager defaultManager] copyItemAtPath:bundleValidTermsCacheFilePath toPath:dictionary.validTermsCacheFilePath error:nil];
     [dictionary reloadValidTermsCache];
   }
@@ -44,6 +45,7 @@
   NSString *bundleInvalidTermsCacheFilePath = [[NSBundle mainBundle] pathForResource:@"invalidTerms" ofType:@"txt"];
 
   if (![[NSFileManager defaultManager] fileExistsAtPath:dictionary.invalidTermsCacheFilePath]) {
+    NSLog(@"copying invalid terms from bundle");
     [[NSFileManager defaultManager] copyItemAtPath:bundleInvalidTermsCacheFilePath toPath:dictionary.invalidTermsCacheFilePath error:nil];
     [dictionary reloadInvalidTermsCache];
   }

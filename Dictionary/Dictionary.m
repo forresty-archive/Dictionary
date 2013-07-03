@@ -9,8 +9,7 @@
 #import "Dictionary.h"
 #import "UIKit/UITextChecker.h"
 #import "UIKit/UIReferenceLibraryViewController.h"
-
-//#include <stdio.h>
+#import "SVProgressHUD.h"
 
 # pragma mark - NSMutableSet ReadWriteAsTXT addition
 
@@ -119,27 +118,28 @@
   NSLog(@"memory warning received");
   // only discard if the app is in the background
   if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
+    NSLog(@"discarding cache");
     self.validTermsCache = nil;
     self.invalidTermsCache = nil;
   }
 }
 
+
 - (void)reloadCacheDueToMemoryWarningIfNeeded {
   if (!self.validTermsCache || !self.invalidTermsCacheFilePath) {
-    [self didStartReloadingCacheDueToMemoryWarning];
-    [self reloadCacheIfNeeded];
-    [self didEndReloadingCacheDueToMemoryWarning];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
+    }];
+
+    NSOperationQueue *backgroundQueue = [[NSOperationQueue alloc] init];
+    [backgroundQueue addOperationWithBlock:^{
+      [self reloadCacheIfNeeded];
+
+      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        [SVProgressHUD dismiss];
+      }];
+    }];
   }
-}
-
-
-- (void)didStartReloadingCacheDueToMemoryWarning {
-  // show hud
-}
-
-
-- (void)didEndReloadingCacheDueToMemoryWarning {
-  // hide hud
 }
 
 
@@ -178,15 +178,19 @@
 
 
 - (void)saveCache {
-  @autoreleasepool {
-    [self.validTermsCache writeAsTXTToFile:self.validTermsCacheFilePath];
-    NSLog(@"%d valid terms written", self.validTermsCache.count);
-  }
+  NSOperationQueue *backgroundQueue = [[NSOperationQueue alloc] init];
 
-  @autoreleasepool {
-    [self.invalidTermsCache writeAsTXTToFile:self.invalidTermsCacheFilePath];
-    NSLog(@"%d invalid terms written", self.invalidTermsCache.count);
-  }
+  [backgroundQueue addOperationWithBlock:^{
+    @autoreleasepool {
+      [self.validTermsCache writeAsTXTToFile:self.validTermsCacheFilePath];
+      NSLog(@"%d valid terms written", self.validTermsCache.count);
+    }
+
+    @autoreleasepool {
+      [self.invalidTermsCache writeAsTXTToFile:self.invalidTermsCacheFilePath];
+      NSLog(@"%d invalid terms written", self.invalidTermsCache.count);
+    }
+  }];
 }
 
 

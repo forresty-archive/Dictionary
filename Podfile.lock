@@ -1,10 +1,10 @@
 PODS:
-  - MTStatusBarOverlay (0.9.1)
+  - SVProgressHUD (0.9)
 
 DEPENDENCIES:
-  - MTStatusBarOverlay
+  - SVProgressHUD
 
 SPEC CHECKSUMS:
-  MTStatusBarOverlay: 2cee705996e4e307191d423bf49e583b9b2c14ac
+  SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
 
 COCOAPODS: 0.20.2
