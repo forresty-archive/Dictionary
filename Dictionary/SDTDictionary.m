@@ -39,7 +39,8 @@
 
 
 + (NSMutableSet *)setWithTXTContentsOfFile:(NSString *)path {
-  // read file line by line is roughly 1 time slower, but uses less memory... hmm.
+  // read file line by line using C is roughly 1 time slower, but does not have memory usage spike... hmm.
+  // since the spike is only 5~10 MB so I think generally it is acceptable to just use the obj-c way and try not to over-optimize here
 
 //  NSMutableSet *result = [NSMutableSet set];
 //

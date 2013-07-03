@@ -13,6 +13,8 @@
 + (SDTLookupResponse *)responseWithProgressState:(DictionaryLookupProgressState)state terms:(NSArray *)terms {
   SDTLookupResponse *response = [[self alloc] init];
   response.lookupState = state;
+
+  // uniq and sort
   response.terms = [[[NSSet setWithArray:terms] allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
     return [obj1 caseInsensitiveCompare:obj2];
   }];

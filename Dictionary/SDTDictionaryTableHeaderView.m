@@ -13,15 +13,14 @@
 
 
 + (instancetype)viewWithText:(NSString *)text {
-  SDTDictionaryTableHeaderView *view = [self sharedInstanceWithText:text];
-
-  return view;
+  return [self sharedInstanceWithText:text];
 }
 
 
 # pragma mark - private
 
 
+// reuse globally, flyweight pattern?
 + (instancetype)sharedInstanceWithText:(NSString *)text {
   static NSMutableDictionary* _instances = nil;
 
