@@ -100,25 +100,86 @@
 - (instancetype)init {
   self = [super init];
 
-  [self reloadCache];
+  [self reloadCacheIfNeeded];
 
   _textChecker = [[UITextChecker alloc] init];
 
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveCache) name:UIApplicationDidEnterBackgroundNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(discardCache) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMemoryWarning) name:UIApplicationDidBecomeActiveNotification object:nil];
 
   return self;
+}
+
+
+# pragma mark - handling memory warnings
+
+
+- (void)discardCache {
+  NSLog(@"memory warning received");
+  // only discard if the app is in the background
+  if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
+    NSLog(@"discarding caches");
+    // only discarding valid Terms for now
+    _validTermsCache = nil;
+  }
+}
+
+- (void)handleMemoryWarning {
+  if (!_validTermsCache || !_invalidTermsCache) {
+    [self didStartReloadingCacheDueToMemoryWarning];
+    [self reloadCacheIfNeeded];
+    [self didEndReloadingCacheDueToMemoryWarning];
+  }
+}
+
+
+- (void)didStartReloadingCacheDueToMemoryWarning {
+  // show hud
+}
+
+
+- (void)didEndReloadingCacheDueToMemoryWarning {
+  // hide hud
 }
 
 
 # pragma mark - cache manipulation
 
 
-- (void)reloadCache {
-  _validTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithTXTContentsOfFile:[self validTermsCacheFilePath]]];
-  NSLog(@"%d valid terms read", self.validTermsCache.count);
+- (void)reloadValidTermsCache {
+  @autoreleasepool {
+    _validTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithTXTContentsOfFile:[self validTermsCacheFilePath]]];
+    NSLog(@"%d valid terms read", self.validTermsCache.count);
+  }
+}
 
-  _invalidTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithTXTContentsOfFile:[self invalidTermsCacheFilePath]]];
-  NSLog(@"%d invalid terms read", self.invalidTermsCache.count);
+
+- (void)reloadInvalidTermsCache {
+  @autoreleasepool {
+    _invalidTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithTXTContentsOfFile:[self invalidTermsCacheFilePath]]];
+    NSLog(@"%d invalid terms read", self.invalidTermsCache.count);
+  }
+}
+
+
+- (void)reloadCacheIfNeeded {
+  NSLog(@"checking cache status");
+
+  if (!_validTermsCache) {
+    NSLog(@"valid terms cache gone, need reloading");
+    [self reloadValidTermsCache];
+  }
+
+  if (!_invalidTermsCache) {
+    NSLog(@"invalid terms cache gone, need reloading");
+    [self reloadInvalidTermsCache];
+  }
+}
+
+
+- (void)reloadCache {
+  [self reloadCacheIfNeeded];
 }
 
 
