@@ -41,7 +41,9 @@
 
 - (void)saveCache;
 
-- (void)reloadCache;
+- (void)reloadValidTermsCache;
+
+- (void)reloadInvalidTermsCache;
 
 
 @end
