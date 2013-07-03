@@ -190,6 +190,9 @@
       [self.invalidTermsCache writeAsTXTToFile:self.invalidTermsCacheFilePath];
       NSLog(@"%d invalid terms written", self.invalidTermsCache.count);
     }
+
+    // test if memory warning handling is working
+//    [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationDidReceiveMemoryWarningNotification object:nil];
   }];
 }
 
