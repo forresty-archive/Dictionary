@@ -35,35 +35,37 @@
 - (void)copyCacheIfNeeded {
   SDTDictionary *dictionary = [SDTDictionary sharedInstance];
 
-  NSString *bundleValidTermsCacheFilePath = [[NSBundle mainBundle] pathForResource:@"validTerms" ofType:@"txt"];
   if (![[NSFileManager defaultManager] fileExistsAtPath:dictionary.validTermsCacheFilePath]) {
     NSLog(@"copying valid terms from bundle");
-    [[NSFileManager defaultManager] copyItemAtPath:bundleValidTermsCacheFilePath toPath:dictionary.validTermsCacheFilePath error:nil];
+    [[NSFileManager defaultManager] copyItemAtPath:[[NSBundle mainBundle] pathForResource:@"validTerms" ofType:@"txt"]
+                                            toPath:dictionary.validTermsCacheFilePath error:nil];
     [dictionary reloadValidTermsCache];
   }
 
-  NSString *bundleInvalidTermsCacheFilePath = [[NSBundle mainBundle] pathForResource:@"invalidTerms" ofType:@"txt"];
-
   if (![[NSFileManager defaultManager] fileExistsAtPath:dictionary.invalidTermsCacheFilePath]) {
     NSLog(@"copying invalid terms from bundle");
-    [[NSFileManager defaultManager] copyItemAtPath:bundleInvalidTermsCacheFilePath toPath:dictionary.invalidTermsCacheFilePath error:nil];
+    [[NSFileManager defaultManager] copyItemAtPath:[[NSBundle mainBundle] pathForResource:@"invalidTerms" ofType:@"txt"]
+                                            toPath:dictionary.invalidTermsCacheFilePath error:nil];
     [dictionary reloadInvalidTermsCache];
   }
 }
 
 
 - (void)setupUIAppearances {
+  // UISearchBar
   [[UISearchBar appearance] setTintColor:DICTIONARY_BASIC_TINT_COLOR];
 
-  // http://stackoverflow.com/questions/11572372/modifying-uisearchbar-cancel-button-font-text-color-and-style
+  // UIBarButtonItem
   NSDictionary *attributes = @{ UITextAttributeTextColor: DICTIONARY_BASIC_TEXT_COLOR,
                                 UITextAttributeTextShadowColor: DICTIONARY_BASIC_TINT_COLOR,
                                 UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, -1)] };
   [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTitleTextAttributes:attributes forState:UIControlStateNormal];
 
+  // UITableViewHeaderFooterView
   UITableViewHeaderFooterView *headerViewProxy = [UITableViewHeaderFooterView appearance];
   headerViewProxy.tintColor = DICTIONARY_BASIC_TEXT_COLOR;
 
+  // UILabel
   UILabel *labelProxy = [UILabel appearanceWhenContainedIn:[UITableViewHeaderFooterView class], nil];
   labelProxy.textColor = DICTIONARY_BASIC_TINT_COLOR;
   labelProxy.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
