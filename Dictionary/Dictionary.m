@@ -41,26 +41,27 @@
 
 + (NSMutableSet *)setWithTXTContentsOfFile:(NSString *)path {
   // read file line by line is roughly 1 time slower, but uses less memory... hmm.
-  NSMutableSet *result = [NSMutableSet set];
 
-  FILE *file = fopen([path UTF8String], "r");
+//  NSMutableSet *result = [NSMutableSet set];
+//
+//  FILE *file = fopen([path UTF8String], "r");
+//
+//  if (file) {
+//    while(!feof(file)) {
+//      char *line = NULL;
+//      size_t linecap = 0;
+//      ssize_t linelen;
+//      while ((linelen = getline(&line, &linecap, file)) > 0) {
+//        [result addObject:[NSString stringWithCString:line encoding:NSUTF8StringEncoding]];
+//      }
+//    }
+//  }
+//
+//  fclose(file);
+//
+//  return result;
 
-  if (file) {
-    while(!feof(file)) {
-      char *line = NULL;
-      size_t linecap = 0;
-      ssize_t linelen;
-      while ((linelen = getline(&line, &linecap, file)) > 0) {
-        [result addObject:[NSString stringWithCString:line encoding:NSUTF8StringEncoding]];
-      }
-    }
-  }
-
-  fclose(file);
-
-  return result;
-
-//  return [self setWithArray:[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil] componentsSeparatedByString:@"\n"]];
+  return [self setWithArray:[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil] componentsSeparatedByString:@"\n"]];
 }
 
 
