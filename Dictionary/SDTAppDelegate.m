@@ -9,6 +9,7 @@
 #import "SDTAppDelegate.h"
 #import "SDTMainViewController.h"
 #import "SDTDictionary.h"
+#import "SDTDictionaryViewDefinitions.h"
 #import "Flurry.h"
 
 @implementation SDTAppDelegate
@@ -20,12 +21,11 @@
 
   [self copyCacheIfNeeded];
 
+  [self setupUIAppearances];
+
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
   self.window.rootViewController = [[SDTMainViewController alloc] init];
-
   self.window.backgroundColor = [UIColor whiteColor];
-
   [self.window makeKeyAndVisible];
 
   return YES;
@@ -49,6 +49,25 @@
     [[NSFileManager defaultManager] copyItemAtPath:bundleInvalidTermsCacheFilePath toPath:dictionary.invalidTermsCacheFilePath error:nil];
     [dictionary reloadInvalidTermsCache];
   }
+}
+
+
+- (void)setupUIAppearances {
+  [[UISearchBar appearance] setTintColor:DICTIONARY_BASIC_TINT_COLOR];
+
+  // http://stackoverflow.com/questions/11572372/modifying-uisearchbar-cancel-button-font-text-color-and-style
+  NSDictionary *attributes = @{ UITextAttributeTextColor: DICTIONARY_BASIC_TEXT_COLOR,
+                                UITextAttributeTextShadowColor: DICTIONARY_BASIC_TINT_COLOR,
+                                UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, -1)] };
+  [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTitleTextAttributes:attributes forState:UIControlStateNormal];
+
+  UITableViewHeaderFooterView *headerViewProxy = [UITableViewHeaderFooterView appearance];
+  headerViewProxy.tintColor = DICTIONARY_BASIC_TEXT_COLOR;
+
+  UILabel *labelProxy = [UILabel appearanceWhenContainedIn:[UITableViewHeaderFooterView class], nil];
+  labelProxy.textColor = DICTIONARY_BASIC_TINT_COLOR;
+  labelProxy.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
+  labelProxy.shadowOffset = CGSizeZero;
 }
 
 
