@@ -12,19 +12,19 @@
 
 //#include <stdio.h>
 
-# pragma mark - NSArray ReadWriteAsTXT addition
+# pragma mark - NSMutableSet ReadWriteAsTXT addition
 
 
-@interface NSArray (ReadWriteAsTXT)
+@interface NSMutableSet (ReadWriteAsTXT)
 
 - (void)writeAsTXTToFile:(NSString *)path;
 
-+ (NSArray *)arrayWithTXTContentsOfFile:(NSString *)path;
++ (NSMutableSet *)mutableSetWithTXTContentsOfFile:(NSString *)path;
 
 @end
 
 
-@implementation NSArray (ReadWriteAsTXT)
+@implementation NSMutableSet (ReadWriteAsTXT)
 
 
 - (void)writeAsTXTToFile:(NSString *)path {
@@ -37,6 +37,26 @@
 
   [result writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
+
++ (NSMutableSet *)mutableSetWithTXTContentsOfFile:(NSString *)path {
+  return nil;
+}
+
+
+@end
+
+
+# pragma mark - NSArray ReadWriteAsTXT addition
+
+
+@interface NSArray (ReadWriteAsTXT)
+
++ (NSArray *)arrayWithTXTContentsOfFile:(NSString *)path;
+
+@end
+
+
+@implementation NSArray (ReadWriteAsTXT)
 
 
 + (NSArray *)arrayWithTXTContentsOfFile:(NSString *)path {
@@ -184,21 +204,11 @@
 
 
 - (void)saveCache {
-  NSMutableArray *array = [@[] mutableCopy];
-  for (NSString *term in self.validTermsCache) {
-    [array addObject:term];
-  }
+  [self.validTermsCache writeAsTXTToFile:[self validTermsCacheFilePath]];
+  NSLog(@"%d valid terms written", self.validTermsCache.count);
 
-  [array writeAsTXTToFile:[self validTermsCacheFilePath]];
-  NSLog(@"%d valid terms written", array.count);
-
-  array = [@[] mutableCopy];
-  for (NSString *term in self.invalidTermsCache) {
-    [array addObject:term];
-  }
-
-  [array writeAsTXTToFile:[self invalidTermsCacheFilePath]];
-  NSLog(@"%d invalid terms written", array.count);
+  [self.invalidTermsCache writeAsTXTToFile:[self invalidTermsCacheFilePath]];
+  NSLog(@"%d invalid terms written", self.invalidTermsCache.count);
 }
 
 
