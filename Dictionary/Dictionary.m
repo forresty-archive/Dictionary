@@ -74,6 +74,8 @@
 
 @property UITextChecker *textChecker;
 
+@property (readonly) NSString *cacheDirectoryPath;
+
 @end
 
 
@@ -105,7 +107,7 @@
 
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveCache) name:UIApplicationDidEnterBackgroundNotification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(discardCache) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCacheDueToMemoryWarningIfNeeded) name:UIApplicationDidBecomeActiveNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restoreCacheDueToMemoryWarningHandlingIfNeeded) name:UIApplicationDidBecomeActiveNotification object:nil];
 
   return self;
 }
@@ -125,7 +127,7 @@
 }
 
 
-- (void)reloadCacheDueToMemoryWarningIfNeeded {
+- (void)restoreCacheDueToMemoryWarningHandlingIfNeeded {
   if (!self.validTermsCache || !self.invalidTermsCacheFilePath) {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
       [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
@@ -198,16 +200,17 @@
 
 
 - (NSString *)validTermsCacheFilePath {
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-
-  return [paths[0] stringByAppendingPathComponent:@"validTerms.txt"];
+  return [self.cacheDirectoryPath stringByAppendingPathComponent:@"validTerms.txt"];
 }
 
 
 - (NSString *)invalidTermsCacheFilePath {
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+  return [self.cacheDirectoryPath stringByAppendingPathComponent:@"invalidTerms.txt"];
+}
 
-  return [paths[0] stringByAppendingPathComponent:@"invalidTerms.txt"];
+
+- (NSString *)cacheDirectoryPath {
+  return NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
 }
 
 
