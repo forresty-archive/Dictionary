@@ -19,7 +19,7 @@
 
 - (void)writeAsTXTToFile:(NSString *)path;
 
-+ (NSMutableSet *)mutableSetWithTXTContentsOfFile:(NSString *)path;
++ (NSMutableSet *)setWithTXTContentsOfFile:(NSString *)path;
 
 @end
 
@@ -31,59 +31,36 @@
   NSMutableString *result = [@"" mutableCopy];
 
   for (NSString *term in self) {
-    @autoreleasepool {
-      [result appendString:term];
-      [result appendString:@"\n"];
-    }
+    [result appendString:term];
+    [result appendString:@"\n"];
   }
 
   [result writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 
-+ (NSMutableSet *)mutableSetWithTXTContentsOfFile:(NSString *)path {
-  return nil;
-}
 
++ (NSMutableSet *)setWithTXTContentsOfFile:(NSString *)path {
+  // read file line by line is roughly 1 time slower, but uses less memory... hmm.
+  NSMutableSet *result = [NSMutableSet set];
 
-@end
+  FILE *file = fopen([path UTF8String], "r");
 
+  if (file) {
+    while(!feof(file)) {
+      char *line = NULL;
+      size_t linecap = 0;
+      ssize_t linelen;
+      while ((linelen = getline(&line, &linecap, file)) > 0) {
+        [result addObject:[NSString stringWithCString:line encoding:NSUTF8StringEncoding]];
+      }
+    }
+  }
 
-# pragma mark - NSArray ReadWriteAsTXT addition
+  fclose(file);
 
+  return result;
 
-@interface NSArray (ReadWriteAsTXT)
-
-+ (NSArray *)arrayWithTXTContentsOfFile:(NSString *)path;
-
-@end
-
-
-@implementation NSArray (ReadWriteAsTXT)
-
-
-+ (NSArray *)arrayWithTXTContentsOfFile:(NSString *)path {
-// read file line by line using C is roughly 1 time slower than obj-c implementation. hmm.
-
-//  NSMutableArray *result = [NSMutableArray arrayWithCapacity:100000];
-//
-//  FILE *file = fopen([path UTF8String], "r");
-//
-//  if (file) {
-//    while(!feof(file)) {
-//      char *line = NULL;
-//      size_t linecap = 0;
-//      ssize_t linelen;
-//      while ((linelen = getline(&line, &linecap, file)) > 0) {
-//        [result addObject:[NSString stringWithCString:line encoding:NSUTF8StringEncoding]];
-//      }
-//    }
-//  }
-//
-//  fclose(file);
-//
-//  return result;
-
-  return [[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil] componentsSeparatedByString:@"\n"];
+//  return [self setWithArray:[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil] componentsSeparatedByString:@"\n"]];
 }
 
 
@@ -128,7 +105,7 @@
 
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveCache) name:UIApplicationDidEnterBackgroundNotification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(discardCache) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMemoryWarning) name:UIApplicationDidBecomeActiveNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCacheDueToMemoryWarningIfNeeded) name:UIApplicationDidBecomeActiveNotification object:nil];
 
   return self;
 }
@@ -141,14 +118,13 @@
   NSLog(@"memory warning received");
   // only discard if the app is in the background
   if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
-    NSLog(@"discarding caches");
-    // only discarding valid Terms for now
-    _validTermsCache = nil;
+    self.validTermsCache = nil;
+    self.invalidTermsCache = nil;
   }
 }
 
-- (void)handleMemoryWarning {
-  if (!_validTermsCache || !_invalidTermsCache) {
+- (void)reloadCacheDueToMemoryWarningIfNeeded {
+  if (!self.validTermsCache || !self.invalidTermsCacheFilePath) {
     [self didStartReloadingCacheDueToMemoryWarning];
     [self reloadCacheIfNeeded];
     [self didEndReloadingCacheDueToMemoryWarning];
@@ -171,7 +147,7 @@
 
 - (void)reloadValidTermsCache {
   @autoreleasepool {
-    _validTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithTXTContentsOfFile:[self validTermsCacheFilePath]]];
+    _validTermsCache = [NSMutableSet setWithTXTContentsOfFile:self.validTermsCacheFilePath];
     NSLog(@"%d valid terms read", self.validTermsCache.count);
   }
 }
@@ -179,7 +155,7 @@
 
 - (void)reloadInvalidTermsCache {
   @autoreleasepool {
-    _invalidTermsCache = [NSMutableSet setWithArray:[NSArray arrayWithTXTContentsOfFile:[self invalidTermsCacheFilePath]]];
+    _invalidTermsCache = [NSMutableSet setWithTXTContentsOfFile:self.invalidTermsCacheFilePath];
     NSLog(@"%d invalid terms read", self.invalidTermsCache.count);
   }
 }
@@ -188,31 +164,26 @@
 - (void)reloadCacheIfNeeded {
   NSLog(@"checking cache status");
 
-  if (!_validTermsCache) {
+  if (!self.validTermsCache) {
     NSLog(@"valid terms cache gone, need reloading");
     [self reloadValidTermsCache];
   }
 
-  if (!_invalidTermsCache) {
+  if (!self.invalidTermsCache) {
     NSLog(@"invalid terms cache gone, need reloading");
     [self reloadInvalidTermsCache];
   }
 }
 
 
-- (void)reloadCache {
-  [self reloadCacheIfNeeded];
-}
-
-
 - (void)saveCache {
   @autoreleasepool {
-    [self.validTermsCache writeAsTXTToFile:[self validTermsCacheFilePath]];
+    [self.validTermsCache writeAsTXTToFile:self.validTermsCacheFilePath];
     NSLog(@"%d valid terms written", self.validTermsCache.count);
   }
 
   @autoreleasepool {
-    [self.invalidTermsCache writeAsTXTToFile:[self invalidTermsCacheFilePath]];
+    [self.invalidTermsCache writeAsTXTToFile:self.invalidTermsCacheFilePath];
     NSLog(@"%d invalid terms written", self.invalidTermsCache.count);
   }
 }
