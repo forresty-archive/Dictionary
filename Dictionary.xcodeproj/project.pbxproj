@@ -26,7 +26,7 @@
 		68E5E7031779389900AB0684 /* SDTLookupHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E5E7021779389900AB0684 /* SDTLookupHistory.m */; };
 		68EECF921781D57C000166FD /* SDTDictionaryTermCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EECF911781D57C000166FD /* SDTDictionaryTermCell.m */; };
 		68EECF971781E04A000166FD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683A6A2B14760152004C3F8C /* CoreGraphics.framework */; };
-		68EECF9A1781F11E000166FD /* SDTDictionaryTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EECF991781F11E000166FD /* SDTDictionaryTableHeaderView.m */; };
+		68EECF9A1781F11E000166FD /* FFSolidColorTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EECF991781F11E000166FD /* FFSolidColorTableHeaderView.m */; };
 		68EECF9D17820536000166FD /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68EECF9B17820536000166FD /* Icon.png */; };
 		68EECF9E17820536000166FD /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68EECF9C17820536000166FD /* Icon@2x.png */; };
 		68EECFA817820883000166FD /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 68EECFA517820883000166FD /* Default.png */; };
@@ -78,8 +78,8 @@
 		68EECF901781D57C000166FD /* SDTDictionaryTermCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTDictionaryTermCell.h; sourceTree = "<group>"; };
 		68EECF911781D57C000166FD /* SDTDictionaryTermCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDTDictionaryTermCell.m; sourceTree = "<group>"; };
 		68EECF941781D679000166FD /* SDTDictionaryViewDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTDictionaryViewDefinitions.h; sourceTree = "<group>"; };
-		68EECF981781F11E000166FD /* SDTDictionaryTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTDictionaryTableHeaderView.h; sourceTree = "<group>"; };
-		68EECF991781F11E000166FD /* SDTDictionaryTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDTDictionaryTableHeaderView.m; sourceTree = "<group>"; };
+		68EECF981781F11E000166FD /* FFSolidColorTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFSolidColorTableHeaderView.h; sourceTree = "<group>"; };
+		68EECF991781F11E000166FD /* FFSolidColorTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFSolidColorTableHeaderView.m; sourceTree = "<group>"; };
 		68EECF9B17820536000166FD /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		68EECF9C17820536000166FD /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		68EECFA517820883000166FD /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -87,8 +87,8 @@
 		68EECFA717820883000166FD /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		68FDC3151781424A00D167CC /* SDTLookupResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTLookupResponse.h; sourceTree = "<group>"; };
 		68FDC3161781424A00D167CC /* SDTLookupResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDTLookupResponse.m; sourceTree = "<group>"; };
-		68FDC3181781764500D167CC /* invalidTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = invalidTerms.txt; sourceTree = "<group>"; };
-		68FDC3191781764500D167CC /* validTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = validTerms.txt; sourceTree = "<group>"; };
+		68FDC3181781764500D167CC /* invalidTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = invalidTerms.txt; path = ../invalidTerms.txt; sourceTree = "<group>"; };
+		68FDC3191781764500D167CC /* validTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = validTerms.txt; path = ../validTerms.txt; sourceTree = "<group>"; };
 		68FDC31C17817DA600D167CC /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		68FDC31D17817DA600D167CC /* libFlurry_4.2.2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurry_4.2.2.a; path = Dictionary/libFlurry_4.2.2.a; sourceTree = "<group>"; };
 		68FDC32317817F7800D167CC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -123,12 +123,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6827834C178A74F500329732 /* FFToolkit */ = {
+			isa = PBXGroup;
+			children = (
+				68EECF981781F11E000166FD /* FFSolidColorTableHeaderView.h */,
+				68EECF991781F11E000166FD /* FFSolidColorTableHeaderView.m */,
+			);
+			name = FFToolkit;
+			sourceTree = "<group>";
+		};
 		683A6A1814760151004C3F8C = {
 			isa = PBXGroup;
 			children = (
-				68EECFAB178208FC000166FD /* Assets */,
-				68FDC3181781764500D167CC /* invalidTerms.txt */,
-				68FDC3191781764500D167CC /* validTerms.txt */,
 				683A6A2F14760152004C3F8C /* Dictionary */,
 				683A6A4B14760152004C3F8C /* DictionaryTests */,
 				683A6A2614760152004C3F8C /* Frameworks */,
@@ -163,6 +169,10 @@
 		683A6A2F14760152004C3F8C /* Dictionary */ = {
 			isa = PBXGroup;
 			children = (
+				68EECFAB178208FC000166FD /* Assets */,
+				68FDC3181781764500D167CC /* invalidTerms.txt */,
+				68FDC3191781764500D167CC /* validTerms.txt */,
+				6827834C178A74F500329732 /* FFToolkit */,
 				68E5E6FD1778753C00AB0684 /* Controllers */,
 				68E5E6FC177874E200AB0684 /* Models */,
 				68EECF931781D581000166FD /* Views */,
@@ -234,8 +244,6 @@
 				68EECF941781D679000166FD /* SDTDictionaryViewDefinitions.h */,
 				68EECF901781D57C000166FD /* SDTDictionaryTermCell.h */,
 				68EECF911781D57C000166FD /* SDTDictionaryTermCell.m */,
-				68EECF981781F11E000166FD /* SDTDictionaryTableHeaderView.h */,
-				68EECF991781F11E000166FD /* SDTDictionaryTableHeaderView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -250,6 +258,7 @@
 				68EECF9C17820536000166FD /* Icon@2x.png */,
 			);
 			name = Assets;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -402,7 +411,7 @@
 				68854488177DD5FB009DF57C /* SDTLookupRequest.m in Sources */,
 				68FDC3171781424A00D167CC /* SDTLookupResponse.m in Sources */,
 				68EECF921781D57C000166FD /* SDTDictionaryTermCell.m in Sources */,
-				68EECF9A1781F11E000166FD /* SDTDictionaryTableHeaderView.m in Sources */,
+				68EECF9A1781F11E000166FD /* FFSolidColorTableHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

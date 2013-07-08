@@ -6,10 +6,10 @@
 //
 //
 
-#import "SDTDictionaryTableHeaderView.h"
+#import "FFSolidColorTableHeaderView.h"
 
 
-@implementation SDTDictionaryTableHeaderView
+@implementation FFSolidColorTableHeaderView
 
 
 + (instancetype)viewWithText:(NSString *)text {
@@ -31,7 +31,7 @@
   });
 
   if (!_instances[text]) {
-    SDTDictionaryTableHeaderView *view = [[self alloc] initWithText:text];
+    FFSolidColorTableHeaderView *view = [[self alloc] initWithText:text];
     _instances[text] = view;
   }
 
@@ -48,13 +48,13 @@
     self.backgroundColor = [UIColor colorWithRed:130.0/255 green:85.0/255 blue:48.0/255 alpha:1];
     self.alpha = 0.9;
 
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 310, 30)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
-    label.text = text;
+    _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 310, 30)];
+    self.textLabel.backgroundColor = [UIColor clearColor];
+    self.textLabel.textColor = [UIColor whiteColor];
+    self.textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
+    self.textLabel.text = text;
 
-    [self addSubview:label];
+    [self addSubview:self.textLabel];
   }
 
   return self;

@@ -11,7 +11,7 @@
 #import "SDTLookupRequest.h"
 #import "SDTLookupResponse.h"
 #import "SDTDictionaryTermCell.h"
-#import "SDTDictionaryTableHeaderView.h"
+#import "FFSolidColorTableHeaderView.h"
 
 
 @interface SDTMainViewController ()
@@ -246,10 +246,10 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
   if (tableView == self.lookupHistoryTableView) {
-    return [SDTDictionaryTableHeaderView viewWithText:@"History"];
+    return [FFSolidColorTableHeaderView viewWithText:@"History"];
   }
   if (self.lookupResponse.lookupState == DictionaryLookupProgressStateFinishedWithGuesses) {
-    return [SDTDictionaryTableHeaderView viewWithText:@"Did you mean?"];
+    return [FFSolidColorTableHeaderView viewWithText:@"Did you mean?"];
   }
 
   return nil;

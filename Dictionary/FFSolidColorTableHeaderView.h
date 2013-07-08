@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SDTDictionaryTableHeaderView : UIView
+@interface FFSolidColorTableHeaderView : UIView
+
 
 + (instancetype)viewWithText:(NSString *)text;
+
+@property (nonatomic) UILabel *textLabel;
+
 
 @end
