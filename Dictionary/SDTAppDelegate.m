@@ -11,6 +11,7 @@
 #import "SDTDictionary.h"
 #import "SDTDictionaryViewDefinitions.h"
 #import "Flurry.h"
+#import "TestFlight.h"
 
 @implementation SDTAppDelegate
 
@@ -18,6 +19,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
   [Flurry startSession:@"29W38MKGVJXS7Y92C4ZX"];
+  [TestFlight takeOff:@"3f3a4a0b-47b0-4a35-9049-f69b2c82aa77"];
 
   [self copyCacheIfNeeded];
 
