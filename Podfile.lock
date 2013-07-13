@@ -1,10 +1,16 @@
 PODS:
+  - FlurrySDK (4.2.1)
   - SVProgressHUD (0.9)
+  - TestFlightSDK (1.3.0-beta.7)
 
 DEPENDENCIES:
+  - FlurrySDK
   - SVProgressHUD
+  - TestFlightSDK
 
 SPEC CHECKSUMS:
+  FlurrySDK: 9a38bbb195c9f636a40193190ef38fd07e6b76c5
   SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
+  TestFlightSDK: 3af0a385405725e36452a35ef63ba8b3f2ef3ffc
 
-COCOAPODS: 0.20.2
+COCOAPODS: 0.22.2

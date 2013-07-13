@@ -39,7 +39,6 @@
 		68FDC3171781424A00D167CC /* SDTLookupResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FDC3161781424A00D167CC /* SDTLookupResponse.m */; };
 		68FDC31A1781764500D167CC /* invalidTerms.txt in Resources */ = {isa = PBXBuildFile; fileRef = 68FDC3181781764500D167CC /* invalidTerms.txt */; };
 		68FDC31B1781764500D167CC /* validTerms.txt in Resources */ = {isa = PBXBuildFile; fileRef = 68FDC3191781764500D167CC /* validTerms.txt */; };
-		68FDC31E17817DA600D167CC /* libFlurry_4.2.2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68FDC31D17817DA600D167CC /* libFlurry_4.2.2.a */; };
 		68FDC32417817F7800D167CC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68FDC32317817F7800D167CC /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
@@ -97,8 +96,6 @@
 		68FDC3161781424A00D167CC /* SDTLookupResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDTLookupResponse.m; sourceTree = "<group>"; };
 		68FDC3181781764500D167CC /* invalidTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = invalidTerms.txt; path = ../invalidTerms.txt; sourceTree = "<group>"; };
 		68FDC3191781764500D167CC /* validTerms.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = validTerms.txt; path = ../validTerms.txt; sourceTree = "<group>"; };
-		68FDC31C17817DA600D167CC /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
-		68FDC31D17817DA600D167CC /* libFlurry_4.2.2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurry_4.2.2.a; path = Dictionary/libFlurry_4.2.2.a; sourceTree = "<group>"; };
 		68FDC32317817F7800D167CC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		AA4BCB22A4CB48EEAC5E0BC8 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -113,7 +110,6 @@
 				683A6A2A14760152004C3F8C /* Foundation.framework in Frameworks */,
 				683A6A2C14760152004C3F8C /* CoreGraphics.framework in Frameworks */,
 				2659B76977BD40CB8C3FF315 /* libPods.a in Frameworks */,
-				68FDC31E17817DA600D167CC /* libFlurry_4.2.2.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,7 +165,6 @@
 				683A6A2B14760152004C3F8C /* CoreGraphics.framework */,
 				683A6A4414760152004C3F8C /* SenTestingKit.framework */,
 				206B5FAD4EF0452B9D4F0FCB /* libPods.a */,
-				68FDC31D17817DA600D167CC /* libFlurry_4.2.2.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -185,7 +180,6 @@
 				68EECF931781D581000166FD /* Views */,
 				683A6A3814760152004C3F8C /* SDTAppDelegate.h */,
 				683A6A3914760152004C3F8C /* SDTAppDelegate.m */,
-				68FDC31C17817DA600D167CC /* Flurry.h */,
 				683A6A3014760152004C3F8C /* Supporting Files */,
 			);
 			path = Dictionary;
