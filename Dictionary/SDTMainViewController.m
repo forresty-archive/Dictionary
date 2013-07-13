@@ -30,6 +30,7 @@
 @implementation SDTMainViewController
 
 
+# pragma mark
 # pragma mark - View lifecycle
 
 
@@ -88,6 +89,7 @@
 }
 
 
+# pragma mark
 # pragma mark - internal
 
 
@@ -102,6 +104,7 @@
 }
 
 
+# pragma mark
 # pragma mark - history
 
 
@@ -120,6 +123,7 @@
 }
 
 
+# pragma mark
 # pragma mark - UI presentation
 
 
@@ -135,6 +139,7 @@
 }
 
 
+# pragma mark
 # pragma mark - UITableViewDataSource
 
 
@@ -209,6 +214,7 @@
   }
 }
 
+
 # pragma mark private
 
 
@@ -239,6 +245,7 @@
 }
 
 
+# pragma mark
 # pragma mark - UITableViewDelegate
 
 # pragma mark view customization
@@ -290,6 +297,7 @@
 }
 
 
+# pragma mark
 # pragma mark - UISearchDisplayDelegate
 
 
@@ -309,6 +317,7 @@
 }
 
 
+# pragma mark
 # pragma mark - UISearchBarDelegate
 
 
