@@ -107,7 +107,7 @@
   _textChecker = [[UITextChecker alloc] init];
 
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveCache) name:UIApplicationDidEnterBackgroundNotification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(discardCache) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restoreCacheDueToMemoryWarningHandlingIfNeeded) name:UIApplicationDidBecomeActiveNotification object:nil];
 
   return self;
@@ -117,14 +117,19 @@
 # pragma mark - handling memory warnings
 
 
-- (void)discardCache {
+- (void)handleMemoryWarning {
   NSLog(@"memory warning received");
   // only discard if the app is in the background
-  if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
-    NSLog(@"discarding cache");
-    self.validTermsCache = nil;
-    self.invalidTermsCache = nil;
+  if ([UIApplication sharedApplication].applicationState  == UIApplicationStateBackground) {
+    [self discardCache];
   }
+}
+
+
+- (void)discardCache {
+  NSLog(@"discarding cache");
+  self.validTermsCache = nil;
+  self.invalidTermsCache = nil;
 }
 
 
@@ -196,6 +201,9 @@
 
     // test if memory warning handling is working
 //    [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+
+    // be a nice citizen, discard cache in the background and minimize memory footprint
+    [self discardCache];
   }];
 }
 
