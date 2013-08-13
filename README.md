@@ -12,4 +12,4 @@ Was a shameless rip-off of http://itunes.apple.com/us/app/dictionary/id473493861
 
 ## License
 
-MIT
+WTFPL.
